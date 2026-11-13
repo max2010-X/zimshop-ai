@@ -1,0 +1,1 @@
+FROM python:3.12-slimecho WORKDIR /serviceecho COPY requirements.txt ./requirements.txtecho RUN pip install --no-cache-dir -r requirements.txtecho COPY backend ./backendecho CMD ["sh", "-c", "uvicorn backend.app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
