@@ -1,0 +1,18 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Validate web and Gemini changes",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"npm install && npm run build && python -m pip install -r requirements.txt && python -m unittest discover -v"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$tsc"
+			]
+		}
+	]
+}

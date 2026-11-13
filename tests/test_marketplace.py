@@ -1,0 +1,328 @@
+import unittest
+from datetime import datetime, timezone
+from decimal import Decimal
+from pathlib import Path
+from tempfile import TemporaryDirectory
+from types import SimpleNamespace
+from unittest.mock import patch
+
+from fastapi import FastAPI
+from fastapi.testclient import TestClient
+from sqlalchemy import create_engine, inspect
+from sqlalchemy.pool import StaticPool
+from sqlalchemy.orm import sessionmaker
+
+from backend.app.database import Base, get_session
+from backend.app import marketplace
+from backend.app.marketplace import _hash_password, _verify_password, match_marketplace_products, parse_marketplace_query, router
+from backend.app.migrations import migrate_marketplace_terms_schema
+from backend.app.schemas import MarketplaceSearchRequest
+
+
+class MarketplaceTermsMigrationTests(unittest.TestCase):
+    def test_existing_marketplace_tables_receive_terms_and_business_fields(self):
+        engine = create_engine("sqlite://")
+        with engine.begin() as connection:
+            connection.exec_driver_sql("CREATE TABLE users (id TEXT PRIMARY KEY)")
+            connection.exec_driver_sql("CREATE TABLE marketplace_businesses (id TEXT PRIMARY KEY)")
+            connection.exec_driver_sql("CREATE TABLE marketplace_products (id TEXT PRIMARY KEY, condition VARCHAR(8))")
+
+        migrate_marketplace_terms_schema(engine)
+
+        self.assertIn("terms_accepted_at", {column["name"] for column in inspect(engine).get_columns("users")})
+        business_columns = {column["name"] for column in inspect(engine).get_columns("marketplace_businesses")}
+        self.assertTrue({"physical_address", "legal_status", "registration_details"}.issubset(business_columns))
+        engine.dispose()
+
+
+class MarketplaceMatchingTests(unittest.TestCase):
+    def setUp(self):
+        self.confirmed_at = datetime(2026, 11, 6, tzinfo=timezone.utc)
+        self.harare_business = SimpleNamespace(
+            id="business-harare",
+            business_name="Harare Mobile Shop",
+            phone_number="+263771234567",
+            location="Harare",
+            delivery_available=False,
+            delivery_areas="",
+            active=True,
+            updated_at=self.confirmed_at,
+        )
+        self.delivery_business = SimpleNamespace(
+            id="business-delivery",
+            business_name="Citywide Phones",
+            phone_number="+263772222222",
+            location="Bulawayo",
+            delivery_available=True,
+            delivery_areas="Harare, Chitungwiza",
+            active=True,
+            updated_at=self.confirmed_at,
+        )
+        self.harare_product = SimpleNamespace(
+            id="product-harare",
+            name="Samsung Galaxy A55 5G",
+            description="256GB Android smartphone",
+            price=Decimal("280.00"),
+            currency="USD",
+            condition="new",
+            image_url=None,
+            in_stock=True,
+            active=True,
+            details_confirmed_at=self.confirmed_at,
+            updated_at=self.confirmed_at,
+        )
+        self.delivery_product = SimpleNamespace(
+            id="product-delivery",
+            name="Samsung Galaxy A55",
+            description="128GB phone",
+            price=Decimal("295.00"),
+            currency="USD",
+            condition="new",
+            image_url=None,
+            in_stock=True,
+            active=True,
+            details_confirmed_at=self.confirmed_at,
+            updated_at=self.confirmed_at,
+        )
+
+    def test_search_filters_budget_condition_and_location_and_ranks_local_seller(self):
+        request = MarketplaceSearchRequest(
+            query="Samsung Galaxy A55",
+            max_budget=Decimal("300.00"),
+            currency="USD",
+            location="Harare",
+            condition="new",
+        )
+
+        results = match_marketplace_products(request, [
+            (self.delivery_product, self.delivery_business),
+            (self.harare_product, self.harare_business),
+        ])
+
+        self.assertEqual([result["business_name"] for result in results], ["Harare Mobile Shop", "Citywide Phones"])
+        self.assertIn("Within budget", results[0]["match_reasons"])
+        self.assertIn("Located in Harare", results[0]["match_reasons"])
+        self.assertIn("Delivers to Harare", results[1]["match_reasons"])
+
+    def test_budget_and_condition_remove_nonmatching_listings(self):
+        used_product = SimpleNamespace(**{**vars(self.harare_product), "condition": "used"})
+        expensive_product = SimpleNamespace(**{**vars(self.delivery_product), "price": Decimal("450.00")})
+        request = MarketplaceSearchRequest(
+            query="Samsung A55",
+            max_budget=Decimal("300.00"),
+            currency="USD",
+            location="Harare",
+            condition="new",
+        )
+
+        results = match_marketplace_products(request, [
+            (used_product, self.harare_business),
+            (expensive_product, self.delivery_business),
+        ])
+
+        self.assertEqual(results, [])
+
+    def test_delivery_without_declared_areas_does_not_match_everywhere(self):
+        business_without_areas = SimpleNamespace(**{**vars(self.delivery_business), "delivery_areas": ""})
+        request = MarketplaceSearchRequest(query="Samsung A55", location="Harare")
+
+        results = match_marketplace_products(request, [(self.delivery_product, business_without_areas)])
+
+        self.assertEqual(results, [])
+
+    def test_cheapest_sort_orders_matching_products_by_price(self):
+        request = MarketplaceSearchRequest(query="Samsung A55", sort_by="price")
+
+        results = match_marketplace_products(request, [
+            (self.delivery_product, self.delivery_business),
+            (self.harare_product, self.harare_business),
+        ])
+
+        self.assertEqual([result["price"] for result in results], [Decimal("280.00"), Decimal("295.00")])
+
+    def test_seller_password_hash_is_salted_and_verified(self):
+        first_hash = _hash_password("correct-horse-battery")
+        second_hash = _hash_password("correct-horse-battery")
+
+        self.assertNotEqual(first_hash, second_hash)
+        self.assertTrue(_verify_password("correct-horse-battery", first_hash))
+        self.assertFalse(_verify_password("wrong-password", first_hash))
+
+    def test_natural_language_query_uses_ai_catalog_terms(self):
+        from unittest.mock import patch
+
+        with patch("backend.app.marketplace.generate_ai_json", return_value=(
+            {"keywords": ["laptop", "core i7", "16gb ram"]}, "Cloudflare AI",
+        )):
+            query, mode = parse_marketplace_query("I need a Core i7 laptop with 16GB RAM")
+
+        self.assertEqual(query, "laptop core i7 16gb ram")
+        self.assertEqual(mode, "Cloudflare AI")
+
+
+class MarketplaceApiTests(unittest.TestCase):
+    def setUp(self):
+        self.engine = create_engine(
+            "sqlite://",
+            connect_args={"check_same_thread": False},
+            poolclass=StaticPool,
+        )
+        Base.metadata.create_all(self.engine)
+        self.session_factory = sessionmaker(bind=self.engine, autoflush=False, expire_on_commit=False)
+        test_app = FastAPI()
+        test_app.include_router(router)
+
+        def override_get_session():
+            with self.session_factory() as session:
+                yield session
+
+        test_app.dependency_overrides[get_session] = override_get_session
+        self.client = TestClient(test_app)
+        self.environment = patch.dict("os.environ", {"APP_ENV": "development"}, clear=False)
+        self.environment.start()
+
+    def tearDown(self):
+        self.client.close()
+        self.environment.stop()
+        Base.metadata.drop_all(self.engine)
+        self.engine.dispose()
+
+    def test_seller_registers_lists_product_and_public_search_returns_real_listing(self):
+        seller = self.client.post("/api/v1/marketplace/seller/register", json={
+            "email": "seller@example.co.zw",
+            "password": "correct-horse-battery",
+            "business_name": "Harare Tech",
+            "phone_number": "+263771234567",
+            "location": "Harare",
+            "physical_address": "12 Example Road, Harare",
+            "legal_status": "company",
+            "registration_details": "Company registration 12345/2020",
+            "terms_accepted": True,
+            "delivery_available": True,
+            "delivery_areas": "Harare, Chitungwiza",
+        })
+        self.assertEqual(seller.status_code, 201, seller.text)
+
+        created = self.client.post("/api/v1/marketplace/seller/products", json={
+            "name": "Samsung Galaxy A55",
+            "description": "256GB smartphone",
+            "price": "280.00",
+            "currency": "USD",
+            "condition": "new",
+            "in_stock": True,
+        })
+        self.assertEqual(created.status_code, 201, created.text)
+        confirmed_at = created.json()["details_confirmed_at"]
+
+        paused = self.client.put(f"/api/v1/marketplace/seller/products/{created.json()['id']}", json={
+            "name": "Samsung Galaxy A55",
+            "description": "256GB smartphone",
+            "price": "280.00",
+            "currency": "USD",
+            "condition": "new",
+            "in_stock": True,
+            "active": False,
+        })
+        self.assertEqual(paused.status_code, 200, paused.text)
+        self.assertEqual(paused.json()["details_confirmed_at"], confirmed_at)
+
+        confirmed = self.client.post(f"/api/v1/marketplace/seller/products/{created.json()['id']}/confirm")
+        self.assertEqual(confirmed.status_code, 200, confirmed.text)
+
+        restored = self.client.put(f"/api/v1/marketplace/seller/products/{created.json()['id']}", json={
+            "name": "Samsung Galaxy A55",
+            "description": "256GB smartphone",
+            "price": "280.00",
+            "currency": "USD",
+            "condition": "new",
+            "in_stock": True,
+            "active": True,
+        })
+        self.assertEqual(restored.status_code, 200, restored.text)
+
+        with patch("backend.app.marketplace.generate_ai_json", return_value=(None, None)):
+            response = self.client.post("/api/v1/marketplace/search", json={
+                "query": "Samsung Galaxy A55",
+                "max_budget": "300.00",
+                "currency": "USD",
+                "location": "Harare",
+                "condition": "new",
+            })
+
+        self.assertEqual(response.status_code, 200, response.text)
+        payload = response.json()
+        self.assertEqual(len(payload["results"]), 1)
+        self.assertEqual(payload["results"][0]["business_name"], "Harare Tech")
+        self.assertEqual(payload["results"][0]["price"], "280.00")
+        self.assertIn("Seller listing; verify details before paying", payload["results"][0]["match_reasons"])
+
+    def test_seller_registration_requires_terms_acceptance(self):
+        response = self.client.post("/api/v1/marketplace/seller/register", json={
+            "email": "seller@example.co.zw",
+            "password": "correct-horse-battery",
+            "business_name": "Harare Tech",
+            "phone_number": "+263771234567",
+            "location": "Harare",
+            "physical_address": "12 Example Road, Harare",
+            "legal_status": "company",
+            "terms_accepted": False,
+        })
+
+        self.assertEqual(response.status_code, 422)
+
+    def test_seller_listing_routes_require_a_session(self):
+        response = self.client.get("/api/v1/marketplace/seller/products")
+
+        self.assertEqual(response.status_code, 401)
+
+    def test_seller_can_log_back_in_and_upload_a_product_photo(self):
+        registration = self.client.post("/api/v1/marketplace/seller/register", json={
+            "email": "seller@example.co.zw",
+            "password": "correct-horse-battery",
+            "business_name": "Harare Tech",
+            "phone_number": "+263771234567",
+            "location": "Harare",
+            "physical_address": "12 Example Road, Harare",
+            "legal_status": "company",
+            "registration_details": "Company registration 12345/2020",
+            "terms_accepted": True,
+        })
+        self.assertEqual(registration.status_code, 201, registration.text)
+        with self.session_factory() as session:
+            from backend.app.models import User
+            user = session.query(User).filter_by(email="seller@example.co.zw").one()
+            self.assertIsNotNone(user.terms_accepted_at)
+            self.assertEqual(user.terms_version, "2026-11-13")
+        self.client.post("/api/v1/marketplace/seller/logout")
+        self.assertEqual(self.client.get("/api/v1/marketplace/seller/account").status_code, 401)
+
+        login = self.client.post("/api/v1/marketplace/seller/login", json={
+            "email": "seller@example.co.zw",
+            "password": "correct-horse-battery",
+        })
+        self.assertEqual(login.status_code, 200, login.text)
+
+        with TemporaryDirectory() as upload_dir, patch.object(marketplace, "UPLOAD_DIR", Path(upload_dir)):
+            upload = self.client.post(
+                "/api/v1/marketplace/seller/product-images",
+                files={"image": ("phone.png", b"\x89PNG\r\n\x1a\nimage-data", "image/png")},
+            )
+            self.assertEqual(upload.status_code, 201, upload.text)
+            image_url = upload.json()["image_url"]
+            self.assertTrue((Path(upload_dir) / image_url.rsplit("/", 1)[-1]).is_file())
+
+            listing = self.client.post("/api/v1/marketplace/seller/products", json={
+                "name": "Samsung Galaxy A55",
+                "description": "256GB smartphone",
+                "price": "280.00",
+                "image_url": image_url,
+            })
+            self.assertEqual(listing.status_code, 201, listing.text)
+            with patch("backend.app.marketplace.generate_ai_json", return_value=(None, None)):
+                search = self.client.post("/api/v1/marketplace/search", json={"query": "Samsung Galaxy A55"})
+            self.assertEqual(search.status_code, 200, search.text)
+            self.assertEqual(search.json()["results"][0]["image_url"], image_url)
+
+
+if __name__ == "__main__":
+    unittest.main()
