@@ -1,3 +1,4 @@
+
 # ZimShop AI
 
 ZimShop AI helps Zimbabwean buyers discover local product listings and helps businesses manage product listings alongside customer enquiries and SMS workflows. It is a web application built with React and TypeScript, backed by FastAPI and PostgreSQL.
@@ -113,4 +114,4 @@ Incoming texts are not automatically copied into the learned-phrase table anymor
 STOP and IsiShona opt-out phrases are handled for inbound messages even if the bot is inactive; START/tangazve can restore SMS consent without restoring marketing consent. Conversation history remains stored in PostgreSQL without automatic expiry; implement and verify a retention/deletion process before launch.
 
 Run `npm run build` to create the production frontend in `dist`. When frontend and API use different origins, set `VITE_API_URL` to the API's HTTPS URL and configure that exact frontend origin in `CORS_ORIGINS`.
- Postgre Password=2010@zimshop@2008
+
