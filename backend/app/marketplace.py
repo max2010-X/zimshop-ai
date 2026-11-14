@@ -286,6 +286,7 @@ def logout_seller(request: Request, response: Response, session: Session = Depen
             session.delete(auth_session)
             session.commit()
     response.delete_cookie(SESSION_COOKIE, path="/api/v1/marketplace", httponly=True, secure=os.getenv("APP_ENV", "production").strip().casefold() == "production", samesite="lax")
+    response.status_code = status.HTTP_204_NO_CONTENT
     return response
 
 
