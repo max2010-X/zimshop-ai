@@ -77,7 +77,7 @@ def _set_session_cookie(response: Response, session: Session, user: User) -> Non
         token,
         max_age=SESSION_MAX_AGE,
         httponly=True,
-        secure=os.getenv("APP_ENV", "production").strip().casefold() == "production",
+        secure=True,
         samesite="none",
         path="/api/v1/marketplace",
     )
