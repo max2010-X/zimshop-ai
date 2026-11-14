@@ -111,20 +111,33 @@ SMS_START_COMMANDS = {"start", "tanga", "resume", "tangazve"}
 @app.on_event("startup")
 def initialize_database() -> None:
     if production_mode:
-        required = (
-            "DATABASE_URL",
-            "SMSGATE_USERNAME",
-            "SMSGATE_PASSWORD",
-            "SMSGATE_WEBHOOK_TOKEN",
-            "CORS_ORIGINS",
-        )
+        sms_enabled = os.getenv(
+    "SMS_SENDING_ENABLED", "false"
+).strip().casefold() == "true"
+
+required = [
+    "DATABASE_URL",
+    "CORS_ORIGINS",
+]
+
+if sms_enabled:
+    required.extend([
+        "SMSGATE_USERNAME",
+        "SMSGATE_PASSWORD",
+        "SMSGATE_WEBHOOK_TOKEN",
+    ])
         missing = [key for key in required if not os.getenv(key, "").strip()]
         if missing:
             raise RuntimeError(f"Missing required production settings: {', '.join(missing)}")
         if not os.getenv("DATABASE_URL", "").startswith(("postgresql://", "postgresql+")):
             raise RuntimeError("Production requires PostgreSQL; SQLite is not supported.")
-        if not re.fullmatch(r"[A-Za-z0-9_-]{32,}", os.getenv("SMSGATE_WEBHOOK_TOKEN", "")):
-            raise RuntimeError("SMSGATE_WEBHOOK_TOKEN must be at least 32 URL-safe characters.")
+        if sms_enabled and not re.fullmatch(
+    r"[A-Za-z0-9_-]{32,}",
+    os.getenv("SMSGATE_WEBHOOK_TOKEN", "")
+):
+    raise RuntimeError(
+        "SMSGATE_WEBHOOK_TOKEN must be at least 32 URL-safe characters."
+    )
         allowed_production_origins = [origin.strip() for origin in os.getenv("CORS_ORIGINS", "").split(",") if origin.strip()]
         if not allowed_production_origins or any(not origin.startswith("https://") for origin in allowed_production_origins):
             raise RuntimeError("Production CORS_ORIGINS must contain only explicit HTTPS origins.")
