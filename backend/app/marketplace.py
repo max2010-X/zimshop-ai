@@ -6,7 +6,7 @@ import re
 import secrets
 import unicodedata
 from datetime import datetime, timedelta, timezone
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 from pathlib import Path
 from typing import Any
 from uuid import UUID
@@ -18,7 +18,7 @@ from sqlalchemy.orm import Session
 
 from .analysis import generate_ai_json
 from .database import get_session
-from .models import AuthSession, MarketplaceBusiness, MarketplaceProduct, User
+from .models import AuthSession, BotProduct, MarketplaceBusiness, MarketplaceProduct, User
 from .schemas import (
     MarketplaceBusinessUpdate,
     MarketplaceBusinessRead,
@@ -77,8 +77,8 @@ def _set_session_cookie(response: Response, session: Session, user: User) -> Non
         token,
         max_age=SESSION_MAX_AGE,
         httponly=True,
-        secure=True,
-        samesite="none",
+        secure=os.getenv("APP_ENV", "production").strip().casefold() == "production",
+        samesite="none" if os.getenv("APP_ENV", "production").strip().casefold() == "production" else "lax",
         path="/api/v1/marketplace",
     )
 
@@ -112,6 +112,14 @@ def _tokens(value: str) -> set[str]:
     return set(re.findall(r"[a-z0-9]+", ascii_text))
 
 
+def _price_sort_key(price: str) -> tuple[bool, Decimal, str]:
+    try:
+        numeric_price = Decimal(price)
+    except InvalidOperation:
+        return True, Decimal(0), price.casefold()
+    return False, numeric_price, price.casefold()
+
+
 def parse_marketplace_query(query: str) -> tuple[str, str]:
     result, provider = generate_ai_json(
         json.dumps({"customer_request": query[:120]}),
@@ -131,6 +139,7 @@ def parse_marketplace_query(query: str) -> tuple[str, str]:
 def match_marketplace_products(
     request: MarketplaceSearchRequest,
     listings: list[tuple[MarketplaceProduct, MarketplaceBusiness]],
+    catalog_products: list[BotProduct] | None = None,
 ) -> list[dict[str, Any]]:
     query_tokens = _tokens(request.query)
     if not query_tokens:
@@ -138,6 +147,7 @@ def match_marketplace_products(
     requested_location = request.location.strip().casefold()
     results: list[dict[str, Any]] = []
 
+    # Registered marketplace listings include seller-confirmed details.
     for product, business in listings:
         if not product.active or not business.active:
             continue
@@ -195,28 +205,97 @@ def match_marketplace_products(
 
         results.append({
             "id": product.id,
+            "source": "marketplace",
             "product_name": product.name,
             "description": product.description,
-            "price": price,
+            "price": str(price),
             "currency": product.currency,
             "condition": product.condition,
             "image_url": product.image_url,
             "in_stock": in_stock,
+            "availability": "Available" if in_stock else "Out of stock",
             "details_confirmed_at": product.details_confirmed_at,
             "business_name": business.business_name,
             "phone_number": business.phone_number,
             "location": business.location,
             "delivery_available": business.delivery_available,
             "delivery_areas": business.delivery_areas,
+            "purchase_url": None,
             "match_score": min(score, 100),
             "match_reasons": reasons,
             "local_match": bool(local_match),
         })
 
+        # Bot Catalog entries lack verified price, currency, condition and location.
+    # Do not include them when the customer applies filters we cannot verify.
+    if (
+        request.max_budget is not None
+        or requested_location
+        or request.condition != "any"
+    ):
+        catalog_products = []
+
+    for product in catalog_products or []:
+        if not product.active:
+            continue
+        name_tokens = _tokens(product.name)
+        description_tokens = _tokens(product.description or "")
+        interest_tokens = _tokens(" ".join(product.interests or []))
+        name_matches = query_tokens & name_tokens
+        description_matches = query_tokens & description_tokens
+        interest_matches = query_tokens & interest_tokens
+        if not name_matches and not description_matches and not interest_matches:
+            continue
+
+        score = round(60 * len(name_matches) / len(query_tokens))
+        score += round(15 * len(description_matches) / len(query_tokens))
+        score += round(10 * len(interest_matches) / len(query_tokens))
+        if query_tokens.issubset(name_tokens):
+            score += 10
+        reasons = ["Bot Catalog entry; verify details with the provider"]
+        if requested_location:
+            reasons.append("Location not provided; confirm with the provider")
+        if request.max_budget is not None:
+            reasons.append("Price and currency need confirmation")
+        if request.condition != "any":
+            reasons.append("Product condition not provided; confirm with the provider")
+
+        results.append({
+            "id": product.id,
+            "source": "bot_catalog",
+            "product_name": product.name,
+            "description": product.description,
+            "price": product.price,
+            "currency": None,
+            "condition": None,
+            "image_url": None,
+            "in_stock": None,
+            "availability": product.availability,
+            "details_confirmed_at": product.created_at,
+            "business_name": None,
+            "phone_number": None,
+            "location": None,
+            "delivery_available": None,
+            "delivery_areas": None,
+            "purchase_url": product.purchase_url,
+            "match_score": min(score, 100),
+            "match_reasons": reasons,
+            "local_match": False,
+        })
+
     if request.sort_by == "price":
-        results.sort(key=lambda result: (result["currency"], result["price"], result["product_name"].casefold()))
+        results.sort(key=lambda result: (
+            result["currency"] or "",
+            *_price_sort_key(result["price"]),
+            result["product_name"].casefold(),
+        ))
     else:
-        results.sort(key=lambda result: (-result["match_score"], not result["local_match"], result["price"], result["product_name"].casefold()))
+        results.sort(key=lambda result: (
+            -result["match_score"],
+            not result["local_match"],
+            *_price_sort_key(result["price"]),
+            result["product_name"].casefold(),
+        ))
     return [{key: value for key, value in result.items() if key != "local_match"} for result in results[:50]]
 
 
@@ -404,14 +483,20 @@ def confirm_seller_product(
 @router.post("/search", response_model=MarketplaceSearchResponse)
 def search_marketplace(request: MarketplaceSearchRequest, session: Session = Depends(get_session)) -> dict[str, Any]:
     normalized_query, understanding_mode = parse_marketplace_query(request.query)
-    matching_request = request.model_copy(update={"query": normalized_query})
+    matching_request = request.model_copy(update={"query": f"{request.query} {normalized_query}"})
     listings = list(session.execute(
         select(MarketplaceProduct, MarketplaceBusiness)
         .join(MarketplaceBusiness, MarketplaceProduct.business_id == MarketplaceBusiness.id)
         .where(MarketplaceProduct.active.is_(True), MarketplaceBusiness.active.is_(True))
     ))
+    catalog_products = list(session.scalars(
+        select(BotProduct)
+        .where(BotProduct.active.is_(True))
+        .order_by(BotProduct.created_at.desc())
+        .limit(500)
+    ))
     return {
-        "results": match_marketplace_products(matching_request, listings),
+        "results": match_marketplace_products(matching_request, listings, catalog_products),
         "searched_at": datetime.now(timezone.utc),
         "understanding_mode": understanding_mode,
     }

@@ -302,19 +302,22 @@ class MarketplaceSearchRequest(BaseModel):
 
 class MarketplaceSearchResult(BaseModel):
     id: UUID
+    source: Literal["marketplace", "bot_catalog"]
     product_name: str
     description: str
-    price: Decimal
-    currency: str
-    condition: str
-    image_url: str | None
-    in_stock: bool
+    price: str
+    currency: str | None = None
+    condition: str | None = None
+    image_url: str | None = None
+    in_stock: bool | None = None
+    availability: str | None = None
     details_confirmed_at: datetime
-    business_name: str
-    phone_number: str
-    location: str
-    delivery_available: bool
-    delivery_areas: str
+    business_name: str | None = None
+    phone_number: str | None = None
+    location: str | None = None
+    delivery_available: bool | None = None
+    delivery_areas: str | None = None
+    purchase_url: str | None = None
     match_score: int
     match_reasons: list[str]
 

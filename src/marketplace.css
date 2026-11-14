@@ -405,6 +405,16 @@
 .market-stock i { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 .market-stock.available { color: #159d70; }
 .market-stock.unconfirmed { color: #a4772d; }
+.market-source-label {
+  padding: 4px 7px;
+  border-radius: 5px;
+  color: #526078;
+  background: #eef1f6;
+  font-size: 8px;
+  font-weight: 700;
+}
+.market-source-label.seller { color: #23613d; background: #eaf5ed; }
+.market-source-label.bot-catalog { color: #7158d9; background: #f1efff; }
 .market-condition-label {
   padding: 4px 7px;
   border-radius: 5px;

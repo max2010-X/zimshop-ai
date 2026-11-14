@@ -16,6 +16,7 @@ from backend.app.database import Base, get_session
 from backend.app import marketplace
 from backend.app.marketplace import _hash_password, _verify_password, match_marketplace_products, parse_marketplace_query, router
 from backend.app.migrations import migrate_marketplace_terms_schema
+from backend.app.models import BotProduct
 from backend.app.schemas import MarketplaceSearchRequest
 
 
@@ -138,7 +139,7 @@ class MarketplaceMatchingTests(unittest.TestCase):
             (self.harare_product, self.harare_business),
         ])
 
-        self.assertEqual([result["price"] for result in results], [Decimal("280.00"), Decimal("295.00")])
+        self.assertEqual([result["price"] for result in results], ["280.00", "295.00"])
 
     def test_seller_password_hash_is_salted_and_verified(self):
         first_hash = _hash_password("correct-horse-battery")
@@ -147,6 +148,49 @@ class MarketplaceMatchingTests(unittest.TestCase):
         self.assertNotEqual(first_hash, second_hash)
         self.assertTrue(_verify_password("correct-horse-battery", first_hash))
         self.assertFalse(_verify_password("wrong-password", first_hash))
+
+    def test_bot_catalog_results_are_excluded_when_unverified_filters_are_used(self):
+        catalog_product = SimpleNamespace(
+            id="catalog-product-1",
+            name="Samsung Galaxy A55",
+            description="Android smartphone",
+            price="250",
+            availability="Available",
+            purchase_url=None,
+            interests=["smartphones"],
+            active=True,
+            created_at=self.confirmed_at,
+        )
+
+        normal_request = MarketplaceSearchRequest(query="Samsung Galaxy A55")
+        normal_results = match_marketplace_products(
+            normal_request, [], [catalog_product]
+        )
+        self.assertEqual(len(normal_results), 1)
+        self.assertEqual(normal_results[0]["source"], "bot_catalog")
+
+        filtered_requests = [
+            MarketplaceSearchRequest(
+                query="Samsung Galaxy A55",
+                max_budget=Decimal("300.00"),
+                currency="USD",
+            ),
+            MarketplaceSearchRequest(
+                query="Samsung Galaxy A55",
+                location="Harare",
+            ),
+            MarketplaceSearchRequest(
+                query="Samsung Galaxy A55",
+                condition="new",
+            ),
+        ]
+
+        for request in filtered_requests:
+            with self.subTest(request=request):
+                results = match_marketplace_products(
+                    request, [], [catalog_product]
+                )
+                self.assertEqual(results, [])
 
     def test_natural_language_query_uses_ai_catalog_terms(self):
         from unittest.mock import patch
@@ -254,7 +298,44 @@ class MarketplaceApiTests(unittest.TestCase):
         self.assertEqual(len(payload["results"]), 1)
         self.assertEqual(payload["results"][0]["business_name"], "Harare Tech")
         self.assertEqual(payload["results"][0]["price"], "280.00")
+        self.assertEqual(payload["results"][0]["source"], "marketplace")
         self.assertIn("Seller listing; verify details before paying", payload["results"][0]["match_reasons"])
+
+    def test_search_includes_bot_catalog_without_inventing_seller_details(self):
+        catalog_product = BotProduct(
+            name="Samsung Galaxy A55",
+            description="256GB smartphone",
+            price="USD 280",
+            availability="Available",
+            purchase_url="https://example.com/products/a55",
+            interests=["smartphone"],
+            active=True,
+        )
+        with self.session_factory() as session:
+            session.add(catalog_product)
+            session.commit()
+
+        with patch("backend.app.marketplace.generate_ai_json", return_value=(
+            {"keywords": ["Galaxy A55"]}, "Test AI",
+        )):
+            response = self.client.post("/api/v1/marketplace/search", json={
+                "query": "I want a Samsung",
+            })
+
+        self.assertEqual(response.status_code, 200, response.text)
+        result = response.json()["results"][0]
+        self.assertEqual(result["source"], "bot_catalog")
+        self.assertEqual(result["product_name"], "Samsung Galaxy A55")
+        self.assertEqual(result["price"], "USD 280")
+        self.assertEqual(result["availability"], "Available")
+        self.assertEqual(result["purchase_url"], "https://example.com/products/a55")
+        self.assertIsNone(result["currency"])
+        self.assertIsNone(result["condition"])
+        self.assertIsNone(result["in_stock"])
+        self.assertIsNone(result["business_name"])
+        self.assertIsNone(result["phone_number"])
+        self.assertIsNone(result["location"])
+
 
     def test_seller_registration_requires_terms_acceptance(self):
         response = self.client.post("/api/v1/marketplace/seller/register", json={

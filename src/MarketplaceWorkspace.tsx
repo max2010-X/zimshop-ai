@@ -8,19 +8,22 @@ import "./marketplace.css";
 
 type SearchResult = {
   id: string;
+  source: "marketplace" | "bot_catalog";
   product_name: string;
   description: string;
   price: string;
-  currency: string;
-  condition: "new" | "used" | "refurbished" | "reconditioned" | "grey_market";
+  currency: string | null;
+  condition: "new" | "used" | "refurbished" | "reconditioned" | "grey_market" | null;
   image_url: string | null;
-  in_stock: boolean;
+  in_stock: boolean | null;
+  availability: string | null;
   details_confirmed_at: string;
-  business_name: string;
-  phone_number: string;
-  location: string;
-  delivery_available: boolean;
-  delivery_areas: string;
+  business_name: string | null;
+  phone_number: string | null;
+  location: string | null;
+  delivery_available: boolean | null;
+  delivery_areas: string | null;
+  purchase_url: string | null;
   match_score: number;
   match_reasons: string[];
 };
@@ -80,7 +83,8 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   return response.json() as Promise<T>;
 }
 
-function formatPrice(price: string, currency: string) {
+function formatPrice(price: string, currency: string | null) {
+  if (!currency) return price;
   const amount = Number(price);
   return Number.isFinite(amount) ? `${currency} ${amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : `${currency} ${price}`;
 }
@@ -89,7 +93,8 @@ function formatDate(value: string) {
   return new Intl.DateTimeFormat(undefined, { dateStyle: "medium" }).format(new Date(value));
 }
 
-function formatCondition(value: SellerProduct["condition"]) {
+function formatCondition(value: SellerProduct["condition"] | null) {
+  if (!value) return null;
   return value === "grey_market" ? "Grey market" : value[0].toUpperCase() + value.slice(1);
 }
 
@@ -98,11 +103,13 @@ function productImageUrl(value: string | null) {
 }
 
 function placeOrderSmsHref(result: SearchResult, customerLocation: string) {
+  if (result.source !== "marketplace" || !result.phone_number) return null;
+
   const phone = result.phone_number.replace(/[^\d+]/g, "");
   if (!phone) return null;
 
   const message = [
-    `Hello ${result.business_name},`,
+    `Hello ${result.business_name || "there"},`,
     "",
     "I found your product on ZimShop AI and would like to place an order.",
     "",
@@ -420,33 +427,44 @@ export default function MarketplaceWorkspace({
         </form>
 
         {searched && <section className="marketplace-results" aria-live="polite">
-          <div className="marketplace-results-heading"><div><span className="eyebrow"><span className="eyebrow-line" /> LIVE SELLER CATALOGS</span><h2>{results.length} matching {results.length === 1 ? "listing" : "listings"}</h2></div><span className="market-results-mode"><Sparkles size={13} />{searchMode}</span></div>
-          <p className="marketplace-results-note">Listings are supplied by sellers. Place Order via SMS opens a draft for you to review and send; your carrier may charge for sending it. This is an order enquiry, not a completed purchase—confirm availability, final price, any additional charges and delivery with the business.</p>
+          <div className="marketplace-results-heading"><div><span className="eyebrow"><span className="eyebrow-line" /> SMART MATCH RESULTS</span><h2>{results.length} matching {results.length === 1 ? "result" : "results"}</h2></div><span className="market-results-mode"><Sparkles size={13} />{searchMode}</span></div>
+          <p className="marketplace-results-note">Results may come from registered sellers or the Bot Catalog. Seller listings include SMS and call options; catalog entries may include a provider link. Verify availability, price and other details with the provider before purchasing. SMS charges may apply.</p>
           {results.length ? <div className="marketplace-result-list">{results.map((result) => {
             const customerLocation = location === "Other" ? customLocation.trim() : location;
-            const orderSmsHref = placeOrderSmsHref(result, customerLocation);
-            const phoneHref = result.phone_number.replace(/[^\d+]/g, "");
-            return <article className="marketplace-result" key={result.id}>
+            const isSellerListing = result.source === "marketplace";
+            const orderSmsHref = isSellerListing ? placeOrderSmsHref(result, customerLocation) : null;
+            const phoneHref = result.phone_number?.replace(/[^\d+]/g, "") || "";
+            const conditionLabel = formatCondition(result.condition);
+            return <article className="marketplace-result" key={`${result.source}:${result.id}`}>
               <div className="market-result-image">{result.image_url ? <img src={productImageUrl(result.image_url) || undefined} alt={result.product_name} loading="lazy" /> : <Package size={28} />}</div>
               <div className="market-result-main">
-                <div className="market-result-topline"><span className={`market-stock ${result.in_stock ? "available" : "unconfirmed"}`}><i />{result.in_stock ? "Seller reports in stock" : "Confirm availability"}</span><span className="market-condition-label">{formatCondition(result.condition)}</span></div>
+                <div className="market-result-topline">
+                  <span className={`market-source-label ${isSellerListing ? "seller" : "bot-catalog"}`}>{isSellerListing ? "Seller listing" : "Bot Catalog"}</span>
+                  {isSellerListing
+                    ? <span className={`market-stock ${result.in_stock ? "available" : "unconfirmed"}`}><i />{result.in_stock ? "Seller reports in stock" : "Confirm availability"}</span>
+                    : <span className="market-stock unconfirmed"><i />{result.availability ? `Catalog: ${result.availability}` : "Confirm availability"}</span>}
+                  {conditionLabel && <span className="market-condition-label">{conditionLabel}</span>}
+                </div>
                 <h3>{result.product_name}</h3>
                 <p className="market-result-description">{result.description || "No extra details provided."}</p>
-                <div className="market-result-business"><Store size={15} /><strong>{result.business_name}</strong><span><MapPin size={13} />{result.location}</span></div>
-                {result.delivery_available && <div className="market-delivery-note"><Truck size={14} />Delivery available{result.delivery_areas ? `: ${result.delivery_areas}` : ""}</div>}
-                <div className="market-match-reasons">{result.match_reasons.filter((reason) => !reason.startsWith("Seller listing")).map((reason) => <span key={reason}><Check size={12} />{reason}</span>)}</div>
-                <small className="market-updated">Seller confirmed price and stock {formatDate(result.details_confirmed_at)} · not independently verified</small>
+                {isSellerListing && result.business_name && <div className="market-result-business"><Store size={15} /><strong>{result.business_name}</strong>{result.location && <span><MapPin size={13} />{result.location}</span>}</div>}
+                {isSellerListing && result.delivery_available && <div className="market-delivery-note"><Truck size={14} />Delivery available{result.delivery_areas ? `: ${result.delivery_areas}` : ""}</div>}
+                <div className="market-match-reasons">{result.match_reasons.map((reason) => <span key={reason}><Check size={12} />{reason}</span>)}</div>
+                <small className="market-updated">{isSellerListing
+                  ? <>Seller confirmed price and stock {formatDate(result.details_confirmed_at)} · not independently verified</>
+                  : <>Catalog entry added {formatDate(result.details_confirmed_at)} · details not independently verified</>}</small>
               </div>
               <div className="market-result-side">
                 <strong className="market-result-price">{formatPrice(result.price, result.currency)}</strong>
-                {maxBudget && currency === result.currency && <span className="market-budget-badge">Within budget</span>}
+                {isSellerListing && maxBudget && currency === result.currency && <span className="market-budget-badge">Within budget</span>}
                 {orderSmsHref && <a className="market-contact-link" href={orderSmsHref}><MessageSquareText size={15} />Place Order via SMS</a>}
-                <a className="market-call-link" href={`tel:${phoneHref}`}><Phone size={15} />Call</a>
+                {isSellerListing && phoneHref && <a className="market-call-link" href={`tel:${phoneHref}`}><Phone size={15} />Call</a>}
+                {!isSellerListing && result.purchase_url && <a className="market-contact-link" href={result.purchase_url} target="_blank" rel="noopener noreferrer"><ArrowUpRight size={15} />View provider link</a>}
               </div>
             </article>;
-          })}</div> : <div className="marketplace-no-results"><ShoppingBag size={25} /><div><strong>No matching seller listings yet.</strong><p>Try a shorter product name, a higher budget, or a wider location.</p><span>When a local seller adds this item, it can appear here.</span></div></div>}
+          })}</div> : <div className="marketplace-no-results"><ShoppingBag size={25} /><div><strong>No matching products found.</strong><p>Try a shorter product name, a higher budget, or a wider location.</p><span>Matching seller listings and Bot Catalog entries can appear here.</span></div></div>}
         </section>}
-        {!searched && <div className="marketplace-trust-note"><BadgeCheck size={16} /><span>Results come from registered seller listings. ZimShop AI does not confirm stock or guarantee seller prices.</span></div>}
+        {!searched && <div className="marketplace-trust-note"><BadgeCheck size={16} /><span>Results may come from seller listings or the Bot Catalog. ZimShop AI does not independently confirm availability or guarantee prices.</span></div>}
       </> : <section className="seller-area">
         {sellerPage === "dashboard" && business.id ? <>
           <div className="seller-dashboard-heading"><div><span className="eyebrow"><span className="eyebrow-line" /> SELLER WORKSPACE</span><h2>{business.business_name}</h2><p><MapPin size={14} />{business.location} <span>·</span> Seller profile</p></div><button type="button" className="icon-button" title="Sign out" aria-label="Sign out" onClick={() => void logout()} disabled={sellerBusy}><LogOut size={16} /></button></div>
