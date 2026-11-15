@@ -201,7 +201,7 @@ class BotProductCreate(BaseModel):
     description: str = Field(default="", max_length=1000)
     price: str = Field(default="", max_length=80)
     availability: str = Field(default="Available", max_length=80)
-    image_url: str | None = Field(default=None, max_length=1000, pattern=r"^(https://|/uploads/[a-f0-9]+\.(jpg|png|webp)$)")
+    image_url: str | None = Field(default=None, max_length=1000, pattern=r"^(https://|/uploads/[a-f0-9]+\.(jpg|png|webp)$|/api/v1/marketplace/product-images/[a-f0-9]{32}\.(jpg|png|webp)$)")
     purchase_url: str | None = Field(default=None, max_length=500, pattern=r"^https?://")
     interests: list[str] = Field(default_factory=list, max_length=20)
     active: bool = True
@@ -278,7 +278,7 @@ class MarketplaceProductCreate(BaseModel):
     price: Decimal = Field(gt=0, max_digits=12, decimal_places=2)
     currency: Literal["USD", "ZWG"] = "USD"
     condition: Literal["new", "used", "refurbished", "reconditioned", "grey_market"] = "new"
-    image_url: str | None = Field(default=None, max_length=1000, pattern=r"^(https://|/uploads/[a-f0-9]+\.(jpg|png|webp)$)")
+    image_url: str | None = Field(default=None, max_length=1000, pattern=r"^(https://|/uploads/[a-f0-9]+\.(jpg|png|webp)$|/api/v1/marketplace/product-images/[a-f0-9]{32}\.(jpg|png|webp)$)")
     in_stock: bool = True
     active: bool = True
 

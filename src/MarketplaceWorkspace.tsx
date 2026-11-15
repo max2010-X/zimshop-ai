@@ -55,7 +55,7 @@ type SellerProduct = {
   details_confirmed_at: string;
 };
 
-type SearchResponse = { results: SearchResult[]; searched_at: string; understanding_mode: string };
+type SearchResponse = { results: SearchResult[]; searched_at?: string; understanding_mode?: string };
 type ViewMode = "search" | "seller";
 type SellerPage = "login" | "register" | "dashboard";
 type MarketplaceWorkspaceProps = {
@@ -115,7 +115,9 @@ function formatCondition(value: SellerProduct["condition"] | null) {
 }
 
 function productImageUrl(value: string | null) {
-  return value?.startsWith("/uploads/") ? `${apiBase}${value}` : value;
+  return value?.startsWith("/uploads/") || value?.startsWith("/api/v1/marketplace/product-images/")
+    ? `${apiBase}${value}`
+    : value;
 }
 
 function placeOrderSmsHref(result: SearchResult, customerLocation: string) {
@@ -250,8 +252,11 @@ export default function MarketplaceWorkspace({
           sort_by: sortBy,
         }),
       });
+      if (!Array.isArray(response.results)) {
+        throw new Error("Search did not return a product list. Please try again.");
+      }
       setResults(response.results);
-      setSearchMode(response.understanding_mode);
+      setSearchMode(response.understanding_mode || "Product matching");
     } catch (error) {
       setNotice(error instanceof Error ? error.message : "Could not search listings.");
       setResults([]);

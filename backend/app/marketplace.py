@@ -18,7 +18,7 @@ from sqlalchemy.orm import Session
 
 from .analysis import generate_ai_json
 from .database import get_session
-from .models import AuthSession, BotBusinessProfile, BotProduct, MarketplaceBusiness, MarketplaceProduct, MarketplaceSearchQuery, User
+from .models import AuthSession, BotBusinessProfile, BotProduct, MarketplaceBusiness, MarketplaceProduct, MarketplaceSearchQuery, StoredProductImage, User
 from .schemas import (
     MarketplaceBusinessUpdate,
     MarketplaceBusinessRead,
@@ -421,7 +421,7 @@ async def upload_seller_product_image(
     session: Session = Depends(get_session),
 ) -> dict[str, str]:
     _get_seller(request, session)
-    return await _store_product_image(image)
+    return await _store_product_image(image, session)
 
 
 @router.post("/catalog/product-images", status_code=status.HTTP_201_CREATED)
@@ -431,10 +431,10 @@ async def upload_catalog_product_image(
     session: Session = Depends(get_session),
 ) -> dict[str, str]:
     _get_seller(request, session)
-    return await _store_product_image(image)
+    return await _store_product_image(image, session)
 
 
-async def _store_product_image(image: UploadFile) -> dict[str, str]:
+async def _store_product_image(image: UploadFile, session: Session) -> dict[str, str]:
     image_type = IMAGE_TYPES.get(image.content_type or "")
     if image_type is None:
         raise HTTPException(status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE, detail="Upload a JPEG, PNG, or WebP image.")
@@ -445,8 +445,28 @@ async def _store_product_image(image: UploadFile) -> dict[str, str]:
     if not valid_signature(contents):
         raise HTTPException(status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE, detail="The uploaded file does not match its image type.")
     filename = f"{secrets.token_hex(16)}{extension}"
-    (UPLOAD_DIR / filename).write_bytes(contents)
-    return {"image_url": f"/uploads/{filename}"}
+    stored_image = StoredProductImage(
+        filename=filename,
+        content_type=image.content_type or "application/octet-stream",
+        contents=contents,
+    )
+    session.add(stored_image)
+    session.commit()
+    return {"image_url": f"/api/v1/marketplace/product-images/{filename}"}
+
+
+@router.get("/product-images/{filename}")
+def get_product_image(filename: str, session: Session = Depends(get_session)) -> Response:
+    if not re.fullmatch(r"[a-f0-9]{32}\.(jpg|png|webp)", filename):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product image not found.")
+    image = session.get(StoredProductImage, filename)
+    if image is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product image not found.")
+    return Response(
+        content=image.contents,
+        media_type=image.content_type,
+        headers={"Cache-Control": "public, max-age=31536000, immutable"},
+    )
 
 
 @router.post("/seller/products", response_model=MarketplaceProductRead, status_code=status.HTTP_201_CREATED)

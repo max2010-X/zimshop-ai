@@ -1085,10 +1085,13 @@
               : body.trim() || `Search failed (${response.status}). Please try again.`;
             throw new Error(detail);
           }
-          if (!payload || !Array.isArray(payload.results) || typeof payload.understanding_mode !== "string") {
+          if (!payload || typeof payload !== "object" || !Array.isArray(payload.results)) {
             throw new Error("Search returned an incomplete response. Please try again.");
           }
-          message.textContent = `${payload.results.length} matching ${payload.results.length === 1 ? "listing" : "listings"} · ${payload.understanding_mode}. SMS opens a draft for you to review; carrier charges may apply.`;
+          const understandingMode = typeof payload.understanding_mode === "string" && payload.understanding_mode
+            ? payload.understanding_mode
+            : "product matching";
+          message.textContent = `${payload.results.length} matching ${payload.results.length === 1 ? "listing" : "listings"} · ${understandingMode}. SMS opens a draft for you to review; carrier charges may apply.`;
           if (!payload.results.length) {
             const empty = document.createElement("p");
             empty.className = "landing-search-empty";
@@ -1098,9 +1101,10 @@
           payload.results.forEach(listing => {
             const card = document.createElement("article");
             card.className = "landing-match";
+            const isSellerListing = listing.source === "marketplace";
             if (listing.image_url) {
               const image = document.createElement("img");
-              image.src = listing.image_url.startsWith("/uploads/") ? listing.image_url : listing.image_url;
+              image.src = listing.image_url;
               image.alt = listing.product_name;
               image.loading = "lazy";
               card.append(image);
@@ -1109,39 +1113,67 @@
             const name = document.createElement("h3");
             name.textContent = listing.product_name;
             const seller = document.createElement("p");
-            seller.textContent = `${listing.business_name} · ${listing.location}`;
+            seller.textContent = isSellerListing
+              ? [listing.business_name, listing.location].filter(Boolean).join(" · ") || "Independent seller"
+              : "Bot Catalog · verify details with the provider";
             const listingStatus = document.createElement("p");
-            const conditionLabel = listing.condition === "grey_market"
-              ? "Grey market"
-              : listing.condition[0].toUpperCase() + listing.condition.slice(1);
-            listingStatus.textContent = `${conditionLabel} · ${listing.in_stock ? "Seller reports in stock" : "Confirm availability"}`;
+            const conditionLabel = typeof listing.condition === "string"
+              ? listing.condition === "grey_market"
+                ? "Grey market"
+                : `${listing.condition[0].toUpperCase()}${listing.condition.slice(1)}`
+              : "";
+            listingStatus.textContent = isSellerListing
+              ? [conditionLabel, listing.in_stock ? "Seller reports in stock" : "Confirm availability"].filter(Boolean).join(" · ")
+              : `Catalog: ${listing.availability || "Confirm availability"}`;
             const description = document.createElement("p");
             description.textContent = listing.description || "No extra details provided.";
             const price = document.createElement("strong");
-            price.textContent = `${listing.currency} ${Number(listing.price).toLocaleString()}`;
+            const numericPrice = Number(listing.price);
+            price.textContent = listing.currency && Number.isFinite(numericPrice)
+              ? `${listing.currency} ${numericPrice.toLocaleString()}`
+              : listing.price || "Price not provided";
             details.append(name, seller, listingStatus, description, price);
-            const phone = listing.phone_number.replace(/[^\d+]/g, "");
-            const contact = document.createElement("a");
-            contact.className = "btn btn-primary";
-            const separator = /iPhone|iPad|iPod/i.test(navigator.userAgent) ? "&" : "?";
-            const customerLocation = document.getElementById("location").value;
-            const orderMessage = [
-              `Hello ${listing.business_name},`,
-              "",
-              "I found your product on Zimshop AI and would like to place an order.",
-              "",
-              `Product: ${listing.product_name}`,
-              `Listed Price: ${listing.currency} ${Number(listing.price).toLocaleString()}`,
-              "Quantity: 1",
-              `My location: ${customerLocation && customerLocation !== "Other" ? customerLocation : "Not specified"}`,
-              "",
-              "Please confirm availability, final price, any additional charges and delivery options.",
-              "",
-              "Thank you.",
-            ].join("\n");
-            contact.href = `sms:${phone}${separator}body=${encodeURIComponent(orderMessage)}`;
-            contact.textContent = "Place Order via SMS";
-            card.append(details, contact);
+            if (isSellerListing && typeof listing.phone_number === "string") {
+              const phone = listing.phone_number.replace(/[^\d+]/g, "");
+              if (phone) {
+                const contact = document.createElement("a");
+                contact.className = "btn btn-primary";
+                const separator = /iPhone|iPad|iPod/i.test(navigator.userAgent) ? "&" : "?";
+                const customerLocation = document.getElementById("location").value;
+                const listedPrice = listing.currency && Number.isFinite(numericPrice)
+                  ? `${listing.currency} ${numericPrice.toLocaleString()}`
+                  : listing.price;
+                const orderMessage = [
+                  `Hello ${listing.business_name || "there"},`,
+                  "",
+                  "I found your product on Zimshop AI and would like to place an order.",
+                  "",
+                  `Product: ${listing.product_name}`,
+                  `Listed Price: ${listedPrice}`,
+                  "Quantity: 1",
+                  `My location: ${customerLocation && customerLocation !== "Other" ? customerLocation : "Not specified"}`,
+                  "",
+                  "Please confirm availability, final price, any additional charges and delivery options.",
+                  "",
+                  "Thank you.",
+                ].join("\n");
+                contact.href = `sms:${phone}${separator}body=${encodeURIComponent(orderMessage)}`;
+                contact.textContent = "Place Order via SMS";
+                card.append(details, contact);
+              } else {
+                card.append(details);
+              }
+            } else if (!isSellerListing && typeof listing.purchase_url === "string") {
+              const providerLink = document.createElement("a");
+              providerLink.className = "btn btn-primary";
+              providerLink.href = listing.purchase_url;
+              providerLink.target = "_blank";
+              providerLink.rel = "noopener noreferrer";
+              providerLink.textContent = "View provider link";
+              card.append(details, providerLink);
+            } else {
+              card.append(details);
+            }
             resultsElement.append(card);
           });
         } catch (error) {

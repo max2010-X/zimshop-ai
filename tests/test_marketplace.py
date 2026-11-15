@@ -1,8 +1,6 @@
 import unittest
 from datetime import datetime, timezone
 from decimal import Decimal
-from pathlib import Path
-from tempfile import TemporaryDirectory
 from types import SimpleNamespace
 from unittest.mock import patch
 
@@ -16,7 +14,7 @@ from backend.app.database import Base, get_session
 from backend.app import marketplace
 from backend.app.marketplace import _hash_password, _verify_password, match_marketplace_products, parse_marketplace_query, router
 from backend.app.migrations import migrate_bot_product_image_schema, migrate_marketplace_terms_schema
-from backend.app.models import BotBusinessProfile, BotProduct, MarketplaceSearchQuery
+from backend.app.models import BotBusinessProfile, BotProduct, MarketplaceSearchQuery, StoredProductImage
 from backend.app.schemas import BotProductCreate, MarketplaceSearchRequest
 
 
@@ -523,26 +521,33 @@ class MarketplaceApiTests(unittest.TestCase):
         })
         self.assertEqual(login.status_code, 200, login.text)
 
-        with TemporaryDirectory() as upload_dir, patch.object(marketplace, "UPLOAD_DIR", Path(upload_dir)):
-            upload = self.client.post(
-                "/api/v1/marketplace/seller/product-images",
-                files={"image": ("phone.png", b"\x89PNG\r\n\x1a\nimage-data", "image/png")},
-            )
-            self.assertEqual(upload.status_code, 201, upload.text)
-            image_url = upload.json()["image_url"]
-            self.assertTrue((Path(upload_dir) / image_url.rsplit("/", 1)[-1]).is_file())
+        upload = self.client.post(
+            "/api/v1/marketplace/seller/product-images",
+            files={"image": ("phone.png", b"\x89PNG\r\n\x1a\nimage-data", "image/png")},
+        )
+        self.assertEqual(upload.status_code, 201, upload.text)
+        image_url = upload.json()["image_url"]
+        image = self.client.get(image_url)
+        self.assertEqual(image.status_code, 200, image.text)
+        self.assertEqual(image.content, b"\x89PNG\r\n\x1a\nimage-data")
+        self.assertEqual(image.headers["content-type"], "image/png")
+        with self.session_factory() as session:
+            stored = session.get(StoredProductImage, image_url.rsplit("/", 1)[-1])
+            self.assertIsNotNone(stored)
+            self.assertEqual(stored.contents, image.content)
 
-            listing = self.client.post("/api/v1/marketplace/seller/products", json={
-                "name": "Samsung Galaxy A55",
-                "description": "256GB smartphone",
-                "price": "280.00",
-                "image_url": image_url,
-            })
-            self.assertEqual(listing.status_code, 201, listing.text)
-            with patch("backend.app.marketplace.generate_ai_json", return_value=(None, None)):
-                search = self.client.post("/api/v1/marketplace/search", json={"query": "Samsung Galaxy A55"})
-            self.assertEqual(search.status_code, 200, search.text)
-            self.assertEqual(search.json()["results"][0]["image_url"], image_url)
+        listing = self.client.post("/api/v1/marketplace/seller/products", json={
+            "name": "Samsung Galaxy A55",
+            "description": "256GB smartphone",
+            "price": "280.00",
+            "image_url": image_url,
+        })
+        self.assertEqual(listing.status_code, 201, listing.text)
+        self.assertEqual(listing.json()["image_url"], image_url)
+        with patch("backend.app.marketplace.generate_ai_json", return_value=(None, None)):
+            search = self.client.post("/api/v1/marketplace/search", json={"query": "Samsung Galaxy A55"})
+        self.assertEqual(search.status_code, 200, search.text)
+        self.assertEqual(search.json()["results"][0]["image_url"], image_url)
 
     def test_catalog_photo_upload_requires_seller_session_and_validates_image(self):
         registration = self.client.post("/api/v1/marketplace/seller/register", json={
@@ -557,23 +562,24 @@ class MarketplaceApiTests(unittest.TestCase):
         })
         self.assertEqual(registration.status_code, 201, registration.text)
 
-        with TemporaryDirectory() as upload_dir, patch.object(marketplace, "UPLOAD_DIR", Path(upload_dir)):
-            response = self.client.post(
-                "/api/v1/marketplace/catalog/product-images",
-                files={"image": ("catalog.png", b"\x89PNG\r\n\x1a\nimage-data", "image/png")},
-            )
-            self.assertEqual(response.status_code, 201, response.text)
-            image_url = response.json()["image_url"]
-            self.assertTrue((Path(upload_dir) / image_url.rsplit("/", 1)[-1]).is_file())
-            catalog_product = BotProduct(**BotProductCreate(
-                name="Catalog phone",
-                image_url=image_url,
-            ).model_dump())
-            with self.session_factory() as session:
-                session.add(catalog_product)
-                session.commit()
-                session.refresh(catalog_product)
-                self.assertEqual(catalog_product.image_url, image_url)
+        response = self.client.post(
+            "/api/v1/marketplace/catalog/product-images",
+            files={"image": ("catalog.png", b"\x89PNG\r\n\x1a\nimage-data", "image/png")},
+        )
+        self.assertEqual(response.status_code, 201, response.text)
+        image_url = response.json()["image_url"]
+        image = self.client.get(image_url)
+        self.assertEqual(image.status_code, 200, image.text)
+        self.assertEqual(image.content, b"\x89PNG\r\n\x1a\nimage-data")
+        catalog_product = BotProduct(**BotProductCreate(
+            name="Catalog phone",
+            image_url=image_url,
+        ).model_dump())
+        with self.session_factory() as session:
+            session.add(catalog_product)
+            session.commit()
+            session.refresh(catalog_product)
+            self.assertEqual(catalog_product.image_url, image_url)
 
 
 if __name__ == "__main__":

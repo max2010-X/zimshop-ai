@@ -26,7 +26,9 @@ const initialSchedule = () => new Date(Date.now() + 60 * 60 * 1000).toISOString(
 const apiBase = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
 
 function productImageUrl(value: string | null) {
-  return value?.startsWith("/uploads/") ? `${apiBase}${value}` : value;
+  return value?.startsWith("/uploads/") || value?.startsWith("/api/v1/marketplace/product-images/")
+    ? `${apiBase}${value}`
+    : value;
 }
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
