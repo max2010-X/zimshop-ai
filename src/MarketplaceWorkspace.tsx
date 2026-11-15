@@ -2,7 +2,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import {
   ArrowDownWideNarrow, ArrowUpRight, BadgeCheck, Camera, Check, CircleAlert, LoaderCircle,
   LogIn, LogOut, MapPin, MessageSquareText, Package, Pause, Phone, Play, Plus, Search,
-  Pencil, ShoppingBag, Sparkles, Store, Truck, UserPlus, X,
+  Pencil, ShoppingBag, Sparkles, Store, Trash2, Truck, UserPlus, X,
 } from "lucide-react";
 import "./marketplace.css";
 
@@ -166,6 +166,7 @@ export default function MarketplaceWorkspace({
   const [sellerError, setSellerError] = useState("");
   const [business, setBusiness] = useState<Business>(emptyBusiness);
   const [products, setProducts] = useState<SellerProduct[]>([]);
+  const [deletingProductId, setDeletingProductId] = useState<string | null>(null);
   const [authDraft, setAuthDraft] = useState({ email: "", password: "", business_name: "", phone_number: "", location: "Harare", physical_address: "", legal_status: "individual", registration_details: "", terms_accepted: false, delivery_available: false, delivery_areas: "" });
   const [productDraft, setProductDraft] = useState(emptyProduct);
   const [editingProductId, setEditingProductId] = useState<string | null>(null);
@@ -383,6 +384,25 @@ export default function MarketplaceWorkspace({
     }
   }
 
+  async function deleteProduct(product: SellerProduct) {
+    if (!window.confirm(`Delete "${product.name}"? This cannot be undone.`)) return;
+    setDeletingProductId(product.id);
+    setSellerError("");
+    try {
+      await request<void>(`/api/v1/marketplace/seller/products/${product.id}`, { method: "DELETE" });
+      setProducts((current) => current.filter((item) => item.id !== product.id));
+      if (editingProductId === product.id) {
+        setEditingProductId(null);
+        setProductDraft(emptyProduct);
+      }
+      setSellerError("Product listing deleted.");
+    } catch (error) {
+      setSellerError(error instanceof Error ? error.message : "Could not delete this listing.");
+    } finally {
+      setDeletingProductId(null);
+    }
+  }
+
   function editProduct(product: SellerProduct) {
     setEditingProductId(product.id);
     setProductDraft({
@@ -543,7 +563,7 @@ export default function MarketplaceWorkspace({
                 <div className="seller-product-form-actions"><button className="button button-primary" type="submit" disabled={productBusy || photoBusy}>{productBusy ? <LoaderCircle className="spin" size={15} /> : editingProductId ? <Check size={15} /> : <Plus size={15} />}{photoBusy ? "Uploading photo" : editingProductId ? "Save listing" : "Publish listing"}</button>{editingProductId && <button className="button button-secondary" type="button" disabled={photoBusy} onClick={() => { setEditingProductId(null); setProductDraft(emptyProduct); }}><X size={14} />Cancel</button>}</div>
               </form>
               <div className="seller-listings"><div className="seller-listings-heading"><h3>Your listings</h3><span>{products.length} PRODUCTS</span></div>
-                {products.length ? products.map((product) => <article className={`seller-listing-row ${product.active ? "" : "paused"}`} key={product.id}><div className="seller-listing-photo">{product.image_url ? <img src={productImageUrl(product.image_url) || undefined} alt="" loading="lazy" /> : <Camera size={17} />}</div><div className="seller-listing-copy"><strong>{product.name}</strong><span>{formatPrice(product.price, product.currency)} · {formatCondition(product.condition)} · {product.in_stock ? "In stock" : "Out of stock"}</span><small>Confirmed {formatDate(product.details_confirmed_at)}</small></div><button type="button" className="icon-button" title="Edit listing" aria-label={`Edit ${product.name}`} onClick={() => editProduct(product)}><Pencil size={14} /></button><button type="button" className="icon-button" title="Confirm price and stock" aria-label={`Confirm price and stock: ${product.name}`} onClick={() => void confirmProduct(product)}><Check size={15} /></button><button type="button" className="icon-button" title={product.in_stock ? "Mark out of stock" : "Mark in stock"} aria-label={`${product.in_stock ? "Mark out of stock" : "Mark in stock"}: ${product.name}`} onClick={() => void updateProduct(product, { in_stock: !product.in_stock })}>{product.in_stock ? <Check size={15} /> : <Package size={15} />}</button><button type="button" className="icon-button" title={product.active ? "Pause listing" : "Publish listing"} aria-label={`${product.active ? "Pause" : "Publish"}: ${product.name}`} onClick={() => void updateProduct(product, { active: !product.active })}>{product.active ? <Pause size={15} /> : <Play size={15} />}</button></article>) : <div className="seller-listings-empty"><Package size={20} /><p>Your product listings will appear here.</p></div>}
+                {products.length ? products.map((product) => <article className={`seller-listing-row ${product.active ? "" : "paused"}`} key={product.id}><div className="seller-listing-photo">{product.image_url ? <img src={productImageUrl(product.image_url) || undefined} alt="" loading="lazy" /> : <Camera size={17} />}</div><div className="seller-listing-copy"><strong>{product.name}</strong><span>{formatPrice(product.price, product.currency)} · {formatCondition(product.condition)} · {product.in_stock ? "In stock" : "Out of stock"}</span><small>Confirmed {formatDate(product.details_confirmed_at)}</small></div><button type="button" className="icon-button" title="Edit listing" aria-label={`Edit ${product.name}`} onClick={() => editProduct(product)}><Pencil size={14} /></button><button type="button" className="icon-button" title="Confirm price and stock" aria-label={`Confirm price and stock: ${product.name}`} onClick={() => void confirmProduct(product)}><Check size={15} /></button><button type="button" className="icon-button" title={product.in_stock ? "Mark out of stock" : "Mark in stock"} aria-label={`${product.in_stock ? "Mark out of stock" : "Mark in stock"}: ${product.name}`} onClick={() => void updateProduct(product, { in_stock: !product.in_stock })}>{product.in_stock ? <Check size={15} /> : <Package size={15} />}</button><button type="button" className="icon-button" title={product.active ? "Pause listing" : "Publish listing"} aria-label={`${product.active ? "Pause" : "Publish"}: ${product.name}`} onClick={() => void updateProduct(product, { active: !product.active })}>{product.active ? <Pause size={15} /> : <Play size={15} />}</button><button type="button" className="icon-button delete-product-button" title="Delete listing" aria-label={`Delete ${product.name}`} disabled={deletingProductId === product.id} onClick={() => void deleteProduct(product)}>{deletingProductId === product.id ? <LoaderCircle className="spin" size={14} /> : <Trash2 size={14} />}</button></article>) : <div className="seller-listings-empty"><Package size={20} /><p>Your product listings will appear here.</p></div>}
               </div>
             </div>
           </div>

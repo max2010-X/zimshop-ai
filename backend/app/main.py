@@ -842,6 +842,15 @@ def update_bot_product(product_id: UUID, request: BotProductCreate, session: Ses
     return product
 
 
+@app.delete("/api/v1/bot/products/{product_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_bot_product(product_id: UUID, session: Session = Depends(get_session)) -> None:
+    product = session.get(BotProduct, product_id)
+    if product is None:
+        raise HTTPException(status_code=404, detail="Product not found.")
+    session.delete(product)
+    session.commit()
+
+
 @app.get("/api/v1/bot/business-profile", response_model=BotBusinessProfileRead | None)
 def get_bot_business_profile(session: Session = Depends(get_session)) -> BotBusinessProfile | None:
     return session.get(BotBusinessProfile, 1)

@@ -293,6 +293,21 @@ export default function BotWorkspace({ view = "bots", onOpenGateway }: { view?: 
     }
   }
 
+  async function deleteProduct(product: Product) {
+    if (!window.confirm(`Delete "${product.name}" from the catalog? This cannot be undone.`)) return;
+    setBusy(`delete-product-${product.id}`);
+    setNotice("");
+    try {
+      await request<void>(`/api/v1/bot/products/${product.id}`, { method: "DELETE" });
+      setProducts((current) => current.filter((item) => item.id !== product.id));
+      setNotice("Product deleted from the catalog.");
+    } catch (error) {
+      setNotice(error instanceof Error ? error.message : "Could not delete this product.");
+    } finally {
+      setBusy("");
+    }
+  }
+
   async function saveBusinessProfile(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setBusy("profile");
@@ -471,7 +486,7 @@ export default function BotWorkspace({ view = "bots", onOpenGateway }: { view?: 
               <input id="product-tags" className="text-input" value={productDraft.interests} onChange={(event) => setProductDraft((current) => ({ ...current, interests: event.target.value }))} placeholder="jeans, denim" />
               <button className="button button-primary" type="submit" disabled={busy === "product" || productPhotoBusy}>{busy === "product" ? <LoaderCircle className="spin" size={15} /> : <Plus size={15} />}Add product</button>
             </form>
-            <div className="sms-record-list sms-product-list"><div className="sms-record-list-head"><strong>{products.length} catalog items</strong><span>ACTIVE ITEMS CAN BE QUOTED</span></div>{products.length ? products.slice(0, 10).map((product) => <article className="sms-product-row" key={product.id}>{product.image_url ? <img className="sms-product-thumbnail" src={productImageUrl(product.image_url) || undefined} alt="" /> : <span className="sms-product-thumbnail-placeholder"><Camera size={15} /></span>}<div><strong>{product.name}</strong><small>{product.price || "Price not set"} · {product.availability}</small></div><button className="icon-button" type="button" title={product.active ? "Pause product" : "Activate product"} aria-label={`${product.active ? "Pause" : "Activate"} ${product.name}`} onClick={() => void toggleProduct(product)}>{product.active ? <Send size={14} /> : <RefreshCw size={14} />}</button></article>) : <p className="sms-empty-copy">Add confirmed prices, availability, and purchase links for accurate replies.</p>}</div>
+            <div className="sms-record-list sms-product-list"><div className="sms-record-list-head"><strong>{products.length} catalog items</strong><span>ACTIVE ITEMS CAN BE QUOTED</span></div>{products.length ? products.slice(0, 10).map((product) => <article className="sms-product-row" key={product.id}>{product.image_url ? <img className="sms-product-thumbnail" src={productImageUrl(product.image_url) || undefined} alt="" /> : <span className="sms-product-thumbnail-placeholder"><Camera size={15} /></span>}<div><strong>{product.name}</strong><small>{product.price || "Price not set"} · {product.availability}</small></div><button className="icon-button" type="button" title={product.active ? "Pause product" : "Activate product"} aria-label={`${product.active ? "Pause" : "Activate"} ${product.name}`} onClick={() => void toggleProduct(product)}>{product.active ? <Send size={14} /> : <RefreshCw size={14} />}</button><button className="icon-button delete-product-button" type="button" title="Delete product" aria-label={`Delete ${product.name}`} disabled={busy === `delete-product-${product.id}`} onClick={() => void deleteProduct(product)}>{busy === `delete-product-${product.id}` ? <LoaderCircle className="spin" size={14} /> : <Trash2 size={14} />}</button></article>) : <p className="sms-empty-copy">Add confirmed prices, availability, and purchase links for accurate replies.</p>}</div>
           </div>
           <form className="sms-tool-form" onSubmit={saveBusinessProfile}>
             <h3>Verified shop information</h3>

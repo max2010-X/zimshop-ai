@@ -756,7 +756,7 @@
 .seller-listings-heading span { color: #999fb0; font-size: 8px; font-weight: 800; letter-spacing: .1em; }
 .seller-listing-row {
   display: grid;
-  grid-template-columns: 48px minmax(0,1fr) repeat(4, 31px);
+  grid-template-columns: 48px minmax(0,1fr) repeat(5, 31px);
   align-items: center;
   gap: 8px;
   padding: 11px 0;
@@ -764,6 +764,8 @@
 }
 .seller-listing-row:last-child { border-bottom: 0; }
 .seller-listing-row.paused { opacity: .58; }
+.marketplace-page .delete-product-button { color: #a64d3e; }
+.marketplace-page .delete-product-button:hover:not(:disabled) { color: #8e3024; border-color: #efc8c2; background: #fff5f3; }
 .seller-listing-photo {
   display: grid;
   width: 48px;
@@ -837,8 +839,7 @@
   .seller-auth-intro { padding: 25px; }
   .seller-form, .seller-auth-form { padding: 18px; }
   .seller-listings { padding: 15px; }
-  .seller-listing-row { grid-template-columns: 42px minmax(0,1fr) repeat(2, 30px); }
-  .seller-listing-row .icon-button:nth-last-child(-n+2) { display: none; }
+  .seller-listing-row { grid-template-columns: 42px minmax(0,1fr) repeat(5, 30px); }
 }
 @media (max-width: 440px) {
   .marketplace-heading-mark { display: none; }
@@ -848,9 +849,59 @@
   .market-result-side { grid-template-columns: 1fr 1fr; }
   .market-result-price { grid-column: 1 / -1; }
   .market-budget-badge { grid-column: 1 / -1; }
-  .seller-listing-row { grid-template-columns: 42px minmax(0,1fr) 30px 30px; }
-  .seller-listing-row .icon-button:nth-last-child(-n+2) { display: none; }
+  .seller-listing-row { grid-template-columns: repeat(4, minmax(0,1fr)); gap: 7px; padding: 10px 0; }
+  .seller-listing-photo { grid-column: 1; grid-row: 1; width: 42px; height: 42px; }
+  .seller-listing-copy { grid-column: 2 / -1; grid-row: 1; }
+  .seller-listing-row .icon-button { justify-self: center; grid-row: 2; }
   .seller-dashboard-heading h2 { font-size: 19px; }
+}
+@media (min-width: 761px) and (max-width: 1000px) {
+  .marketplace-page { padding: 24px 20px; }
+  .marketplace-search { padding: 20px; }
+  .marketplace-result { grid-template-columns: 90px minmax(0,1fr); gap: 12px; }
+  .market-result-image, .market-result-image img { min-height: 90px; }
+  .market-result-side {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    align-items: center;
+    gap: 8px;
+    padding: 11px 0 0;
+    border-top: 1px solid #eff0f5;
+    border-left: 0;
+  }
+  .market-result-price { margin: 0; text-align: left; }
+  .market-contact-link, .market-call-link { min-height: 42px; }
+  .seller-listing-row { grid-template-columns: 42px minmax(0,1fr) repeat(5, 32px); }
+  .seller-listing-row .icon-button { display: grid; }
+}
+@media (max-width: 760px) {
+  .marketplace-page { padding: 20px 14px 24px; }
+  .marketplace-tabs { overflow-x: auto; }
+  .marketplace-tabs button { min-height: 42px; flex: 0 0 auto; }
+  .marketplace-search { padding: 15px; }
+  .marketplace-page .button, .marketplace-page .icon-button { min-height: 42px; }
+  .marketplace-result { min-width: 0; }
+  .market-result-side { gap: 8px; }
+  .seller-dashboard-grid { grid-template-columns: minmax(0,1fr); }
+  .seller-listing-row {
+    grid-template-columns: repeat(5, minmax(0,1fr));
+    gap: 7px;
+    padding: 10px 0;
+  }
+  .seller-listing-photo { grid-column: 1; grid-row: 1; width: 42px; height: 42px; }
+  .seller-listing-copy { grid-column: 2 / -1; grid-row: 1; }
+  .seller-listing-row .icon-button { display: grid; justify-self: center; grid-row: 2; }
+}
+@media (max-width: 360px) {
+  .marketplace-page { padding-inline: 10px; }
+  .marketplace-tabs { gap: 3px; padding: 4px; }
+  .marketplace-tabs button { gap: 5px; padding-inline: 8px; font-size: 9px; }
+  .marketplace-search { padding: 12px; }
+  .marketplace-search-title { align-items: flex-start; }
+  .marketplace-result { padding: 12px; }
+  .market-result-side { grid-template-columns: minmax(0,1fr) minmax(0,1fr); }
+  .seller-form, .seller-listings { padding: 14px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .marketplace-page *, .marketplace-page *::before, .marketplace-page *::after {

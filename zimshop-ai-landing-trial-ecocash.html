@@ -497,6 +497,15 @@
     .landing-match strong { display: block; margin-top: 7px; color: var(--green); font: 800 14px var(--display); }
     .landing-search-empty { padding: 16px; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: var(--muted); font-size: 13px; }
     @media (max-width: 600px) { .landing-match { grid-template-columns: 64px minmax(0, 1fr); gap: 10px; } .landing-match > img { width: 64px; height: 64px; } .landing-match .btn { grid-column: 1 / -1; } }
+    @media (max-width: 600px) {
+      .cookie-banner { right: 10px; bottom: max(10px, env(safe-area-inset-bottom)); width: calc(100% - 20px); padding: 16px; }
+      .cookie-actions { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .cookie-actions button { min-height: 44px; padding-inline: 8px; }
+      .cookie-actions .cookie-primary { grid-column: 1 / -1; }
+      .cookie-dialog-inner { padding: 18px; }
+      .cookie-dialog-actions { display: grid; grid-template-columns: 1fr; }
+      .cookie-dialog-actions button { min-height: 44px; }
+    }
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
       *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
@@ -1061,8 +1070,24 @@
               sort_by: sortBy,
             }),
           });
-          const payload = await response.json();
-          if (!response.ok) throw new Error(payload.detail || "Search failed. Please try again.");
+          const body = await response.text();
+          let payload = null;
+          if (body.trim()) {
+            try {
+              payload = JSON.parse(body);
+            } catch {
+              if (response.ok) throw new Error("Search returned an invalid response. Please try again.");
+            }
+          }
+          if (!response.ok) {
+            const detail = payload && typeof payload === "object" && "detail" in payload
+              ? String(payload.detail)
+              : body.trim() || `Search failed (${response.status}). Please try again.`;
+            throw new Error(detail);
+          }
+          if (!payload || !Array.isArray(payload.results) || typeof payload.understanding_mode !== "string") {
+            throw new Error("Search returned an incomplete response. Please try again.");
+          }
           message.textContent = `${payload.results.length} matching ${payload.results.length === 1 ? "listing" : "listings"} · ${payload.understanding_mode}. SMS opens a draft for you to review; carrier charges may apply.`;
           if (!payload.results.length) {
             const empty = document.createElement("p");

@@ -471,6 +471,31 @@ class MarketplaceApiTests(unittest.TestCase):
 
         self.assertEqual(response.status_code, 401)
 
+    def test_seller_can_delete_own_listing(self):
+        registration = self.client.post("/api/v1/marketplace/seller/register", json={
+            "email": "seller@example.co.zw",
+            "password": "correct-horse-battery",
+            "business_name": "Harare Tech",
+            "phone_number": "+263771234567",
+            "location": "Harare",
+            "physical_address": "12 Example Road, Harare",
+            "legal_status": "individual",
+            "terms_accepted": True,
+        })
+        self.assertEqual(registration.status_code, 201, registration.text)
+        created = self.client.post("/api/v1/marketplace/seller/products", json={
+            "name": "Samsung Galaxy A55",
+            "price": "280.00",
+        })
+        self.assertEqual(created.status_code, 201, created.text)
+
+        deleted = self.client.delete(f"/api/v1/marketplace/seller/products/{created.json()['id']}")
+
+        self.assertEqual(deleted.status_code, 204, deleted.text)
+        self.assertEqual(self.client.get("/api/v1/marketplace/seller/products").json(), [])
+        missing = self.client.delete(f"/api/v1/marketplace/seller/products/{created.json()['id']}")
+        self.assertEqual(missing.status_code, 404)
+
     def test_seller_can_log_back_in_and_upload_a_product_photo(self):
         registration = self.client.post("/api/v1/marketplace/seller/register", json={
             "email": "seller@example.co.zw",

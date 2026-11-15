@@ -491,6 +491,23 @@ def update_seller_product(
     return product
 
 
+@router.delete("/seller/products/{product_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_seller_product(
+    product_id: UUID,
+    http_request: Request,
+    session: Session = Depends(get_session),
+) -> None:
+    _, business = _get_seller(http_request, session)
+    product = session.scalar(select(MarketplaceProduct).where(
+        MarketplaceProduct.id == product_id,
+        MarketplaceProduct.business_id == business.id,
+    ))
+    if product is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product listing not found.")
+    session.delete(product)
+    session.commit()
+
+
 @router.post("/seller/products/{product_id}/confirm", response_model=MarketplaceProductRead)
 def confirm_seller_product(
     product_id: UUID,

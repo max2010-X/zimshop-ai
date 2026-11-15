@@ -112,6 +112,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 .sms-knowledge-column{display:grid;gap:14px;min-width:0}
 .sms-product-list{padding:0 14px;background:#f8f7f1;border:1px solid var(--line);border-radius:6px}
 .sms-product-row>div:first-child{flex:1}
+.sms-product-row .delete-product-button{flex:none;color:#a64d3e}
 .sms-product-thumbnail,.sms-product-thumbnail-placeholder{width:38px;height:38px;flex:none;border:1px solid var(--line);border-radius:5px;object-fit:cover}
 .sms-product-thumbnail-placeholder{display:grid;place-items:center;color:var(--muted);background:var(--white)}
 .sms-product-photo-preview{width:100%;max-height:180px;border:1px solid var(--line);border-radius:6px;object-fit:contain;background:var(--white)}
@@ -418,4 +419,59 @@ body{
   .sms-report-grid>div:nth-child(3){border-right:1px solid var(--line)}
   .sms-report-grid>div:nth-child(2n){border-right:0}
   .sms-report-grid>div:nth-child(n+3){border-top:1px solid var(--line)}
+}
+
+@media (min-width: 1001px) and (max-width: 1200px) {
+  .sidebar { width: 220px; }
+  .main-content { margin-left: 220px; }
+  .page-wrap { padding-right: 24px; padding-left: 24px; }
+  .workspace-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+}
+
+@media (min-width: 761px) and (max-width: 1000px) {
+  .sidebar { width: 190px; padding-inline: 12px; }
+  .main-content { margin-left: 190px; }
+  .topbar { padding-inline: 20px; }
+  .page-wrap, .bot-page-wrap { padding: 22px 20px 24px; }
+  .workspace-grid, .bot-layout, .sms-operations-grid, .gateway-workspace-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .gateway-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .decision-option {
+    grid-template-columns: minmax(70px, .8fr) auto minmax(90px, 1fr) 28px;
+  }
+}
+
+@media (max-width: 760px) {
+  .page-wrap, .bot-page-wrap { width: 100%; padding-inline: 14px; }
+  .sidebar { padding-inline: 10px; }
+  .sidebar .main-nav { max-width: calc(100vw - 100px); }
+  .sidebar .nav-item { width: 38px; height: 40px; }
+  .topbar { padding-inline: 14px; }
+  .page-heading, .bot-page-heading, .bot-section-heading, .seller-dashboard-heading {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .workspace-grid, .bot-layout, .sms-operations-grid, .gateway-workspace-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .bot-metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .bot-metrics > div { min-width: 0; }
+  .bot-section-heading h2 { overflow-wrap: anywhere; }
+  .decision-option { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1.1fr) 28px; }
+  .gateway-section, .sms-operations-section { min-width: 0; }
+}
+
+@media (max-width: 420px) {
+  .page-wrap, .bot-page-wrap { padding-inline: 11px; }
+  .topbar { padding-inline: 11px; }
+  .page-heading { padding: 15px 13px; }
+  .page-heading h1, .bot-page-heading h1 { font-size: 24px; }
+  .bot-metrics > div { grid-template-columns: 1fr; gap: 4px; padding-inline: 5px; }
+  .bot-metrics strong { grid-column: 1; grid-row: auto; font-size: 18px; }
+  .bot-metrics small { max-width: none; }
+  .bot-generator, .flow-section, .bot-simulator, .bot-conversations { padding: 12px; }
+  .decision-option { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) 26px; }
+  .gateway-section, .sms-operations-section { padding: 12px 10px; }
 }
