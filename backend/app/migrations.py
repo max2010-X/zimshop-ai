@@ -123,3 +123,12 @@ def migrate_marketplace_terms_schema(engine: Engine) -> None:
                 connection.exec_driver_sql(
                     "ALTER TABLE marketplace_products ALTER COLUMN condition TYPE VARCHAR(20)"
                 )
+
+
+def migrate_bot_product_image_schema(engine: Engine) -> None:
+    if not inspect(engine).has_table("bot_products"):
+        return
+    columns = {column["name"] for column in inspect(engine).get_columns("bot_products")}
+    if "image_url" not in columns:
+        with engine.begin() as connection:
+            connection.exec_driver_sql("ALTER TABLE bot_products ADD COLUMN image_url VARCHAR(1000)")

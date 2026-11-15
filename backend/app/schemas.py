@@ -201,6 +201,7 @@ class BotProductCreate(BaseModel):
     description: str = Field(default="", max_length=1000)
     price: str = Field(default="", max_length=80)
     availability: str = Field(default="Available", max_length=80)
+    image_url: str | None = Field(default=None, max_length=1000, pattern=r"^(https://|/uploads/[a-f0-9]+\.(jpg|png|webp)$)")
     purchase_url: str | None = Field(default=None, max_length=500, pattern=r"^https?://")
     interests: list[str] = Field(default_factory=list, max_length=20)
     active: bool = True

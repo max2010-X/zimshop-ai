@@ -112,6 +112,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 .sms-knowledge-column{display:grid;gap:14px;min-width:0}
 .sms-product-list{padding:0 14px;background:#f8f7f1;border:1px solid var(--line);border-radius:6px}
 .sms-product-row>div:first-child{flex:1}
+.sms-product-thumbnail,.sms-product-thumbnail-placeholder{width:38px;height:38px;flex:none;border:1px solid var(--line);border-radius:5px;object-fit:cover}
+.sms-product-thumbnail-placeholder{display:grid;place-items:center;color:var(--muted);background:var(--white)}
+.sms-product-photo-preview{width:100%;max-height:180px;border:1px solid var(--line);border-radius:6px;object-fit:contain;background:var(--white)}
+.sms-photo-input{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.sms-photo-input:focus-visible+.sms-photo-upload{outline:3px solid rgba(237,189,71,.9);outline-offset:3px}
+.sms-photo-upload{justify-self:start}
 .sms-report-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));border-block:1px solid var(--line)}
 .sms-report-grid>div{display:flex;flex-direction:column;gap:5px;padding:12px 10px;border-right:1px solid var(--line)}
 .sms-report-grid>div:last-child{border:0}

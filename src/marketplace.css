@@ -107,6 +107,24 @@
   background: #fff;
   box-shadow: 0 3px 10px rgba(35,29,80,.06);
 }
+.smart-match-profile {
+  margin-bottom: 14px;
+  padding: 15px 17px;
+  border: 1px solid #e4e9e2;
+  border-radius: 12px;
+  background: linear-gradient(110deg, #f8fbf6, #fff);
+}
+.smart-match-profile-heading { display: flex; align-items: center; gap: 10px; }
+.smart-match-profile-heading > div { flex: 1; min-width: 0; }
+.smart-match-profile-heading .eyebrow { font-size: 8px; }
+.smart-match-profile-heading h2 { margin: 4px 0 0; color: #252c43; font: 800 14px/1.2 'Manrope', sans-serif; }
+.smart-match-profile-icon { display: grid; width: 34px; height: 34px; place-items: center; border-radius: 9px; color: #23613d; background: #eaf5ed; }
+.smart-match-profile-heading .button { min-height: 32px; padding: 0 10px; font-size: 9px; }
+.smart-match-profile-details { display: flex; flex-wrap: wrap; align-items: center; gap: 7px 15px; margin: 12px 0 0 44px; color: #71798e; font-size: 9px; }
+.smart-match-profile-details strong { color: #4b5369; font-size: 10px; }
+.smart-match-profile-details span { display: inline-flex; align-items: center; gap: 5px; }
+.smart-match-profile-details svg { color: #23613d; }
+.smart-match-profile-loading { display: flex; align-items: center; gap: 7px; margin: 0 0 12px; color: #71798e; font-size: 10px; }
 
 /* Main product search form */
 .marketplace-search {
@@ -150,6 +168,24 @@
   font-size: 10px;
   font-weight: 800;
 }
+.marketplace-optional-filters { margin-top: 17px; }
+.marketplace-optional-filters summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  color: #4e3ab4;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none;
+}
+.marketplace-optional-filters summary::-webkit-details-marker { display: none; }
+.marketplace-optional-filters summary::before { content: "+"; display: inline-grid; width: 17px; height: 17px; place-items: center; border: 1px solid #e5e0ff; border-radius: 50%; }
+.marketplace-optional-filters[open] summary::before { content: "−"; }
+.marketplace-optional-filters summary span { color: #9298a9; font-size: 9px; font-weight: 400; }
+.marketplace-optional-filters .marketplace-filter-grid { margin-top: 15px; }
+.marketplace-optional-filters .market-condition-field { margin-top: 14px; }
 .marketplace-page .field-label {
   display: block;
   margin: 0 0 9px;

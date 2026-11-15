@@ -140,6 +140,8 @@ export default function MarketplaceWorkspace({
   const [customLocation, setCustomLocation] = useState("");
   const [condition, setCondition] = useState<"any" | SellerProduct["condition"]>("any");
   const [results, setResults] = useState<SearchResult[]>([]);
+  const [searchBusiness, setSearchBusiness] = useState<Business | null>(null);
+  const [searchProfileLoading, setSearchProfileLoading] = useState(false);
   const [searchMode, setSearchMode] = useState("");
   const [searched, setSearched] = useState(false);
   const [searchBusy, setSearchBusy] = useState(false);
@@ -188,6 +190,27 @@ export default function MarketplaceWorkspace({
 
   useEffect(() => {
     if (viewMode === "seller") void loadSeller();
+  }, [viewMode]);
+
+  useEffect(() => {
+    if (viewMode !== "search") return;
+    let active = true;
+    setSearchProfileLoading(true);
+    request<Business>("/api/v1/marketplace/seller/account")
+      .then((account) => {
+        if (active) setSearchBusiness(account);
+      })
+      .catch((error: unknown) => {
+        if (!active) return;
+        setSearchBusiness(null);
+        if (!(error instanceof Error) || !error.message.includes("Sign in")) {
+          setNotice(error instanceof Error ? error.message : "Could not load your business profile.");
+        }
+      })
+      .finally(() => {
+        if (active) setSearchProfileLoading(false);
+      });
+    return () => { active = false; };
   }, [viewMode]);
 
   async function search(sortBy: "best_match" | "price") {
@@ -400,28 +423,41 @@ export default function MarketplaceWorkspace({
       </div>
 
       {viewMode === "search" ? <>
+        {searchBusiness && <section className="smart-match-profile" aria-labelledby="smart-match-profile-title">
+          <div className="smart-match-profile-heading"><span className="smart-match-profile-icon"><Store size={17} /></span><div><span className="eyebrow"><span className="eyebrow-line" /> YOUR ACCOUNT</span><h2 id="smart-match-profile-title">Business profile</h2></div><button type="button" className="button button-secondary" onClick={() => switchMode("seller")}>Edit profile</button></div>
+          <div className="smart-match-profile-details">
+            <strong>{searchBusiness.business_name}</strong>
+            <span><Phone size={13} />{searchBusiness.phone_number}</span>
+            <span><MapPin size={13} />{searchBusiness.location}</span>
+            {searchBusiness.delivery_available && <span><Truck size={13} />Delivery available{searchBusiness.delivery_areas ? `: ${searchBusiness.delivery_areas}` : ""}</span>}
+          </div>
+        </section>}
+        {searchProfileLoading && <div className="smart-match-profile-loading" role="status"><LoaderCircle className="spin" size={14} />Loading your business profile…</div>}
         <form className="marketplace-search" onSubmit={(event) => { event.preventDefault(); void search("best_match"); }}>
-          <div className="marketplace-search-title"><div><span className="step-index">01</span><div><h2>What are you looking for?</h2><p>Search products listed by Zimbabwean businesses.</p></div></div><Sparkles size={17} /></div>
+          <div className="marketplace-search-title"><div><span className="step-index">01</span><div><h2>What are you looking for?</h2><p>Describe what you need; AI helps match your request to seller and catalog products.</p></div></div><Sparkles size={17} /></div>
           <label className="field-label" htmlFor="market-query">PRODUCT OR DETAILS</label>
           <textarea id="market-query" className="market-query-input" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Samsung Galaxy A55, 16GB RAM laptop, school uniform..." maxLength={120} required />
-          <div className="marketplace-filter-grid">
-            <div className="market-filter-budget">
-              <label className="field-label" htmlFor="market-budget">MAXIMUM BUDGET</label>
-              <div><input id="market-budget" type="number" min="0" step="0.01" value={maxBudget} onChange={(event) => setMaxBudget(event.target.value)} placeholder="No limit" /><select aria-label="Budget currency" value={currency} onChange={(event) => setCurrency(event.target.value as "USD" | "ZWG")}><option value="USD">USD</option><option value="ZWG">ZWG</option></select></div>
+          <details className="marketplace-optional-filters">
+            <summary>Optional filters <span>Budget, location, and condition</span></summary>
+            <div className="marketplace-filter-grid">
+              <div className="market-filter-budget">
+                <label className="field-label" htmlFor="market-budget">MAXIMUM BUDGET</label>
+                <div><input id="market-budget" type="number" min="0" step="0.01" value={maxBudget} onChange={(event) => setMaxBudget(event.target.value)} placeholder="No limit" /><select aria-label="Budget currency" value={currency} onChange={(event) => setCurrency(event.target.value as "USD" | "ZWG")}><option value="USD">USD</option><option value="ZWG">ZWG</option></select></div>
+              </div>
+              <div>
+                <label className="field-label" htmlFor="market-location">YOUR LOCATION</label>
+                <div className="market-location-field"><MapPin size={15} /><select id="market-location" value={location} onChange={(event) => { setLocation(event.target.value); setCustomLocation(""); }}><option value="">Anywhere in Zimbabwe</option>{locations.map((item) => <option value={item} key={item}>{item}</option>)}<option value="Other">Other</option></select></div>
+                {location === "Other" && <input className="market-custom-location" aria-label="Enter your town or city" value={customLocation} onChange={(event) => setCustomLocation(event.target.value)} placeholder="Enter your town or city" maxLength={120} />}
+              </div>
             </div>
-            <div>
-              <label className="field-label" htmlFor="market-location">YOUR LOCATION</label>
-              <div className="market-location-field"><MapPin size={15} /><select id="market-location" value={location} onChange={(event) => { setLocation(event.target.value); setCustomLocation(""); }}><option value="">Anywhere in Zimbabwe</option>{locations.map((item) => <option value={item} key={item}>{item}</option>)}<option value="Other">Other</option></select></div>
-              {location === "Other" && <input className="market-custom-location" aria-label="Enter your town or city" value={customLocation} onChange={(event) => setCustomLocation(event.target.value)} placeholder="Enter your town or city" maxLength={120} />}
-            </div>
-          </div>
-          <fieldset className="market-condition-field">
-            <legend className="field-label">CONDITION</legend>
-            <div className="market-condition-options">{(["any", "new", "used", "refurbished", "reconditioned", "grey_market"] as const).map((value) => <button key={value} type="button" aria-pressed={condition === value} className={condition === value ? "selected" : ""} onClick={() => setCondition(value)}>{value === "any" ? "Any condition" : value === "grey_market" ? "Grey market" : value[0].toUpperCase() + value.slice(1)}</button>)}</div>
-          </fieldset>
+            <fieldset className="market-condition-field">
+              <legend className="field-label">CONDITION</legend>
+              <div className="market-condition-options">{(["any", "new", "used", "refurbished", "reconditioned", "grey_market"] as const).map((value) => <button key={value} type="button" aria-pressed={condition === value} className={condition === value ? "selected" : ""} onClick={() => setCondition(value)}>{value === "any" ? "Any condition" : value === "grey_market" ? "Grey market" : value[0].toUpperCase() + value.slice(1)}</button>)}</div>
+            </fieldset>
+          </details>
           <div className="market-search-actions">
-            <button type="submit" className="button button-primary" disabled={searchBusy}>{searchBusy ? <LoaderCircle className="spin" size={16} /> : <Search size={16} />}{searchBusy ? "Searching listings" : "Find matching businesses"}</button>
-            <button type="button" className="button button-secondary" disabled={searchBusy} onClick={() => void search("price")}><ArrowDownWideNarrow size={16} />Find cheapest deal</button>
+            <button type="submit" className="button button-primary" disabled={searchBusy}>{searchBusy ? <LoaderCircle className="spin" size={16} /> : <Search size={16} />}{searchBusy ? "Searching products" : "Search products"}</button>
+            <button type="button" className="button button-secondary" disabled={searchBusy} onClick={() => void search("price")}><ArrowDownWideNarrow size={16} />Sort by lowest price</button>
           </div>
           {notice && <div className="marketplace-notice" role="status"><CircleAlert size={16} />{notice}</div>}
         </form>

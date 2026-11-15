@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import {
-  ArrowDown, ArrowRight, Bot, CircleAlert, CircleHelp,
+  ArrowDown, ArrowRight, Bot, Camera, CircleAlert, CircleHelp,
   BarChart3, CalendarClock, Clock3, GitBranch, LoaderCircle, MessageCircle, MessageSquareText,
   Plus, RefreshCw, Save, Send, Sparkles, Tag, Trash2, UserRound, UsersRound, WandSparkles,
 } from "lucide-react";
@@ -16,7 +16,7 @@ type Contact = { id: string; phone_number: string; profile_name: string; sms_con
 type CampaignCategory = "promotion" | "seasonal" | "reminder" | "follow_up";
 type Campaign = { id: string; name: string; category: CampaignCategory; message: string; interest_filter: string | null; scheduled_at: string; status: string; queued_count: number; sent_count: number; delivered_count: number; failed_count: number; reply_count: number; created_at: string; completed_at: string | null };
 type Reports = { contacts: number; opted_in: number; marketing_opted_in: number; leads: number; messages_sent: number; customer_replies: number; delivered: number; campaigns: Campaign[]; sales_tracking: string };
-type Product = { id: string; name: string; description: string; price: string; availability: string; purchase_url: string | null; interests: string[]; active: boolean; created_at: string };
+type Product = { id: string; name: string; description: string; price: string; availability: string; image_url: string | null; purchase_url: string | null; interests: string[]; active: boolean; created_at: string };
 type BusinessProfile = { business_hours: string; location: string; delivery_policy: string; returns_policy: string; payment_instructions: string; support_contact: string };
 export type BotView = "bots" | "contacts" | "campaigns" | "catalog" | "reports";
 
@@ -24,6 +24,10 @@ const emptyBusinessProfile: BusinessProfile = { business_hours: "", location: ""
 const initialSchedule = () => new Date(Date.now() + 60 * 60 * 1000).toISOString().slice(0, 16);
 
 const apiBase = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+
+function productImageUrl(value: string | null) {
+  return value?.startsWith("/uploads/") ? `${apiBase}${value}` : value;
+}
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await fetch(`${apiBase}${path}`, {
@@ -53,7 +57,8 @@ export default function BotWorkspace({ view = "bots", onOpenGateway }: { view?: 
   const [businessProfile, setBusinessProfile] = useState<BusinessProfile>(emptyBusinessProfile);
   const [contactDraft, setContactDraft] = useState({ phone_number: "", profile_name: "", interests: "", sms_consent: false, marketing_consent: false });
   const [campaignDraft, setCampaignDraft] = useState({ name: "", category: "promotion" as CampaignCategory, message: "", interest_filter: "", scheduled_at: initialSchedule() });
-  const [productDraft, setProductDraft] = useState({ name: "", description: "", price: "", availability: "Available", purchase_url: "", interests: "" });
+  const [productDraft, setProductDraft] = useState({ name: "", description: "", price: "", availability: "Available", image_url: "", purchase_url: "", interests: "" });
+  const [productPhotoBusy, setProductPhotoBusy] = useState(false);
   const [workflow, setWorkflow] = useState<BotWorkflow | null>(null);
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(true);
@@ -211,15 +216,55 @@ export default function BotWorkspace({ view = "bots", onOpenGateway }: { view?: 
     try {
       await request<Product>("/api/v1/bot/products", {
         method: "POST",
-        body: JSON.stringify({ ...productDraft, purchase_url: productDraft.purchase_url.trim() || null, interests: productDraft.interests.split(",").map((interest) => interest.trim()).filter(Boolean) }),
+        body: JSON.stringify({
+          ...productDraft,
+          image_url: productDraft.image_url.trim() || null,
+          purchase_url: productDraft.purchase_url.trim() || null,
+          interests: productDraft.interests.split(",").map((interest) => interest.trim()).filter(Boolean),
+        }),
       });
-      setProductDraft({ name: "", description: "", price: "", availability: "Available", purchase_url: "", interests: "" });
+      setProductDraft({ name: "", description: "", price: "", availability: "Available", image_url: "", purchase_url: "", interests: "" });
       await refresh();
       setNotice("Product added to the catalog.");
     } catch (error) {
       setNotice(error instanceof Error ? error.message : "Could not save this product.");
     } finally {
       setBusy("");
+    }
+  }
+
+  async function uploadProductPhoto(event: FormEvent<HTMLInputElement>) {
+    const input = event.currentTarget;
+    const image = input.files?.[0];
+    if (!image) return;
+    if (image.size > 5 * 1024 * 1024) {
+      setNotice("Product photos must be 5 MB or smaller.");
+      input.value = "";
+      return;
+    }
+
+    setProductPhotoBusy(true);
+    setNotice("");
+    const formData = new FormData();
+    formData.append("image", image);
+    try {
+      const response = await fetch(`${apiBase}/api/v1/marketplace/seller/product-images`, {
+        method: "POST",
+        credentials: "include",
+        body: formData,
+      });
+      if (!response.ok) {
+        const payload = await response.json().catch(() => null);
+        throw new Error(payload?.detail || `Photo upload failed (${response.status})`);
+      }
+      const uploaded = await response.json() as { image_url: string };
+      setProductDraft((current) => ({ ...current, image_url: uploaded.image_url }));
+      setNotice("Product photo uploaded.");
+    } catch (error) {
+      setNotice(error instanceof Error ? error.message : "Could not upload this product photo.");
+    } finally {
+      setProductPhotoBusy(false);
+      input.value = "";
     }
   }
 
@@ -402,6 +447,10 @@ export default function BotWorkspace({ view = "bots", onOpenGateway }: { view?: 
               <div className="sms-inline-fields"><div><label className="field-label" htmlFor="product-price">PRICE</label><input id="product-price" className="text-input" value={productDraft.price} onChange={(event) => setProductDraft((current) => ({ ...current, price: event.target.value }))} placeholder="$15" maxLength={80} /></div><div><label className="field-label" htmlFor="product-stock">AVAILABILITY</label><input id="product-stock" className="text-input" value={productDraft.availability} onChange={(event) => setProductDraft((current) => ({ ...current, availability: event.target.value }))} maxLength={80} /></div></div>
               <label className="field-label" htmlFor="product-description">DESCRIPTION</label>
               <textarea id="product-description" className="node-body-input" value={productDraft.description} onChange={(event) => setProductDraft((current) => ({ ...current, description: event.target.value }))} rows={2} maxLength={1000} />
+              <label className="field-label" htmlFor="product-photo">PRODUCT PHOTO</label>
+              <input id="product-photo" className="sms-photo-input" type="file" accept="image/jpeg,image/png,image/webp" onChange={(event) => void uploadProductPhoto(event)} disabled={productPhotoBusy} />
+              <label className="button button-secondary sms-photo-upload" htmlFor="product-photo">{productPhotoBusy ? <LoaderCircle className="spin" size={15} /> : <Camera size={15} />}{productPhotoBusy ? "Uploading photo…" : "Upload product photo"}</label>
+              {productDraft.image_url && <img className="sms-product-photo-preview" src={productImageUrl(productDraft.image_url) || undefined} alt={`Preview of ${productDraft.name || "new product"}`} />}
               <label className="field-label" htmlFor="product-url">PURCHASE / WHATSAPP LINK</label>
               <input id="product-url" className="text-input" type="url" value={productDraft.purchase_url} onChange={(event) => setProductDraft((current) => ({ ...current, purchase_url: event.target.value }))} placeholder="https://wa.me/263771234567" maxLength={500} />
               <p className="sms-form-note">Paste a WhatsApp Business catalog or product link to open it directly. A wa.me chat link opens with this product name and a request for your catalog; the customer taps Send in WhatsApp.</p>
@@ -409,7 +458,7 @@ export default function BotWorkspace({ view = "bots", onOpenGateway }: { view?: 
               <input id="product-tags" className="text-input" value={productDraft.interests} onChange={(event) => setProductDraft((current) => ({ ...current, interests: event.target.value }))} placeholder="jeans, denim" />
               <button className="button button-primary" type="submit" disabled={busy === "product"}>{busy === "product" ? <LoaderCircle className="spin" size={15} /> : <Plus size={15} />}Add product</button>
             </form>
-            <div className="sms-record-list sms-product-list"><div className="sms-record-list-head"><strong>{products.length} catalog items</strong><span>ACTIVE ITEMS CAN BE QUOTED</span></div>{products.length ? products.slice(0, 10).map((product) => <article className="sms-product-row" key={product.id}><div><strong>{product.name}</strong><small>{product.price || "Price not set"} · {product.availability}</small></div><button className="icon-button" type="button" title={product.active ? "Pause product" : "Activate product"} aria-label={`${product.active ? "Pause" : "Activate"} ${product.name}`} onClick={() => void toggleProduct(product)}>{product.active ? <Send size={14} /> : <RefreshCw size={14} />}</button></article>) : <p className="sms-empty-copy">Add confirmed prices, availability, and purchase links for accurate replies.</p>}</div>
+            <div className="sms-record-list sms-product-list"><div className="sms-record-list-head"><strong>{products.length} catalog items</strong><span>ACTIVE ITEMS CAN BE QUOTED</span></div>{products.length ? products.slice(0, 10).map((product) => <article className="sms-product-row" key={product.id}>{product.image_url ? <img className="sms-product-thumbnail" src={productImageUrl(product.image_url) || undefined} alt="" /> : <span className="sms-product-thumbnail-placeholder"><Camera size={15} /></span>}<div><strong>{product.name}</strong><small>{product.price || "Price not set"} · {product.availability}</small></div><button className="icon-button" type="button" title={product.active ? "Pause product" : "Activate product"} aria-label={`${product.active ? "Pause" : "Activate"} ${product.name}`} onClick={() => void toggleProduct(product)}>{product.active ? <Send size={14} /> : <RefreshCw size={14} />}</button></article>) : <p className="sms-empty-copy">Add confirmed prices, availability, and purchase links for accurate replies.</p>}</div>
           </div>
           <form className="sms-tool-form" onSubmit={saveBusinessProfile}>
             <h3>Verified shop information</h3>

@@ -166,6 +166,7 @@ class BotProduct(Base):
     description: Mapped[str] = mapped_column(Text, nullable=False, default="")
     price: Mapped[str] = mapped_column(String(80), nullable=False, default="")
     availability: Mapped[str] = mapped_column(String(80), nullable=False, default="Available")
+    image_url: Mapped[str | None] = mapped_column(String(1000))
     purchase_url: Mapped[str | None] = mapped_column(String(500))
     interests: Mapped[list] = mapped_column(JSON, nullable=False, default=list)
     active: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)

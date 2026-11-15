@@ -162,11 +162,17 @@ def initialize_database() -> None:
             raise RuntimeError("Local Server SMSGATE_API_URL must start with http:// or https://.")
 
     Base.metadata.create_all(bind=engine)
-    from .migrations import migrate_marketplace_terms_schema, migrate_sms_schema, migrate_subscription_schema
+    from .migrations import (
+        migrate_bot_product_image_schema,
+        migrate_marketplace_terms_schema,
+        migrate_sms_schema,
+        migrate_subscription_schema,
+    )
 
     migrate_sms_schema(engine)
     migrate_subscription_schema(engine)
     migrate_marketplace_terms_schema(engine)
+    migrate_bot_product_image_schema(engine)
 @app.get("/health")
 def health() -> dict[str, str]:
     return {"status": "ok"}

@@ -15,9 +15,9 @@ from sqlalchemy.orm import sessionmaker
 from backend.app.database import Base, get_session
 from backend.app import marketplace
 from backend.app.marketplace import _hash_password, _verify_password, match_marketplace_products, parse_marketplace_query, router
-from backend.app.migrations import migrate_marketplace_terms_schema
+from backend.app.migrations import migrate_bot_product_image_schema, migrate_marketplace_terms_schema
 from backend.app.models import BotProduct
-from backend.app.schemas import MarketplaceSearchRequest
+from backend.app.schemas import BotProductCreate, MarketplaceSearchRequest
 
 
 class MarketplaceTermsMigrationTests(unittest.TestCase):
@@ -33,6 +33,16 @@ class MarketplaceTermsMigrationTests(unittest.TestCase):
         self.assertIn("terms_accepted_at", {column["name"] for column in inspect(engine).get_columns("users")})
         business_columns = {column["name"] for column in inspect(engine).get_columns("marketplace_businesses")}
         self.assertTrue({"physical_address", "legal_status", "registration_details"}.issubset(business_columns))
+        engine.dispose()
+
+    def test_existing_bot_catalog_table_receives_product_image_column(self):
+        engine = create_engine("sqlite://")
+        with engine.begin() as connection:
+            connection.exec_driver_sql("CREATE TABLE bot_products (id TEXT PRIMARY KEY)")
+
+        migrate_bot_product_image_schema(engine)
+
+        self.assertIn("image_url", {column["name"] for column in inspect(engine).get_columns("bot_products")})
         engine.dispose()
 
 
@@ -141,6 +151,35 @@ class MarketplaceMatchingTests(unittest.TestCase):
 
         self.assertEqual([result["price"] for result in results], ["280.00", "295.00"])
 
+    def test_product_query_alone_matches_seller_and_bot_catalog_results(self):
+        request = MarketplaceSearchRequest(query="Samsung Galaxy A55")
+        catalog_product = SimpleNamespace(
+            id="catalog-product",
+            name="Samsung Galaxy A55",
+            description="Android smartphone",
+            price="USD 250",
+            availability="Available",
+            image_url=None,
+            purchase_url=None,
+            interests=["smartphones"],
+            active=True,
+            created_at=self.confirmed_at,
+        )
+
+        results = match_marketplace_products(
+            request,
+            [(self.harare_product, self.harare_business)],
+            [catalog_product],
+        )
+
+        self.assertEqual(request.max_budget, None)
+        self.assertEqual(request.location, "")
+        self.assertEqual(request.condition, "any")
+        self.assertEqual(
+            {result["source"] for result in results},
+            {"marketplace", "bot_catalog"},
+        )
+
     def test_seller_password_hash_is_salted_and_verified(self):
         first_hash = _hash_password("correct-horse-battery")
         second_hash = _hash_password("correct-horse-battery")
@@ -156,6 +195,7 @@ class MarketplaceMatchingTests(unittest.TestCase):
             description="Android smartphone",
             price="250",
             availability="Available",
+            image_url=None,
             purchase_url=None,
             interests=["smartphones"],
             active=True,
@@ -221,7 +261,7 @@ class MarketplaceApiTests(unittest.TestCase):
                 yield session
 
         test_app.dependency_overrides[get_session] = override_get_session
-        self.client = TestClient(test_app)
+        self.client = TestClient(test_app, base_url="https://testserver")
         self.environment = patch.dict("os.environ", {"APP_ENV": "development"}, clear=False)
         self.environment.start()
 
@@ -307,6 +347,7 @@ class MarketplaceApiTests(unittest.TestCase):
             description="256GB smartphone",
             price="USD 280",
             availability="Available",
+            image_url="/uploads/0123456789abcdef0123456789abcdef.png",
             purchase_url="https://example.com/products/a55",
             interests=["smartphone"],
             active=True,
@@ -328,6 +369,7 @@ class MarketplaceApiTests(unittest.TestCase):
         self.assertEqual(result["product_name"], "Samsung Galaxy A55")
         self.assertEqual(result["price"], "USD 280")
         self.assertEqual(result["availability"], "Available")
+        self.assertEqual(result["image_url"], "/uploads/0123456789abcdef0123456789abcdef.png")
         self.assertEqual(result["purchase_url"], "https://example.com/products/a55")
         self.assertIsNone(result["currency"])
         self.assertIsNone(result["condition"])
@@ -335,6 +377,29 @@ class MarketplaceApiTests(unittest.TestCase):
         self.assertIsNone(result["business_name"])
         self.assertIsNone(result["phone_number"])
         self.assertIsNone(result["location"])
+
+    def test_ai_expanded_search_terms_match_related_catalog_products(self):
+        catalog_product = BotProduct(
+            name="Running shoes",
+            description="Lightweight footwear for exercise",
+            price="USD 45",
+            availability="Available",
+            interests=["sneakers", "trainers"],
+            active=True,
+        )
+        with self.session_factory() as session:
+            session.add(catalog_product)
+            session.commit()
+
+        with patch("backend.app.marketplace.generate_ai_json", return_value=(
+            {"keywords": ["sneakers", "running shoes", "trainers"]}, "Test AI",
+        )):
+            response = self.client.post("/api/v1/marketplace/search", json={"query": "sneakers"})
+
+        self.assertEqual(response.status_code, 200, response.text)
+        payload = response.json()
+        self.assertEqual(payload["understanding_mode"], "Test AI")
+        self.assertEqual(payload["results"][0]["product_name"], "Running shoes")
 
 
     def test_seller_registration_requires_terms_acceptance(self):
@@ -403,6 +468,37 @@ class MarketplaceApiTests(unittest.TestCase):
                 search = self.client.post("/api/v1/marketplace/search", json={"query": "Samsung Galaxy A55"})
             self.assertEqual(search.status_code, 200, search.text)
             self.assertEqual(search.json()["results"][0]["image_url"], image_url)
+
+    def test_catalog_photo_upload_requires_seller_session_and_validates_image(self):
+        registration = self.client.post("/api/v1/marketplace/seller/register", json={
+            "email": "seller@example.co.zw",
+            "password": "correct-horse-battery",
+            "business_name": "Harare Tech",
+            "phone_number": "+263771234567",
+            "location": "Harare",
+            "physical_address": "12 Example Road, Harare",
+            "legal_status": "company",
+            "terms_accepted": True,
+        })
+        self.assertEqual(registration.status_code, 201, registration.text)
+
+        with TemporaryDirectory() as upload_dir, patch.object(marketplace, "UPLOAD_DIR", Path(upload_dir)):
+            response = self.client.post(
+                "/api/v1/marketplace/seller/product-images",
+                files={"image": ("catalog.png", b"\x89PNG\r\n\x1a\nimage-data", "image/png")},
+            )
+            self.assertEqual(response.status_code, 201, response.text)
+            image_url = response.json()["image_url"]
+            self.assertTrue((Path(upload_dir) / image_url.rsplit("/", 1)[-1]).is_file())
+            catalog_product = BotProduct(**BotProductCreate(
+                name="Catalog phone",
+                image_url=image_url,
+            ).model_dump())
+            with self.session_factory() as session:
+                session.add(catalog_product)
+                session.commit()
+                session.refresh(catalog_product)
+                self.assertEqual(catalog_product.image_url, image_url)
 
 
 if __name__ == "__main__":
