@@ -1,3 +1,5 @@
+import asyncio
+import logging
 import os
 import hmac
 import json
@@ -21,7 +23,7 @@ from sqlalchemy.orm import Session
 
 from .analysis import analyze_enquiry, greet_customer
 from .bot import generate_workflow, normalize_text, route_message, send_sms_message, starter_workflow, whatsapp_purchase_link
-from .database import Base, engine, get_session
+from .database import Base, SessionLocal, engine, get_session
 from .models import (
     BotBusinessProfile,
     BotCampaign,
@@ -66,10 +68,12 @@ from .smsgate import (
     send_sms_message as smsgate_send_sms,
 )
 from .subscriptions import router as subscriptions_router
-from .marketplace import UPLOAD_DIR, router as marketplace_router
+from .marketplace import UPLOAD_DIR, purge_expired_search_queries, router as marketplace_router
 
 
 production_mode = os.getenv("APP_ENV", "production").strip().casefold() == "production"
+logger = logging.getLogger(__name__)
+search_query_cleanup_task: asyncio.Task[None] | None = None
 app = FastAPI(
     title="ZimShop AI API",
     version="1.0.0",
@@ -173,6 +177,41 @@ def initialize_database() -> None:
     migrate_subscription_schema(engine)
     migrate_marketplace_terms_schema(engine)
     migrate_bot_product_image_schema(engine)
+    with SessionLocal() as session:
+        purge_expired_search_queries(session)
+        session.commit()
+    global search_query_cleanup_task
+    if search_query_cleanup_task is None or search_query_cleanup_task.done():
+        search_query_cleanup_task = asyncio.get_running_loop().create_task(
+            search_query_retention_loop()
+        )
+
+
+async def search_query_retention_loop() -> None:
+    while True:
+        await asyncio.sleep(60 * 60 * 24)
+        try:
+            await asyncio.to_thread(purge_expired_search_queries_from_database)
+        except Exception:
+            logger.exception("Could not remove expired Smart Match search queries.")
+
+
+def purge_expired_search_queries_from_database() -> None:
+    with SessionLocal() as session:
+        purge_expired_search_queries(session)
+        session.commit()
+
+
+@app.on_event("shutdown")
+async def stop_search_query_retention_loop() -> None:
+    global search_query_cleanup_task
+    if search_query_cleanup_task is not None:
+        search_query_cleanup_task.cancel()
+        try:
+            await search_query_cleanup_task
+        except asyncio.CancelledError:
+            pass
+        search_query_cleanup_task = None
 @app.get("/health")
 def health() -> dict[str, str]:
     return {"status": "ok"}

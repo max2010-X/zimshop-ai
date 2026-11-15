@@ -12,13 +12,13 @@ from typing import Any
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, File, HTTPException, Request, Response, UploadFile, status
-from sqlalchemy import select
+from sqlalchemy import delete, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from .analysis import generate_ai_json
 from .database import get_session
-from .models import AuthSession, BotProduct, MarketplaceBusiness, MarketplaceProduct, User
+from .models import AuthSession, BotBusinessProfile, BotProduct, MarketplaceBusiness, MarketplaceProduct, MarketplaceSearchQuery, User
 from .schemas import (
     MarketplaceBusinessUpdate,
     MarketplaceBusinessRead,
@@ -118,6 +118,20 @@ def _price_sort_key(price: str) -> tuple[bool, Decimal, str]:
     except InvalidOperation:
         return True, Decimal(0), price.casefold()
     return False, numeric_price, price.casefold()
+
+
+def purge_expired_search_queries(session: Session) -> int:
+    profile = session.get(BotBusinessProfile, 1)
+    retention_days = profile.query_retention_days if profile else 90
+    if retention_days is None:
+        return 0
+    cutoff = datetime.now(timezone.utc) - timedelta(days=retention_days)
+    result = session.execute(
+        delete(MarketplaceSearchQuery)
+        .where(MarketplaceSearchQuery.created_at < cutoff)
+        .execution_options(synchronize_session=False)
+    )
+    return result.rowcount or 0
 
 
 def parse_marketplace_query(query: str) -> tuple[str, str]:
@@ -407,6 +421,20 @@ async def upload_seller_product_image(
     session: Session = Depends(get_session),
 ) -> dict[str, str]:
     _get_seller(request, session)
+    return await _store_product_image(image)
+
+
+@router.post("/catalog/product-images", status_code=status.HTTP_201_CREATED)
+async def upload_catalog_product_image(
+    request: Request,
+    image: UploadFile = File(...),
+    session: Session = Depends(get_session),
+) -> dict[str, str]:
+    _get_seller(request, session)
+    return await _store_product_image(image)
+
+
+async def _store_product_image(image: UploadFile) -> dict[str, str]:
     image_type = IMAGE_TYPES.get(image.content_type or "")
     if image_type is None:
         raise HTTPException(status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE, detail="Upload a JPEG, PNG, or WebP image.")
@@ -497,8 +525,15 @@ def search_marketplace(request: MarketplaceSearchRequest, session: Session = Dep
         .order_by(BotProduct.created_at.desc())
         .limit(500)
     ))
+    results = match_marketplace_products(matching_request, listings, catalog_products)
+    purge_expired_search_queries(session)
+    session.add(MarketplaceSearchQuery(
+        query=request.query.strip(),
+        result_count=len(results),
+    ))
+    session.commit()
     return {
-        "results": match_marketplace_products(matching_request, listings, catalog_products),
+        "results": results,
         "searched_at": datetime.now(timezone.utc),
         "understanding_mode": understanding_mode,
     }

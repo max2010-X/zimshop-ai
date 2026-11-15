@@ -16,7 +16,7 @@ from backend.app.database import Base, get_session
 from backend.app import marketplace
 from backend.app.marketplace import _hash_password, _verify_password, match_marketplace_products, parse_marketplace_query, router
 from backend.app.migrations import migrate_bot_product_image_schema, migrate_marketplace_terms_schema
-from backend.app.models import BotProduct
+from backend.app.models import BotBusinessProfile, BotProduct, MarketplaceSearchQuery
 from backend.app.schemas import BotProductCreate, MarketplaceSearchRequest
 
 
@@ -39,10 +39,12 @@ class MarketplaceTermsMigrationTests(unittest.TestCase):
         engine = create_engine("sqlite://")
         with engine.begin() as connection:
             connection.exec_driver_sql("CREATE TABLE bot_products (id TEXT PRIMARY KEY)")
+            connection.exec_driver_sql("CREATE TABLE bot_business_profiles (id INTEGER PRIMARY KEY)")
 
         migrate_bot_product_image_schema(engine)
 
         self.assertIn("image_url", {column["name"] for column in inspect(engine).get_columns("bot_products")})
+        self.assertIn("query_retention_days", {column["name"] for column in inspect(engine).get_columns("bot_business_profiles")})
         engine.dispose()
 
 
@@ -378,6 +380,54 @@ class MarketplaceApiTests(unittest.TestCase):
         self.assertIsNone(result["phone_number"])
         self.assertIsNone(result["location"])
 
+    def test_search_query_is_saved_without_customer_contact_details_or_filters(self):
+        with patch("backend.app.marketplace.generate_ai_json", return_value=(None, None)):
+            response = self.client.post("/api/v1/marketplace/search", json={
+                "query": "Samsung Galaxy A55",
+                "location": "Harare",
+                "max_budget": "300.00",
+            })
+
+        self.assertEqual(response.status_code, 200, response.text)
+        with self.session_factory() as session:
+            saved_query = session.query(MarketplaceSearchQuery).one()
+            self.assertEqual(saved_query.query, "Samsung Galaxy A55")
+            self.assertEqual(saved_query.result_count, 0)
+            self.assertFalse(hasattr(saved_query, "location"))
+
+    def test_query_retention_deletes_expired_records_and_supports_never(self):
+        expired = MarketplaceSearchQuery(
+            query="Expired query",
+            result_count=0,
+            created_at=datetime(2026, 1, 1, tzinfo=timezone.utc),
+        )
+        current = MarketplaceSearchQuery(
+            query="Recent query",
+            result_count=1,
+        )
+        with self.session_factory() as session:
+            session.add_all([
+                BotBusinessProfile(id=1, query_retention_days=7),
+                expired,
+                current,
+            ])
+            session.commit()
+            self.assertEqual(marketplace.purge_expired_search_queries(session), 1)
+            session.commit()
+            self.assertEqual(
+                [item.query for item in session.query(MarketplaceSearchQuery).all()],
+                ["Recent query"],
+            )
+            profile = session.get(BotBusinessProfile, 1)
+            profile.query_retention_days = None
+            session.add(MarketplaceSearchQuery(
+                query="Keep forever",
+                result_count=0,
+                created_at=datetime(2020, 1, 1, tzinfo=timezone.utc),
+            ))
+            session.commit()
+            self.assertEqual(marketplace.purge_expired_search_queries(session), 0)
+
     def test_ai_expanded_search_terms_match_related_catalog_products(self):
         catalog_product = BotProduct(
             name="Running shoes",
@@ -484,7 +534,7 @@ class MarketplaceApiTests(unittest.TestCase):
 
         with TemporaryDirectory() as upload_dir, patch.object(marketplace, "UPLOAD_DIR", Path(upload_dir)):
             response = self.client.post(
-                "/api/v1/marketplace/seller/product-images",
+                "/api/v1/marketplace/catalog/product-images",
                 files={"image": ("catalog.png", b"\x89PNG\r\n\x1a\nimage-data", "image/png")},
             )
             self.assertEqual(response.status_code, 201, response.text)

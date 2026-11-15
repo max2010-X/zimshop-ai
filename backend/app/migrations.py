@@ -126,9 +126,17 @@ def migrate_marketplace_terms_schema(engine: Engine) -> None:
 
 
 def migrate_bot_product_image_schema(engine: Engine) -> None:
-    if not inspect(engine).has_table("bot_products"):
-        return
-    columns = {column["name"] for column in inspect(engine).get_columns("bot_products")}
-    if "image_url" not in columns:
-        with engine.begin() as connection:
-            connection.exec_driver_sql("ALTER TABLE bot_products ADD COLUMN image_url VARCHAR(1000)")
+    inspector = inspect(engine)
+    with engine.begin() as connection:
+        if inspector.has_table("bot_products"):
+            columns = {column["name"] for column in inspector.get_columns("bot_products")}
+            if "image_url" not in columns:
+                connection.exec_driver_sql(
+                    "ALTER TABLE bot_products ADD COLUMN image_url VARCHAR(1000)"
+                )
+        if inspector.has_table("bot_business_profiles"):
+            columns = {column["name"] for column in inspector.get_columns("bot_business_profiles")}
+            if "query_retention_days" not in columns:
+                connection.exec_driver_sql(
+                    "ALTER TABLE bot_business_profiles ADD COLUMN query_retention_days INTEGER DEFAULT 90"
+                )

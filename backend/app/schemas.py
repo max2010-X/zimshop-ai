@@ -219,6 +219,7 @@ class BotBusinessProfileUpdate(BaseModel):
     returns_policy: str = Field(default="", max_length=2000)
     payment_instructions: str = Field(default="", max_length=2000)
     support_contact: str = Field(default="", max_length=200)
+    query_retention_days: Literal[7, 30, 60, 90, 180, 365] | None = 90
 
 
 class BotBusinessProfileRead(BotBusinessProfileUpdate):

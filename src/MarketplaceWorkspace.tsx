@@ -75,12 +75,28 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     credentials: "include",
     headers: { "Content-Type": "application/json", ...init?.headers },
   });
+  return readJsonResponse<T>(response, "Request");
+}
+
+async function readJsonResponse<T>(response: Response, action: string): Promise<T> {
+  const body = await response.text();
+  let payload: unknown = null;
+  if (body.trim()) {
+    try {
+      payload = JSON.parse(body);
+    } catch {
+      if (response.ok) throw new Error(`${action} returned an invalid response. Please try again.`);
+    }
+  }
   if (!response.ok) {
-    const payload = await response.json().catch(() => null);
-    throw new Error(payload?.detail || `Request failed (${response.status})`);
+    const detail = payload && typeof payload === "object" && "detail" in payload
+      ? String(payload.detail)
+      : body.trim() || `${action} failed (${response.status}).`;
+    throw new Error(detail);
   }
   if (response.status === 204) return undefined as T;
-  return response.json() as Promise<T>;
+  if (!body.trim()) throw new Error(`${action} returned an empty response. Please try again.`);
+  return payload as T;
 }
 
 function formatPrice(price: string, currency: string | null) {
@@ -326,11 +342,7 @@ export default function MarketplaceWorkspace({
         credentials: "include",
         body: formData,
       });
-      if (!response.ok) {
-        const payload = await response.json().catch(() => null);
-        throw new Error(payload?.detail || `Photo upload failed (${response.status})`);
-      }
-      const uploaded = await response.json() as { image_url: string };
+      const uploaded = await readJsonResponse<{ image_url: string }>(response, "Product photo upload");
       setProductDraft((current) => ({ ...current, image_url: uploaded.image_url }));
     } catch (error) {
       setSellerError(error instanceof Error ? error.message : "Could not upload this photo.");

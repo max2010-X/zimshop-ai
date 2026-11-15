@@ -35,11 +35,24 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     credentials: "include",
     headers: { "Content-Type": "application/json", ...init?.headers },
   });
-  if (!response.ok) {
-    const payload = await response.json().catch(() => null);
-    throw new Error(payload?.detail || `Request failed (${response.status})`);
+  const body = await response.text();
+  let payload: unknown = null;
+  if (body.trim()) {
+    try {
+      payload = JSON.parse(body);
+    } catch {
+      if (response.ok) throw new Error("The server returned an invalid response. Please try again.");
+    }
   }
-  return response.json() as Promise<T>;
+  if (!response.ok) {
+    const detail = payload && typeof payload === "object" && "detail" in payload
+      ? String(payload.detail)
+      : body.trim() || `Request failed (${response.status})`;
+    throw new Error(detail);
+  }
+  if (response.status === 204) return undefined as T;
+  if (!body.trim()) throw new Error("The server returned an empty response. Please try again.");
+  return payload as T;
 }
 
 function formatTime(value: string) {

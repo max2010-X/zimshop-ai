@@ -17,10 +17,10 @@ type CampaignCategory = "promotion" | "seasonal" | "reminder" | "follow_up";
 type Campaign = { id: string; name: string; category: CampaignCategory; message: string; interest_filter: string | null; scheduled_at: string; status: string; queued_count: number; sent_count: number; delivered_count: number; failed_count: number; reply_count: number; created_at: string; completed_at: string | null };
 type Reports = { contacts: number; opted_in: number; marketing_opted_in: number; leads: number; messages_sent: number; customer_replies: number; delivered: number; campaigns: Campaign[]; sales_tracking: string };
 type Product = { id: string; name: string; description: string; price: string; availability: string; image_url: string | null; purchase_url: string | null; interests: string[]; active: boolean; created_at: string };
-type BusinessProfile = { business_hours: string; location: string; delivery_policy: string; returns_policy: string; payment_instructions: string; support_contact: string };
+type BusinessProfile = { business_hours: string; location: string; delivery_policy: string; returns_policy: string; payment_instructions: string; support_contact: string; query_retention_days: number | null };
 export type BotView = "bots" | "contacts" | "campaigns" | "catalog" | "reports";
 
-const emptyBusinessProfile: BusinessProfile = { business_hours: "", location: "", delivery_policy: "", returns_policy: "", payment_instructions: "", support_contact: "" };
+const emptyBusinessProfile: BusinessProfile = { business_hours: "", location: "", delivery_policy: "", returns_policy: "", payment_instructions: "", support_contact: "", query_retention_days: 90 };
 const initialSchedule = () => new Date(Date.now() + 60 * 60 * 1000).toISOString().slice(0, 16);
 
 const apiBase = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
@@ -35,11 +35,28 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     credentials: "include",
     headers: { "Content-Type": "application/json", ...init?.headers },
   });
-  if (!response.ok) {
-    const payload = await response.json().catch(() => null);
-    throw new Error(payload?.detail || `Request failed (${response.status})`);
+  return readJsonResponse<T>(response, "Request");
+}
+
+async function readJsonResponse<T>(response: Response, action: string): Promise<T> {
+  const body = await response.text();
+  let payload: unknown = null;
+  if (body.trim()) {
+    try {
+      payload = JSON.parse(body);
+    } catch {
+      if (response.ok) throw new Error(`${action} returned an invalid response. Please try again.`);
+    }
   }
-  return response.json() as Promise<T>;
+  if (!response.ok) {
+    const detail = payload && typeof payload === "object" && "detail" in payload
+      ? String(payload.detail)
+      : body.trim() || `${action} failed (${response.status}).`;
+    throw new Error(detail);
+  }
+  if (response.status === 204) return undefined as T;
+  if (!body.trim()) throw new Error(`${action} returned an empty response. Please try again.`);
+  return payload as T;
 }
 
 function freshNode(kind: NodeKind, index: number): BotNode {
@@ -248,16 +265,12 @@ export default function BotWorkspace({ view = "bots", onOpenGateway }: { view?: 
     const formData = new FormData();
     formData.append("image", image);
     try {
-      const response = await fetch(`${apiBase}/api/v1/marketplace/seller/product-images`, {
+      const response = await fetch(`${apiBase}/api/v1/marketplace/catalog/product-images`, {
         method: "POST",
         credentials: "include",
         body: formData,
       });
-      if (!response.ok) {
-        const payload = await response.json().catch(() => null);
-        throw new Error(payload?.detail || `Photo upload failed (${response.status})`);
-      }
-      const uploaded = await response.json() as { image_url: string };
+      const uploaded = await readJsonResponse<{ image_url: string }>(response, "Product photo upload");
       setProductDraft((current) => ({ ...current, image_url: uploaded.image_url }));
       setNotice("Product photo uploaded.");
     } catch (error) {
@@ -456,7 +469,7 @@ export default function BotWorkspace({ view = "bots", onOpenGateway }: { view?: 
               <p className="sms-form-note">Paste a WhatsApp Business catalog or product link to open it directly. A wa.me chat link opens with this product name and a request for your catalog; the customer taps Send in WhatsApp.</p>
               <label className="field-label" htmlFor="product-tags">CUSTOMER INTERESTS</label>
               <input id="product-tags" className="text-input" value={productDraft.interests} onChange={(event) => setProductDraft((current) => ({ ...current, interests: event.target.value }))} placeholder="jeans, denim" />
-              <button className="button button-primary" type="submit" disabled={busy === "product"}>{busy === "product" ? <LoaderCircle className="spin" size={15} /> : <Plus size={15} />}Add product</button>
+              <button className="button button-primary" type="submit" disabled={busy === "product" || productPhotoBusy}>{busy === "product" ? <LoaderCircle className="spin" size={15} /> : <Plus size={15} />}Add product</button>
             </form>
             <div className="sms-record-list sms-product-list"><div className="sms-record-list-head"><strong>{products.length} catalog items</strong><span>ACTIVE ITEMS CAN BE QUOTED</span></div>{products.length ? products.slice(0, 10).map((product) => <article className="sms-product-row" key={product.id}>{product.image_url ? <img className="sms-product-thumbnail" src={productImageUrl(product.image_url) || undefined} alt="" /> : <span className="sms-product-thumbnail-placeholder"><Camera size={15} /></span>}<div><strong>{product.name}</strong><small>{product.price || "Price not set"} · {product.availability}</small></div><button className="icon-button" type="button" title={product.active ? "Pause product" : "Activate product"} aria-label={`${product.active ? "Pause" : "Activate"} ${product.name}`} onClick={() => void toggleProduct(product)}>{product.active ? <Send size={14} /> : <RefreshCw size={14} />}</button></article>) : <p className="sms-empty-copy">Add confirmed prices, availability, and purchase links for accurate replies.</p>}</div>
           </div>
@@ -475,6 +488,17 @@ export default function BotWorkspace({ view = "bots", onOpenGateway }: { view?: 
             <textarea id="payment-details" className="node-body-input" value={businessProfile.payment_instructions} onChange={(event) => setBusinessProfile((current) => ({ ...current, payment_instructions: event.target.value }))} rows={2} maxLength={2000} />
             <label className="field-label" htmlFor="support-contact">SUPPORT CONTACT</label>
             <input id="support-contact" className="text-input" value={businessProfile.support_contact} onChange={(event) => setBusinessProfile((current) => ({ ...current, support_contact: event.target.value }))} maxLength={200} />
+            <label className="field-label" htmlFor="query-retention">SMART MATCH QUERY RETENTION</label>
+            <select id="query-retention" className="text-input" value={businessProfile.query_retention_days ?? "never"} onChange={(event) => setBusinessProfile((current) => ({ ...current, query_retention_days: event.target.value === "never" ? null : Number(event.target.value) }))}>
+              <option value="7">Delete after 7 days</option>
+              <option value="30">Delete after 30 days</option>
+              <option value="60">Delete after 60 days</option>
+              <option value="90">Delete after 90 days</option>
+              <option value="180">Delete after 180 days</option>
+              <option value="365">Delete after 365 days</option>
+              <option value="never">Do not auto-delete</option>
+            </select>
+            <p className="sms-form-note">Smart Match stores the product search phrase and result count without customer contact details. Expired search records are deleted automatically; customer contacts and SMS messages are managed separately.</p>
             <button className="button button-primary" type="submit" disabled={busy === "profile"}>{busy === "profile" ? <LoaderCircle className="spin" size={15} /> : <Save size={15} />}Save shop details</button>
           </form>
         </div>
