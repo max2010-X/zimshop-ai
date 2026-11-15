@@ -1085,20 +1085,37 @@
               : body.trim() || `Search failed (${response.status}). Please try again.`;
             throw new Error(detail);
           }
-          if (!payload || typeof payload !== "object" || !Array.isArray(payload.results)) {
-            throw new Error("Search returned an incomplete response. Please try again.");
+          const responseData = payload && typeof payload === "object" && !Array.isArray(payload)
+            ? payload.data
+            : null;
+          const searchResults = Array.isArray(payload)
+            ? payload
+            : payload && typeof payload === "object" && Array.isArray(payload.results)
+              ? payload.results
+              : Array.isArray(responseData)
+                ? responseData
+                : responseData && typeof responseData === "object" && Array.isArray(responseData.results)
+                  ? responseData.results
+                  : null;
+          if (!searchResults) {
+            throw new Error("The search service did not return a product list. Please refresh and try again.");
           }
-          const understandingMode = typeof payload.understanding_mode === "string" && payload.understanding_mode
+          const responseMode = payload && typeof payload === "object" && typeof payload.understanding_mode === "string"
             ? payload.understanding_mode
+            : responseData && typeof responseData === "object" && typeof responseData.understanding_mode === "string"
+              ? responseData.understanding_mode
+              : null;
+          const understandingMode = responseMode
+            ? responseMode
             : "product matching";
-          message.textContent = `${payload.results.length} matching ${payload.results.length === 1 ? "listing" : "listings"} · ${understandingMode}. SMS opens a draft for you to review; carrier charges may apply.`;
-          if (!payload.results.length) {
+          message.textContent = `${searchResults.length} matching ${searchResults.length === 1 ? "listing" : "listings"} · ${understandingMode}. SMS opens a draft for you to review; carrier charges may apply.`;
+          if (!searchResults.length) {
             const empty = document.createElement("p");
             empty.className = "landing-search-empty";
             empty.textContent = "No matching product listings yet. Try a shorter search or a wider location.";
             resultsElement.append(empty);
           }
-          payload.results.forEach(listing => {
+          searchResults.forEach(listing => {
             const card = document.createElement("article");
             card.className = "landing-match";
             const isSellerListing = listing.source === "marketplace";

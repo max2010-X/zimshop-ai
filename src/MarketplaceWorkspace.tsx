@@ -55,7 +55,7 @@ type SellerProduct = {
   details_confirmed_at: string;
 };
 
-type SearchResponse = { results: SearchResult[]; searched_at?: string; understanding_mode?: string };
+type SearchResponse = { results: SearchResult[]; understanding_mode?: string };
 type ViewMode = "search" | "seller";
 type SellerPage = "login" | "register" | "dashboard";
 type MarketplaceWorkspaceProps = {
@@ -118,6 +118,28 @@ function productImageUrl(value: string | null) {
   return value?.startsWith("/uploads/") || value?.startsWith("/api/v1/marketplace/product-images/")
     ? `${apiBase}${value}`
     : value;
+}
+
+function normalizeSearchResponse(payload: unknown): SearchResponse | null {
+  if (Array.isArray(payload)) return { results: payload as SearchResult[] };
+  if (!payload || typeof payload !== "object") return null;
+
+  const response = payload as { results?: unknown; data?: unknown; understanding_mode?: unknown };
+  if (Array.isArray(response.results)) {
+    return {
+      results: response.results as SearchResult[],
+      understanding_mode: typeof response.understanding_mode === "string" ? response.understanding_mode : undefined,
+    };
+  }
+  if (Array.isArray(response.data)) return { results: response.data as SearchResult[] };
+  if (response.data && typeof response.data === "object" && Array.isArray((response.data as { results?: unknown }).results)) {
+    const data = response.data as { results: SearchResult[]; understanding_mode?: unknown };
+    return {
+      results: data.results,
+      understanding_mode: typeof data.understanding_mode === "string" ? data.understanding_mode : undefined,
+    };
+  }
+  return null;
 }
 
 function placeOrderSmsHref(result: SearchResult, customerLocation: string) {
@@ -241,7 +263,7 @@ export default function MarketplaceWorkspace({
     setNotice("");
     setSearched(true);
     try {
-      const response = await request<SearchResponse>("/api/v1/marketplace/search", {
+      const payload = await request<unknown>("/api/v1/marketplace/search", {
         method: "POST",
         body: JSON.stringify({
           query: query.trim(),
@@ -252,9 +274,8 @@ export default function MarketplaceWorkspace({
           sort_by: sortBy,
         }),
       });
-      if (!Array.isArray(response.results)) {
-        throw new Error("Search did not return a product list. Please try again.");
-      }
+      const response = normalizeSearchResponse(payload);
+      if (!response) throw new Error("The search service did not return a product list. Please try again.");
       setResults(response.results);
       setSearchMode(response.understanding_mode || "Product matching");
     } catch (error) {
