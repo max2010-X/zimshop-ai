@@ -1,5 +1,6 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { CalendarClock, Check, CircleAlert, CreditCard, LoaderCircle, RefreshCw, Settings2, ShieldCheck } from "lucide-react";
+import { apiBase } from "./api";
 
 type Plan = {
   id: string;
@@ -34,7 +35,6 @@ type SubscriptionSettings = {
   enabled: boolean;
 };
 
-const apiBase = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
 const storageKey = "zimshop-subscription-reference";
 const trialEmailKey = "zimshop-subscription-trial-email";
 

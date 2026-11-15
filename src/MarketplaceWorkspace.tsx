@@ -5,6 +5,7 @@ import {
   Pencil, ShoppingBag, Sparkles, Store, Trash2, Truck, UserPlus, X,
 } from "lucide-react";
 import "./marketplace.css";
+import { apiBase } from "./api";
 
 type SearchResult = {
   id: string;
@@ -64,7 +65,6 @@ type MarketplaceWorkspaceProps = {
   onUnauthenticated?: () => void;
 };
 
-const apiBase = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
 const locations = ["Harare", "Bulawayo", "Chitungwiza", "Mutare", "Gweru", "Kwekwe", "Masvingo", "Marondera", "Chinhoyi", "Victoria Falls", "Bindura"];
 const emptyBusiness: Business = { id: "", business_name: "", phone_number: "", location: "", physical_address: "", legal_status: "individual", registration_details: "", delivery_available: false, delivery_areas: "" };
 const emptyProduct = { name: "", description: "", price: "", currency: "USD" as "USD" | "ZWG", condition: "new" as SellerProduct["condition"], image_url: "", in_stock: true };

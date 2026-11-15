@@ -8,6 +8,7 @@ import {
 import BotWorkspace, { type BotView } from "./BotWorkspace";
 import GatewayWorkspace from "./GatewayWorkspace";
 import SubscriptionWorkspace from "./SubscriptionWorkspace";
+  import { apiBase } from "./api";
 
 type Analysis = {
   intent: string;
@@ -25,7 +26,6 @@ type Followup = Analysis & {
 };
 
 type ActiveView = "marketplace" | "enquiries" | "gateway" | "billing" | BotView;
-const apiBase = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
 const zimshopLogo = "/ZimShop-sticker.png";
 const exampleMessage = "Hi, I need 20 T-shirts printed for an event next Friday. How much would it cost?";
 

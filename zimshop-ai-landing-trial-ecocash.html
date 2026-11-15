@@ -955,6 +955,9 @@
 
   <script>
     (() => {
+      const apiBase = location.hostname === "localhost" || location.hostname === "127.0.0.1"
+        ? ""
+        : "https://zimshop-ai.onrender.com";
       const cookiePreferenceKey = "zimshop-cookie-preferences";
       const cookieBanner = document.getElementById("cookie-banner");
       const cookieDialog = document.getElementById("cookie-dialog");
@@ -1058,7 +1061,7 @@
         resultsElement.replaceChildren();
         const sortBy = document.getElementById("sort").value;
         try {
-          const response = await fetch("/api/v1/marketplace/search", {
+          const response = await fetch(`${apiBase}/api/v1/marketplace/search`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -1121,7 +1124,9 @@
             const isSellerListing = listing.source === "marketplace";
             if (listing.image_url) {
               const image = document.createElement("img");
-              image.src = listing.image_url;
+              image.src = listing.image_url.startsWith("/")
+                ? `${apiBase}${listing.image_url}`
+                : listing.image_url;
               image.alt = listing.product_name;
               image.loading = "lazy";
               card.append(image);
@@ -1199,7 +1204,7 @@
       });
 
       const pricingStatus = document.getElementById("pricing-status-note");
-      fetch("/api/v1/subscriptions/settings")
+      fetch(`${apiBase}/api/v1/subscriptions/settings`)
         .then(response => {
           if (!response.ok) throw new Error("Could not check subscription availability.");
           return response.json();

@@ -115,4 +115,4 @@ Incoming texts are not automatically copied into the learned-phrase table anymor
 
 STOP and IsiShona opt-out phrases are handled for inbound messages even if the bot is inactive; START/tangazve can restore SMS consent without restoring marketing consent. Conversation history remains stored in PostgreSQL without automatic expiry; implement and verify a retention/deletion process before launch.
 
-Run `npm run build` to create the production frontend in `dist`. When frontend and API use different origins, set `VITE_API_URL` to the API's HTTPS URL and configure that exact frontend origin in `CORS_ORIGINS`.
+Run `npm run build` to create the production frontend in `dist`. When frontend and API use different origins, set `VITE_API_URL` to the API's HTTPS URL and configure that exact frontend origin in `CORS_ORIGINS`. The production frontend defaults to `https://zimshop-ai.onrender.com` for API calls when `VITE_API_URL` is unset; local development keeps using the Vite API proxy.

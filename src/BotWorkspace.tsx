@@ -4,6 +4,7 @@ import {
   BarChart3, CalendarClock, Clock3, GitBranch, LoaderCircle, MessageCircle, MessageSquareText,
   Plus, RefreshCw, Save, Send, Sparkles, Tag, Trash2, UserRound, UsersRound, WandSparkles,
 } from "lucide-react";
+import { apiBase } from "./api";
 
 type Choice = { label: string; keywords: string[]; next: string };
 type NodeKind = "trigger" | "message" | "decision" | "action";
@@ -22,8 +23,6 @@ export type BotView = "bots" | "contacts" | "campaigns" | "catalog" | "reports";
 
 const emptyBusinessProfile: BusinessProfile = { business_hours: "", location: "", delivery_policy: "", returns_policy: "", payment_instructions: "", support_contact: "", query_retention_days: 90 };
 const initialSchedule = () => new Date(Date.now() + 60 * 60 * 1000).toISOString().slice(0, 16);
-
-const apiBase = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
 
 function productImageUrl(value: string | null) {
   return value?.startsWith("/uploads/") || value?.startsWith("/api/v1/marketplace/product-images/")

@@ -1,13 +1,12 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { Activity, CircleAlert, Download, LoaderCircle, MessageSquareText, Plus, Radio, RefreshCw, Send, Settings2, Smartphone, Trash2 } from "lucide-react";
+import { apiBase } from "./api";
 
 type GatewayDevice = Record<string, unknown> & { id?: string; deviceId?: string; name?: string; model?: string; lastSeen?: string; simCards?: Array<Record<string, unknown>> };
 type GatewayStatus = { mode: string; api_url: string; auth_type: string; configured: boolean; sending_enabled: boolean; connected: boolean; health: unknown; devices: GatewayDevice[]; error: string | null };
 type Conversation = { id: string; contact: string; phone_number: string; direction: string; message: string; delivery_status: string; created_at: string };
 type ProviderMessage = Record<string, unknown> & { id?: string; state?: string; phoneNumbers?: string[]; textMessage?: { text?: string }; createdAt?: string };
 type Webhook = Record<string, unknown> & { id?: string; url?: string; event?: string };
-
-const apiBase = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await fetch(`${apiBase}${path}`, {

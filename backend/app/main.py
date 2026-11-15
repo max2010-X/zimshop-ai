@@ -85,11 +85,12 @@ allowed_origins = os.getenv(
     "CORS_ORIGINS",
     "http://localhost:4176,http://localhost:5173",
 ).split(",")
+allowed_origins.append("https://zimshop-ai-frontend.onrender.com")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[origin.strip() for origin in allowed_origins if origin.strip()],
     allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "OPTIONS"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["Content-Type", "Authorization"],
 )
 app.include_router(subscriptions_router)
