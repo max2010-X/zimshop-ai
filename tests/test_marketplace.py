@@ -449,6 +449,26 @@ class MarketplaceApiTests(unittest.TestCase):
         self.assertEqual(payload["understanding_mode"], "Test AI")
         self.assertEqual(payload["results"][0]["product_name"], "Running shoes")
 
+    def test_bot_catalog_search_includes_configured_support_phone(self):
+        catalog_product = BotProduct(
+            name="Running shoes",
+            description="Lightweight footwear for exercise",
+            price="USD 45",
+            availability="Available",
+            interests=["sneakers", "trainers"],
+            active=True,
+        )
+        with self.session_factory() as session:
+            session.add(BotBusinessProfile(id=1, support_contact="+263 77 123 4567"))
+            session.add(catalog_product)
+            session.commit()
+
+        with patch("backend.app.marketplace.generate_ai_json", return_value=(None, None)):
+            response = self.client.post("/api/v1/marketplace/search", json={"query": "sneakers"})
+
+        self.assertEqual(response.status_code, 200, response.text)
+        self.assertEqual(response.json()["results"][0]["phone_number"], "+263 77 123 4567")
+
 
     def test_seller_registration_requires_terms_acceptance(self):
         response = self.client.post("/api/v1/marketplace/seller/register", json={

@@ -563,6 +563,14 @@ def search_marketplace(request: MarketplaceSearchRequest, session: Session = Dep
         .limit(500)
     ))
     results = match_marketplace_products(matching_request, listings, catalog_products)
+    bot_profile = session.get(BotBusinessProfile, 1)
+    catalog_contact = bot_profile.support_contact.strip() if bot_profile else ""
+    if not re.fullmatch(r"\+?[0-9][0-9 ()-]{6,38}", catalog_contact):
+        catalog_contact = ""
+    if catalog_contact:
+        for result in results:
+            if result["source"] == "bot_catalog":
+                result["phone_number"] = catalog_contact
     purge_expired_search_queries(session)
     session.add(MarketplaceSearchQuery(
         query=request.query.strip(),

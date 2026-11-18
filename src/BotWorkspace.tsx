@@ -502,8 +502,9 @@ export default function BotWorkspace({ view = "bots", onOpenGateway }: { view?: 
             <textarea id="returns-policy" className="node-body-input" value={businessProfile.returns_policy} onChange={(event) => setBusinessProfile((current) => ({ ...current, returns_policy: event.target.value }))} rows={2} maxLength={2000} />
             <label className="field-label" htmlFor="payment-details">PAYMENT INSTRUCTIONS</label>
             <textarea id="payment-details" className="node-body-input" value={businessProfile.payment_instructions} onChange={(event) => setBusinessProfile((current) => ({ ...current, payment_instructions: event.target.value }))} rows={2} maxLength={2000} />
-            <label className="field-label" htmlFor="support-contact">SUPPORT CONTACT</label>
-            <input id="support-contact" className="text-input" value={businessProfile.support_contact} onChange={(event) => setBusinessProfile((current) => ({ ...current, support_contact: event.target.value }))} maxLength={200} />
+            <label className="field-label" htmlFor="support-contact">SUPPORT CONTACT PHONE (SHOWN ON BOT CATALOG PRODUCTS)</label>
+            <input id="support-contact" className="text-input" type="tel" value={businessProfile.support_contact} onChange={(event) => setBusinessProfile((current) => ({ ...current, support_contact: event.target.value }))} placeholder="+263 77 123 4567" maxLength={40} />
+            <p className="sms-form-note">Add a phone number so customers can call the contact for products found in Smart Match Bot Catalog. This number is public on matching catalog results.</p>
             <label className="field-label" htmlFor="query-retention">SMART MATCH QUERY RETENTION</label>
             <select id="query-retention" className="text-input" value={businessProfile.query_retention_days ?? "never"} onChange={(event) => setBusinessProfile((current) => ({ ...current, query_retention_days: event.target.value === "never" ? null : Number(event.target.value) }))}>
               <option value="7">Delete after 7 days</option>

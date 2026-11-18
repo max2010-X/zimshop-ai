@@ -522,7 +522,7 @@ export default function MarketplaceWorkspace({
 
         {searched && <section className="marketplace-results" aria-live="polite">
           <div className="marketplace-results-heading"><div><span className="eyebrow"><span className="eyebrow-line" /> SMART MATCH RESULTS</span><h2>{results.length} matching {results.length === 1 ? "result" : "results"}</h2></div><span className="market-results-mode"><Sparkles size={13} />{searchMode}</span></div>
-          <p className="marketplace-results-note">Results may come from registered sellers or the Bot Catalog. Seller listings include SMS and call options; catalog entries may include a provider link. Verify availability, price and other details with the provider before purchasing. SMS charges may apply.</p>
+          <p className="marketplace-results-note">Results may come from registered sellers or the Bot Catalog. Seller listings include SMS and call options; Bot Catalog products show the business support phone when configured. Verify availability, price and other details with the provider before purchasing. SMS charges may apply.</p>
           {results.length ? <div className="marketplace-result-list">{results.map((result) => {
             const customerLocation = location === "Other" ? customLocation.trim() : location;
             const isSellerListing = result.source === "marketplace";
@@ -542,6 +542,7 @@ export default function MarketplaceWorkspace({
                 <h3>{result.product_name}</h3>
                 <p className="market-result-description">{result.description || "No extra details provided."}</p>
                 {isSellerListing && result.business_name && <div className="market-result-business"><Store size={15} /><strong>{result.business_name}</strong>{result.location && <span><MapPin size={13} />{result.location}</span>}</div>}
+                {!isSellerListing && result.phone_number && <div className="market-result-business"><Phone size={14} /><strong>Contact: {result.phone_number}</strong></div>}
                 {isSellerListing && result.delivery_available && <div className="market-delivery-note"><Truck size={14} />Delivery available{result.delivery_areas ? `: ${result.delivery_areas}` : ""}</div>}
                 <div className="market-match-reasons">{result.match_reasons.map((reason) => <span key={reason}><Check size={12} />{reason}</span>)}</div>
                 <small className="market-updated">{isSellerListing
@@ -552,7 +553,7 @@ export default function MarketplaceWorkspace({
                 <strong className="market-result-price">{formatPrice(result.price, result.currency)}</strong>
                 {isSellerListing && maxBudget && currency === result.currency && <span className="market-budget-badge">Within budget</span>}
                 {orderSmsHref && <a className="market-contact-link" href={orderSmsHref}><MessageSquareText size={15} />Place Order via SMS</a>}
-                {isSellerListing && phoneHref && <a className="market-call-link" href={`tel:${phoneHref}`}><Phone size={15} />Call</a>}
+                {phoneHref && <a className="market-call-link" href={`tel:${phoneHref}`}><Phone size={15} />{isSellerListing ? "Call seller" : "Call provider"}</a>}
                 {!isSellerListing && result.purchase_url && <a className="market-contact-link" href={result.purchase_url} target="_blank" rel="noopener noreferrer"><ArrowUpRight size={15} />View provider link</a>}
               </div>
             </article>;

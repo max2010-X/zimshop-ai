@@ -22,3 +22,4 @@ build/
 
 # Other
 .DS_Store
+dist_old/
