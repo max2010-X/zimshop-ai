@@ -4,12 +4,20 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#23613d">
-  <meta name="description" content="Discover products, compare listed prices and connect with businesses across Zimbabwe with Zimshop AI.">
+  <meta name="description" content="Find products, compare prices and discover local businesses across Zimbabwe with Zimshop AI. Search smarter and connect directly with sellers.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://zimshopai.co.zw/">
+  <meta property="og:site_name" content="Zimshop AI">
+  <meta property="og:url" content="https://zimshopai.co.zw/">
+  <meta property="og:locale" content="en_ZW">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Find Products & Local Businesses in Zimbabwe | Zimshop AI">
+  <meta name="twitter:description" content="Find products, compare prices and discover local businesses across Zimbabwe with Zimshop AI. Search smarter and connect directly with sellers.">
   <meta property="og:title" content="Zimshop AI — Find what you need. Shop smarter.">
   <meta property="og:description" content="A smarter way to discover products and connect with local businesses in Zimbabwe.">
   <meta property="og:type" content="website">
   <link rel="icon" type="image/png" href="/ZimShop-sticker.png" />
-  <title>Zimshop AI | Zimbabwe's Smart Product Marketplace</title>
+  <title>Find Products & Local Businesses in Zimbabwe | Zimshop AI</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -501,6 +509,8 @@
     .landing-match .landing-match-status { color: var(--green); font-size: 10px; font-weight: 700; }
     .landing-match strong { display: block; margin: 9px 0 12px; color: var(--ink); font: 800 20px var(--display); }
     .landing-match > .btn { width: calc(100% - 28px); min-height: 42px; margin: 0 14px 14px; padding-inline: 10px; font-size: 11px; }
+    .landing-match-actions { display: grid; gap: 8px; padding: 0 14px 14px; }
+    .landing-match-actions .btn { width: 100%; min-height: 42px; padding-inline: 10px; font-size: 11px; }
     .landing-search-empty { grid-column: 1 / -1; padding: 16px; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: var(--muted); font-size: 13px; }
     @media (max-width: 600px) { .landing-search-results { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; } .landing-match-details { padding: 10px 10px 0; } .landing-match h3 { font-size: 13px; } .landing-match p { font-size: 10px; } .landing-match strong { font-size: 17px; } .landing-match > .btn { width: calc(100% - 20px); margin: 0 10px 10px; font-size: 10px; } }
     @media (max-width: 360px) { .landing-search-results { grid-template-columns: 1fr; } }
@@ -518,6 +528,46 @@
       *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
     }
   </style>
+
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://zimshopai.co.zw/#organization",
+      "name": "Zimshop AI",
+      "url": "https://zimshopai.co.zw/",
+      "description": "A Zimbabwe-focused platform for discovering products, comparing listed prices and connecting with local businesses."
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://zimshopai.co.zw/#website",
+      "url": "https://zimshopai.co.zw/",
+      "name": "Zimshop AI",
+      "description": "Find products, compare prices and discover local businesses across Zimbabwe.",
+      "inLanguage": "en-ZW",
+      "publisher": {
+        "@id": "https://zimshopai.co.zw/#organization"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://zimshopai.co.zw/#webpage",
+      "url": "https://zimshopai.co.zw/",
+      "name": "Find Products & Local Businesses in Zimbabwe | Zimshop AI",
+      "description": "Find products, compare prices and discover local businesses across Zimbabwe with Zimshop AI. Search smarter and connect directly with sellers.",
+      "isPartOf": {
+        "@id": "https://zimshopai.co.zw/#website"
+      },
+      "about": {
+        "@id": "https://zimshopai.co.zw/#organization"
+      },
+      "inLanguage": "en-ZW"
+    }
+  ]
+}
+  </script>
 </head>
 
 <body>
@@ -1179,6 +1229,11 @@
               ? `${listing.currency} ${numericPrice.toLocaleString()}`
               : listing.price || "Price not provided";
             details.append(name, seller, listingStatus, description, price);
+            if (!isSellerListing && typeof listing.phone_number === "string" && listing.phone_number) {
+              const contact = document.createElement("p");
+              contact.textContent = `Contact: ${listing.phone_number}`;
+              details.append(contact);
+            }
             if (isSellerListing && typeof listing.phone_number === "string") {
               const phone = listing.phone_number.replace(/[^\d+]/g, "");
               if (phone) {
@@ -1209,14 +1264,27 @@
               } else {
                 card.append(details);
               }
-            } else if (!isSellerListing && typeof listing.purchase_url === "string") {
-              const providerLink = document.createElement("a");
-              providerLink.className = "btn btn-primary";
-              providerLink.href = listing.purchase_url;
-              providerLink.target = "_blank";
-              providerLink.rel = "noopener noreferrer";
-              providerLink.textContent = "View provider link";
-              card.append(details, providerLink);
+            } else if (!isSellerListing && ((typeof listing.phone_number === "string" && listing.phone_number) || typeof listing.purchase_url === "string")) {
+              const actions = document.createElement("div");
+              actions.className = "landing-match-actions";
+              const phone = typeof listing.phone_number === "string" ? listing.phone_number.replace(/[^\d+]/g, "") : "";
+              if (phone) {
+                const call = document.createElement("a");
+                call.className = "btn btn-primary";
+                call.href = `tel:${phone}`;
+                call.textContent = "Call provider";
+                actions.append(call);
+              }
+              if (typeof listing.purchase_url === "string") {
+                const providerLink = document.createElement("a");
+                providerLink.className = "btn btn-light";
+                providerLink.href = listing.purchase_url;
+                providerLink.target = "_blank";
+                providerLink.rel = "noopener noreferrer";
+                providerLink.textContent = "View provider link";
+                actions.append(providerLink);
+              }
+              card.append(details, actions);
             } else {
               card.append(details);
             }
