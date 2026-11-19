@@ -523,6 +523,20 @@ export default function MarketplaceWorkspace({
         </form>
 
         {searched && <section className="marketplace-results" aria-live="polite">
+
+  <button
+    onClick={() => console.log("MARKETPLACE BUTTON WORKS")}
+    style={{
+      padding: "12px",
+      background: "green",
+      color: "white",
+      cursor: "pointer",
+      zIndex: 9999,
+      position: "relative"
+    }}
+  >
+    TEST CLICK
+  </button>
           <div className="marketplace-results-heading"><div><span className="eyebrow"><span className="eyebrow-line" /> SMART MATCH RESULTS</span><h2>{results.length} matching {results.length === 1 ? "result" : "results"}</h2></div><span className="market-results-mode"><Sparkles size={13} />{searchMode}</span></div>
           <p className="marketplace-results-note">Results may come from registered sellers or the Bot Catalog. Seller listings include SMS and call options; Bot Catalog products show the business support phone when configured. Verify availability, price and other details with the provider before purchasing. SMS charges may apply.</p>
           {selectedProduct ? (() => {
