@@ -606,7 +606,10 @@ export default function MarketplaceWorkspace({
               role="button"
               tabIndex={0}
               aria-label={`View full details for ${result.product_name}`}
-              onClick={() => setSelectedProduct(result)}
+              onClick={() => {
+  console.log("PRODUCT CLICKED:", result);
+  setSelectedProduct(result);
+}}
               onKeyDown={(event) => {
                 if (event.key === "Enter" || event.key === " ") {
                   event.preventDefault();
