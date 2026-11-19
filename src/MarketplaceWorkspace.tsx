@@ -1,6 +1,6 @@
 import { useEffect, useState, type FormEvent } from "react";
 import {
-  ArrowDownWideNarrow, ArrowUpRight, BadgeCheck, Camera, Check, CircleAlert, LoaderCircle,
+  ArrowDownWideNarrow, ArrowLeft, ArrowUpRight, BadgeCheck, Camera, Check, CircleAlert, LoaderCircle,
   LogIn, LogOut, MapPin, MessageSquareText, Package, Pause, Phone, Play, Plus, Search,
   Pencil, ShoppingBag, Sparkles, Store, Trash2, Truck, UserPlus, X,
 } from "lucide-react";
@@ -180,6 +180,7 @@ export default function MarketplaceWorkspace({
   const [customLocation, setCustomLocation] = useState("");
   const [condition, setCondition] = useState<"any" | SellerProduct["condition"]>("any");
   const [results, setResults] = useState<SearchResult[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<SearchResult | null>(null);
   const [searchBusiness, setSearchBusiness] = useState<Business | null>(null);
   const [searchProfileLoading, setSearchProfileLoading] = useState(false);
   const [searchMode, setSearchMode] = useState("");
@@ -261,6 +262,7 @@ export default function MarketplaceWorkspace({
     }
     setSearchBusy(true);
     setNotice("");
+    setSelectedProduct(null);
     setSearched(true);
     try {
       const payload = await request<unknown>("/api/v1/marketplace/search", {
@@ -523,13 +525,95 @@ export default function MarketplaceWorkspace({
         {searched && <section className="marketplace-results" aria-live="polite">
           <div className="marketplace-results-heading"><div><span className="eyebrow"><span className="eyebrow-line" /> SMART MATCH RESULTS</span><h2>{results.length} matching {results.length === 1 ? "result" : "results"}</h2></div><span className="market-results-mode"><Sparkles size={13} />{searchMode}</span></div>
           <p className="marketplace-results-note">Results may come from registered sellers or the Bot Catalog. Seller listings include SMS and call options; Bot Catalog products show the business support phone when configured. Verify availability, price and other details with the provider before purchasing. SMS charges may apply.</p>
-          {results.length ? <div className="marketplace-result-list">{results.map((result) => {
+          {selectedProduct ? (() => {
+            const product = selectedProduct;
+            const isSellerListing = product.source === "marketplace";
+            const customerLocation = location === "Other" ? customLocation.trim() : location;
+            const phoneHref = product.phone_number?.replace(/[^\d+]/g, "") || "";
+            const orderSmsHref = placeOrderSmsHref(product, customerLocation);
+            const conditionLabel = formatCondition(product.condition);
+
+            return <section className="marketplace-product-details" aria-labelledby="marketplace-product-title">
+              <button type="button" className="marketplace-details-back" onClick={() => setSelectedProduct(null)}>
+                <ArrowLeft size={17} /> Back to search results
+              </button>
+              <div className="marketplace-details-layout">
+                <div className={`marketplace-details-image ${product.image_url ? "" : "image-unavailable"}`}>
+                  {product.image_url
+                    ? <img src={productImageUrl(product.image_url) || undefined} alt={product.product_name}
+                        onError={(event) => {
+                          event.currentTarget.style.display = "none";
+                          event.currentTarget.parentElement?.classList.add("image-unavailable");
+                        }} />
+                    : <><Package size={42} /><span>Product photo unavailable</span></>}
+                </div>
+                <div className="marketplace-details-main">
+                  <div className="market-result-topline">
+                    <span className={`market-source-label ${isSellerListing ? "seller" : "bot-catalog"}`}>{isSellerListing ? "Seller listing" : "Bot Catalog"}</span>
+                    {isSellerListing
+                      ? <span className={`market-stock ${product.in_stock ? "available" : "unconfirmed"}`}><i />{product.in_stock ? "Seller reports in stock" : "Confirm availability"}</span>
+                      : <span className="market-stock unconfirmed"><i />{product.availability ? `Catalog: ${product.availability}` : "Confirm availability"}</span>}
+                    {conditionLabel && <span className="market-condition-label">{conditionLabel}</span>}
+                  </div>
+                  <h2 id="marketplace-product-title">{product.product_name}</h2>
+                  <strong className="marketplace-details-price">{formatPrice(product.price, product.currency)}</strong>
+                  <div className="marketplace-details-section">
+                    <h3>Product description</h3>
+                    <p>{product.description || "The provider has not added a product description yet. Contact the provider to confirm specifications and included items."}</p>
+                  </div>
+                  <div className="marketplace-details-facts">
+                    <div><span>Condition</span><strong>{conditionLabel || "Not specified"}</strong></div>
+                    <div><span>Availability</span><strong>{isSellerListing ? (product.in_stock ? "Seller reports in stock" : "Please confirm with seller") : (product.availability || "Please confirm with provider")}</strong></div>
+                    <div><span>Listing type</span><strong>{isSellerListing ? "Registered seller listing" : "Bot Catalog entry"}</strong></div>
+                    <div><span>Last details update</span><strong>{product.details_confirmed_at ? formatDate(product.details_confirmed_at) : "Not provided"}</strong></div>
+                  </div>
+                  <div className="marketplace-details-section marketplace-details-business">
+                    <h3><Store size={17} /> Business and seller details</h3>
+                    <div className="marketplace-details-business-facts">
+                      <div><span>Business</span><strong>{product.business_name || "Provider name not provided"}</strong></div>
+                      <div><span>Location</span><strong>{product.location || "Location not provided"}</strong></div>
+                      <div><span>Public contact</span><strong>{product.phone_number || "Phone number not provided"}</strong></div>
+                    </div>
+                  </div>
+                  <div className="marketplace-details-section">
+                    <h3><Truck size={17} /> Delivery information</h3>
+                    {product.delivery_available
+                      ? <p>Delivery is available{product.delivery_areas ? ` to: ${product.delivery_areas}` : ""}. Contact the business to confirm delivery fees and timing.</p>
+                      : <p>{isSellerListing ? "Delivery has not been confirmed for this listing. Contact the seller to ask about collection or delivery." : "Delivery information has not been provided. Contact the provider to confirm available options."}</p>}
+                  </div>
+                  <p className="marketplace-details-disclaimer">
+                    {isSellerListing
+                      ? "Product information, price and stock are provided by the seller and have not been independently verified by ZimShop AI."
+                      : "Catalog information is provided by the listed provider and has not been independently verified by ZimShop AI."}
+                  </p>
+                  <div className="marketplace-details-actions">
+                    {orderSmsHref && <a className="market-contact-link" href={orderSmsHref}><MessageSquareText size={16} />Place order via SMS</a>}
+                    {phoneHref && <a className="market-call-link" href={`tel:${phoneHref}`}><Phone size={16} />{isSellerListing ? "Call seller" : "Call provider"}</a>}
+                    {!isSellerListing && product.purchase_url && <a className="market-contact-link" href={product.purchase_url} target="_blank" rel="noopener noreferrer"><ArrowUpRight size={16} />Visit provider link</a>}
+                  </div>
+                </div>
+              </div>
+            </section>;
+          })() : results.length ? <div className="marketplace-result-list">{results.map((result) => {
             const customerLocation = location === "Other" ? customLocation.trim() : location;
             const isSellerListing = result.source === "marketplace";
             const orderSmsHref = isSellerListing ? placeOrderSmsHref(result, customerLocation) : null;
             const phoneHref = result.phone_number?.replace(/[^\d+]/g, "") || "";
             const conditionLabel = formatCondition(result.condition);
-            return <article className="marketplace-result" key={`${result.source}:${result.id}`}>
+            return <article
+              className="marketplace-result marketplace-result-selectable"
+              key={`${result.source}:${result.id}`}
+              role="button"
+              tabIndex={0}
+              aria-label={`View full details for ${result.product_name}`}
+              onClick={() => setSelectedProduct(result)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  setSelectedProduct(result);
+                }
+              }}
+            >
               <div className={`market-result-image ${result.image_url ? "" : "image-unavailable"}`}>{result.image_url ? <img src={productImageUrl(result.image_url) || undefined} alt={result.product_name} loading="lazy" onError={(event) => { event.currentTarget.style.display = "none"; const imageContainer = event.currentTarget.parentElement; imageContainer?.classList.add("image-unavailable"); imageContainer?.setAttribute("data-photo-error", "true"); }} /> : <><Package size={28} /><span>Product photo unavailable</span></>}</div>
               <div className="market-result-main">
                 <div className="market-result-topline">
@@ -551,10 +635,20 @@ export default function MarketplaceWorkspace({
               </div>
               <div className="market-result-side">
                 <strong className="market-result-price">{formatPrice(result.price, result.currency)}</strong>
+                <button
+                  type="button"
+                  className="market-view-details-button"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    setSelectedProduct(result);
+                  }}
+                >
+                  View full details <ArrowUpRight size={14} />
+                </button>
                 {isSellerListing && maxBudget && currency === result.currency && <span className="market-budget-badge">Within budget</span>}
-                {orderSmsHref && <a className="market-contact-link" href={orderSmsHref}><MessageSquareText size={15} />Place Order via SMS</a>}
-                {phoneHref && <a className="market-call-link" href={`tel:${phoneHref}`}><Phone size={15} />{isSellerListing ? "Call seller" : "Call provider"}</a>}
-                {!isSellerListing && result.purchase_url && <a className="market-contact-link" href={result.purchase_url} target="_blank" rel="noopener noreferrer"><ArrowUpRight size={15} />View provider link</a>}
+                {orderSmsHref && <a className="market-contact-link" href={orderSmsHref} onClick={(event) => event.stopPropagation()}><MessageSquareText size={15} />Place Order via SMS</a>}
+                {phoneHref && <a className="market-call-link" href={`tel:${phoneHref}`} onClick={(event) => event.stopPropagation()}><Phone size={15} />{isSellerListing ? "Call seller" : "Call provider"}</a>}
+                {!isSellerListing && result.purchase_url && <a className="market-contact-link" href={result.purchase_url} target="_blank" rel="noopener noreferrer" onClick={(event) => event.stopPropagation()}><ArrowUpRight size={15} />View provider link</a>}
               </div>
             </article>;
           })}</div> : <div className="marketplace-no-results"><ShoppingBag size={25} /><div><strong>No matching products found.</strong><p>Try a shorter product name, a higher budget, or a wider location.</p><span>Matching seller listings and Bot Catalog entries can appear here.</span></div></div>}
