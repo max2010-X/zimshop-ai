@@ -465,7 +465,42 @@
       html { scroll-behavior: auto; }
       *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
     }
-  </style>
+  
+/* ZimShop marketplace results: Alibaba-inspired single-product rows */
+.zs-live-results{margin-top:26px;padding:clamp(16px,2.5vw,28px);border:1px solid #e5ebe6;border-radius:18px;background:#f7faf7}
+.zs-live-results-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid #e6ece7}
+.zs-live-results-head h3{margin:6px 0 0;color:#203328;font-size:clamp(21px,2.5vw,28px);font-weight:800}
+.zs-live-grid{display:flex;flex-direction:column;gap:12px}
+.zs-live-card{display:grid;grid-template-columns:190px minmax(0,1fr);gap:0;min-width:0;padding:14px;border:1px solid #e5eae6;border-radius:13px;background:#fff;box-shadow:0 2px 8px rgba(23,54,35,.035);transition:border-color .18s ease,box-shadow .18s ease}
+.zs-live-card:hover{transform:none;border-color:#b9d8c3;box-shadow:0 7px 22px rgba(20,55,35,.08)}
+.zs-live-card-image{height:180px;min-height:180px;border-radius:9px;background:#f3f6f3;display:grid;place-items:center;overflow:hidden;color:#8a978e}
+.zs-live-card-image img{width:100%;height:100%;object-fit:contain;padding:8px}
+.zs-live-card-body{min-width:0;padding:3px 4px 3px 20px;display:grid;grid-template-columns:minmax(0,1fr) 190px;gap:20px;align-items:center}
+.zs-live-card-copy{min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:9px}
+.zs-live-card h4{font-size:17px;line-height:1.4;margin:0;color:#203328;font-weight:750}
+.zs-live-description{margin:0;color:#6c796f;font-size:12px;line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.zs-live-meta{display:flex;flex-wrap:wrap;gap:6px 16px;color:#68766d;font-size:11px;line-height:1.5}
+.zs-live-meta strong{color:#34483a;font-weight:700}
+.zs-live-source{align-self:flex-start;border-radius:4px;padding:5px 8px;background:#edf7ef;color:#267345;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.035em}
+.zs-live-card-side{height:100%;min-height:130px;padding-left:18px;border-left:1px solid #edf0ed;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:5px}
+.zs-live-price{font-size:22px;font-weight:850;color:#16834b;line-height:1.2;overflow-wrap:anywhere}
+.zs-live-price-note{font-size:10px;color:#89948c}
+.zs-live-card button,.zs-live-back{width:100%;border:0;border-radius:7px;padding:11px 12px;background:#16834b;color:#fff;font-size:12px;font-weight:750;cursor:pointer;margin-top:10px;text-align:center}
+.zs-live-card button:hover,.zs-live-back:hover{background:#10683b}
+.zs-live-empty{padding:26px;text-align:center;color:#68766d;border:1px dashed #d7e2da;border-radius:13px;background:#fff}
+.zs-live-details{margin-top:18px;border:1px solid #e1e9e3;border-radius:14px;padding:20px;background:#fff}
+.zs-live-detail-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:start}
+.zs-live-detail-image{min-height:300px;border-radius:13px;overflow:hidden;background:#f0f4f0;display:grid;place-items:center;color:#849188}
+.zs-live-detail-image img{width:100%;height:100%;max-height:430px;object-fit:contain}
+.zs-live-detail-copy h3{font-size:clamp(22px,3vw,32px);margin:12px 0;color:#1c2c21}
+.zs-live-detail-copy p{color:#68756c;line-height:1.7;font-size:14px}
+.zs-live-detail-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.zs-live-detail-actions a{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;padding:12px 16px;border-radius:8px;background:#16834b;color:#fff;font-weight:750;font-size:13px}
+.zs-live-detail-actions a.secondary{background:#eaf4ed;color:#17683d}
+@media(max-width:760px){.zs-live-card{grid-template-columns:145px minmax(0,1fr)}.zs-live-card-image{height:160px;min-height:160px}.zs-live-card-body{grid-template-columns:minmax(0,1fr);gap:12px;padding-left:15px}.zs-live-card-side{min-height:0;padding:11px 0 0;border-left:0;border-top:1px solid #edf0ed;display:grid;grid-template-columns:minmax(0,1fr) minmax(130px,auto);align-items:center}.zs-live-card-side button{grid-column:2;grid-row:1/3;margin:0}.zs-live-price{font-size:19px}}
+@media(max-width:520px){.zs-live-results{padding:13px}.zs-live-card{grid-template-columns:1fr;padding:11px;gap:11px}.zs-live-card-image{height:190px;min-height:190px}.zs-live-card-body{padding:0;gap:12px}.zs-live-card-copy{gap:8px}.zs-live-card-side{grid-template-columns:minmax(0,1fr) minmax(120px,auto)}.zs-live-card h4{font-size:16px}.zs-live-detail-layout{grid-template-columns:1fr}.zs-live-detail-image{min-height:220px}.zs-live-results-head{align-items:flex-start;flex-direction:column}}
+
+</style>
 \n<style id="zs-live-marketplace-styles">
 .zs-live-results{margin-top:28px;padding:24px;border:1px solid #e6e9e7;border-radius:20px;background:#fff;box-shadow:0 14px 40px rgba(15,45,31,.07)}
 .zs-live-results[hidden],.zs-live-notice[hidden],.zs-live-details[hidden]{display:none!important}
@@ -473,19 +508,24 @@
 .zs-live-results-head h3{font-size:clamp(21px,3vw,29px);margin:7px 0 0;color:#172b21}
 .zs-live-mode{font-size:12px;font-weight:700;color:#16834b;background:#eaf8ef;border-radius:30px;padding:8px 12px}
 .zs-live-notice{padding:13px 15px;margin:0 0 16px;border-radius:10px;background:#fff7e8;color:#805b17;font-size:13px;line-height:1.5}
-.zs-live-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
-.zs-live-card{min-width:0;border:1px solid #e9ece9;border-radius:15px;overflow:hidden;background:#fff;display:flex;flex-direction:column;transition:transform .18s ease,box-shadow .18s ease}
-.zs-live-card:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(20,55,35,.1)}
-.zs-live-card-image{height:190px;background:#f3f6f3;display:grid;place-items:center;overflow:hidden;color:#8a978e}
-.zs-live-card-image img{width:100%;height:100%;object-fit:cover}
-.zs-live-card-body{padding:15px;display:flex;flex-direction:column;gap:9px;flex:1}
-.zs-live-card h4{font-size:15px;line-height:1.4;margin:0;color:#1d2c22}
-.zs-live-price{font-size:20px;font-weight:800;color:#138348}
-.zs-live-meta{font-size:12px;color:#748078;line-height:1.5}
+/* One product per card, stacked vertically in a single column */
+.zs-live-grid{display:flex;flex-direction:column;align-items:stretch;gap:18px}
+.zs-live-card{width:100%;min-width:0;border:1px solid #e5eae6;border-radius:14px;overflow:hidden;background:#fff;display:flex;flex-direction:column;transition:box-shadow .18s ease,border-color .18s ease}
+.zs-live-card:hover{border-color:#b9d8c3;box-shadow:0 8px 24px rgba(20,55,35,.08)}
+.zs-live-card-image{height:230px;background:#f3f6f3;display:grid;place-items:center;overflow:hidden;color:#8a978e}
+.zs-live-card-image img{width:100%;height:100%;object-fit:contain;padding:12px}
+.zs-live-card-body{padding:18px;display:flex;flex-direction:column;align-items:flex-start;gap:11px}
+.zs-live-card-copy{width:100%;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:9px}
+.zs-live-card h4{font-size:18px;line-height:1.4;margin:0;color:#1d2c22}
+.zs-live-description{margin:0;color:#6c796f;font-size:13px;line-height:1.6}
+.zs-live-price{font-size:23px;font-weight:850;color:#138348}
+.zs-live-meta{display:flex;flex-wrap:wrap;gap:7px 16px;font-size:12px;color:#748078;line-height:1.5}
 .zs-live-source{align-self:flex-start;border-radius:30px;padding:5px 9px;background:#eef7f0;color:#267345;font-size:10px;font-weight:800}
-.zs-live-card button,.zs-live-back{border:0;border-radius:9px;padding:11px 14px;background:#16834b;color:#fff;font-weight:750;cursor:pointer;margin-top:auto}
+.zs-live-card-side{width:100%;padding-top:12px;border-top:1px solid #edf0ed;display:flex;flex-direction:column;align-items:flex-start;gap:5px}
+.zs-live-price-note{font-size:11px;color:#89948c}
+.zs-live-card button,.zs-live-back{width:100%;border:0;border-radius:9px;padding:12px 14px;background:#16834b;color:#fff;font-weight:750;cursor:pointer;margin-top:8px}
 .zs-live-card button:hover,.zs-live-back:hover{background:#10683b}
-.zs-live-empty{padding:26px;text-align:center;color:#68766d;border:1px dashed #d7e2da;border-radius:13px;grid-column:1/-1}
+.zs-live-empty{padding:26px;text-align:center;color:#68766d;border:1px dashed #d7e2da;border-radius:13px}
 .zs-live-details{margin-top:20px;border:1px solid #e6ece7;border-radius:16px;padding:20px;background:#fbfdfb}
 .zs-live-detail-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:start}
 .zs-live-detail-image{min-height:300px;border-radius:13px;overflow:hidden;background:#f0f4f0;display:grid;place-items:center;color:#849188}
@@ -495,8 +535,73 @@
 .zs-live-detail-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
 .zs-live-detail-actions a{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;padding:12px 16px;border-radius:9px;background:#16834b;color:#fff;font-weight:750;font-size:13px}
 .zs-live-detail-actions a.secondary{background:#eaf4ed;color:#17683d}
-@media(max-width:850px){.zs-live-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:600px){.zs-live-results{padding:15px}.zs-live-grid{grid-template-columns:1fr}.zs-live-card-image{height:210px}.zs-live-detail-layout{grid-template-columns:1fr}.zs-live-detail-image{min-height:220px}.zs-live-results-head{align-items:flex-start;flex-direction:column}}
+@media(max-width:600px){.zs-live-results{padding:15px}.zs-live-card-image{height:200px}.zs-live-card-body{padding:14px}.zs-live-detail-layout{grid-template-columns:1fr}.zs-live-detail-image{min-height:220px}.zs-live-results-head{align-items:flex-start;flex-direction:column}}
+</style>
+
+
+<style id="zs-standard-ecommerce-grid">
+/* Standard marketplace product cards: 4 desktop / 3 tablet / 2 mobile */
+.zs-live-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  align-items: stretch;
+  gap: 18px !important;
+}
+.zs-live-card {
+  display: flex !important; flex-direction: column !important;
+  width: 100%; min-width: 0; padding: 0 !important; overflow: hidden;
+  border: 1px solid #e5eae6; border-radius: 13px; background: #fff;
+  box-shadow: 0 2px 8px rgba(23,54,35,.035);
+}
+.zs-live-card:hover { border-color: #b9d8c3; box-shadow: 0 8px 24px rgba(20,55,35,.08); }
+.zs-live-card-image {
+  width: 100%; height: auto !important; min-height: 0 !important;
+  aspect-ratio: 1 / 1; border-radius: 0 !important;
+  background: #f3f6f3; display: grid; place-items: center; overflow: hidden;
+}
+.zs-live-card-image img { width: 100%; height: 100%; object-fit: contain; padding: 12px; }
+.zs-live-card-body {
+  flex: 1; min-width: 0; padding: 14px !important;
+  display: flex !important; flex-direction: column !important;
+  align-items: stretch !important; gap: 10px !important;
+}
+.zs-live-card-copy { width: 100%; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+.zs-live-card h4 { margin: 0; color: #203328; font-size: 15px; line-height: 1.4; font-weight: 750; }
+.zs-live-description { margin: 0; color: #6c796f; font-size: 12px; line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.zs-live-meta { display: flex; flex-direction: column; gap: 4px; color: #68766d; font-size: 11px; line-height: 1.45; }
+.zs-live-meta strong { color: #34483a; }
+.zs-live-card-side {
+  width: 100%; min-height: 0; margin-top: auto; padding: 10px 0 0 !important;
+  border-top: 1px solid #edf0ed !important; border-left: 0 !important;
+  display: flex !important; flex-direction: column !important;
+  align-items: stretch !important; justify-content: flex-start; gap: 5px;
+}
+.zs-live-price { color: #16834b; font-size: 19px; font-weight: 850; line-height: 1.25; overflow-wrap: anywhere; }
+.zs-live-price-note { color: #89948c; font-size: 10px; }
+.zs-live-card button { width: 100%; min-height: 40px; margin: 6px 0 0 !important; padding: 10px 12px; border: 0; border-radius: 8px; background: #16834b; color: #fff; font-size: 12px; font-weight: 750; cursor: pointer; }
+.zs-live-card button:hover { background: #10683b; }
+.zs-live-details { scroll-margin-top: 24px; }
+@media (min-width: 761px) and (max-width: 1100px) {
+  .zs-live-grid { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 15px !important; }
+  .zs-live-card-body { padding: 12px !important; }
+}
+@media (max-width: 760px) {
+  .zs-live-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 12px !important; }
+  .zs-live-card-image { aspect-ratio: 1 / 1; }
+  .zs-live-card-body { padding: 11px !important; gap: 8px !important; }
+  .zs-live-card h4 { font-size: 13px; }
+  .zs-live-description { font-size: 11px; }
+  .zs-live-meta { font-size: 10px; gap: 3px; }
+  .zs-live-price { font-size: 16px; }
+  .zs-live-card button { min-height: 38px; padding: 9px 7px; font-size: 11px; }
+  .zs-live-results { padding: 13px !important; }
+}
+@media (max-width: 360px) {
+  .zs-live-grid { gap: 8px !important; }
+  .zs-live-card-body { padding: 8px !important; }
+  .zs-live-card h4 { font-size: 12px; }
+  .zs-live-price { font-size: 14px; }
+}
 </style>
 
 </head>
@@ -980,7 +1085,11 @@
           const image = imageUrl(item.image_url);
           const card = document.createElement("article");
           card.className = "zs-live-card";
-          card.innerHTML = `<div class="zs-live-card-image">${image ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(item.product_name)}" loading="lazy">` : "<span>Product photo unavailable</span>"}</div><div class="zs-live-card-body"><span class="zs-live-source">${item.source === "marketplace" ? "Seller listing" : "Bot Catalog"}</span><h4>${escapeHtml(item.product_name || "Product")}</h4><div class="zs-live-price">${escapeHtml(formatPrice(item))}</div><div class="zs-live-meta">${escapeHtml(item.business_name || "Listed on ZimShop AI")} ${item.location ? `· ${escapeHtml(item.location)}` : ""}</div><button type="button" data-product-index="${index}">View product details →</button></div>`;
+          const seller = item.business_name || "Listed on ZimShop AI";
+          const location = item.location || "Location not specified";
+          const description = item.description || "Contact the seller for product specifications and more information.";
+          const stock = item.in_stock === true ? "Seller reports in stock" : (item.availability || "Confirm availability");
+          card.innerHTML = `<div class="zs-live-card-image">${image ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(item.product_name || "Product")}" loading="lazy">` : "<span>Product photo unavailable</span>"}</div><div class="zs-live-card-body"><div class="zs-live-card-copy"><span class="zs-live-source">${item.source === "marketplace" ? "Seller listing" : "Bot Catalog"}</span><h4>${escapeHtml(item.product_name || "Product")}</h4><p class="zs-live-description">${escapeHtml(description)}</p><div class="zs-live-meta"><span><strong>Seller:</strong> ${escapeHtml(seller)}</span><span><strong>Location:</strong> ${escapeHtml(location)}</span><span><strong>Availability:</strong> ${escapeHtml(stock)}</span></div></div><div class="zs-live-card-side"><div class="zs-live-price">${escapeHtml(formatPrice(item))}</div><span class="zs-live-price-note">Listed price</span><button type="button" data-product-index="${index}">View product details <span aria-hidden="true">→</span></button></div></div>`;
           resultsGrid.appendChild(card);
         });
       };
