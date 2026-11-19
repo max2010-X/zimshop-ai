@@ -1,0 +1,35 @@
+[33m7ef8be8[m Debug product details click functionality
+ ({                               |   0
+ 12                               |   0
+ BotBusinessProfile               |   0
+ BotProduct                       |   0
+ BotWorkflow                      |   0
+ MarketplaceBusiness              |   0
+ Non                              |   0
+ None                             |   0
+ Response                         |   0
+ bool                             |   0
+ cd                               |   0
+ current                          |   0
+ dict                             |   0
+ dict[str                         |   0
+ findstr                          |   0
+ git                              |   0
+ interest.trim()).filter(Boolean) |   0
+ list[BotProduct]                 |   0
+ list[MarketplaceProduct]         |   0
+ new                              |   0
+ node.id                          |   0
+ null)                            |   0
+ python                           |   0
+ set[str]                         |   0
+ src/MarketplaceWorkspace.tsx     |   5 [32m++++[m[31m-[m
+ tests/test_marketplace.rar       | Bin [31m0[m -> [32m3549[m bytes
+ tsc                              |   0
+ tuple[User                       |   0
+ tuple[bool                       |   0
+ tuple[str                        |   0
+ void                             |   0
+ zimshop-ai@1.0.0                 |   0
+ {                                |   0
+ 33 files changed, 4 insertions(+), 1 deletion(-)
