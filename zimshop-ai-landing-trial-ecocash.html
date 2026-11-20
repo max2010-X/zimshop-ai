@@ -4,11 +4,20 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#23613d">
-  <meta name="description" content="Discover products, compare listed prices and connect with businesses across Zimbabwe with Zimshop AI.">
+  <meta name="description" content="Find products, compare prices and discover local businesses across Zimbabwe with Zimshop AI. Search smarter and connect directly with sellers.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://zimshopai.co.zw/">
+  <meta property="og:site_name" content="Zimshop AI">
+  <meta property="og:url" content="https://zimshopai.co.zw/">
+  <meta property="og:locale" content="en_ZW">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Find Products & Local Businesses in Zimbabwe | Zimshop AI">
+  <meta name="twitter:description" content="Find products, compare prices and discover local businesses across Zimbabwe with Zimshop AI. Search smarter and connect directly with sellers.">
   <meta property="og:title" content="Zimshop AI — Find what you need. Shop smarter.">
   <meta property="og:description" content="A smarter way to discover products and connect with local businesses in Zimbabwe.">
   <meta property="og:type" content="website">
-  <title>Zimshop AI | Zimbabwe's Smart Product Marketplace</title>
+  <link rel="icon" type="image/png" href="/ZimShop-sticker.png" />
+  <title>Find Products & Local Businesses in Zimbabwe | Zimshop AI</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -296,6 +305,7 @@
 
     /* Pricing and free trial */
     .pricing-section { background: #fff; }
+    #paid-pricing-content[hidden], #free-pricing-state[hidden] { display: none !important; }
     .trial-banner {
       display: flex; align-items: center; gap: 18px; margin: 0 0 24px; padding: 21px 24px;
       border: 1px solid #d8e6d8; border-radius: 15px; background: linear-gradient(105deg, #edf5eb, #fff9e9);
@@ -369,6 +379,32 @@
     .footer-col a:hover { color: var(--green-bright); }
     .footer-bottom { display: flex; justify-content: space-between; gap: 15px; padding-top: 19px; border-top: 1px solid rgba(255,255,255,.13); color: #a9b9ac; font: 9px var(--mono); }
     .footer-bottom a { color: #d9e6d9; }
+    .cookie-banner {
+      position: fixed; z-index: 20; right: 20px; bottom: 20px; width: min(460px, calc(100% - 32px));
+      padding: 20px; border: 1px solid var(--line); border-radius: 14px; background: #fff;
+      box-shadow: 0 16px 48px rgba(0,0,0,.2);
+    }
+    .cookie-banner[hidden] { display: none; }
+    .cookie-banner h2, .cookie-dialog h2 { margin: 0 0 8px; font: 800 17px var(--display); }
+    .cookie-banner p, .cookie-dialog p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.7; }
+    .cookie-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 16px; }
+    .cookie-actions button, .cookie-dialog button {
+      min-height: 40px; padding: 0 14px; border: 1px solid var(--line); border-radius: 8px;
+      background: #fff; color: var(--ink); font-size: 11px; font-weight: 700; cursor: pointer;
+    }
+    .cookie-actions .cookie-primary, .cookie-dialog .cookie-primary { border-color: var(--green); background: var(--green); color: #fff; }
+    .cookie-dialog { width: min(520px, calc(100% - 32px)); padding: 0; border: 0; border-radius: 14px; box-shadow: 0 20px 60px rgba(0,0,0,.25); }
+    .cookie-dialog::backdrop { background: rgba(15,26,18,.62); }
+    .cookie-dialog-inner { padding: 24px; }
+    .cookie-setting { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; padding: 16px 0; border-top: 1px solid var(--line); }
+    .cookie-setting strong { display: block; margin-bottom: 4px; font: 700 12px var(--display); }
+    .cookie-setting span { display: block; color: var(--muted); font-size: 11px; line-height: 1.6; }
+    .cookie-setting input { width: 18px; height: 18px; accent-color: var(--green); }
+    .cookie-setting input:disabled { opacity: .7; }
+    .cookie-error { min-height: 18px; margin-top: 8px !important; color: var(--red) !important; }
+    .cookie-banner-status { margin-top: 8px !important; color: var(--red) !important; }
+    .cookie-dialog-actions { justify-content: flex-end; }
+    .cookie-preferences-link { padding: 0; border: 0; background: none; color: #d9e6d9; font: inherit; text-decoration: underline; cursor: pointer; }
 
     @media (max-width: 980px) {
       .pricing-grid { grid-template-columns: 1fr 1fr; }
@@ -461,270 +497,77 @@
       .footer-grid { grid-template-columns: 1fr 1fr; gap: 22px 15px; }
       .footer-bottom { flex-direction: column; line-height: 1.7; }
     }
+    .landing-search-results { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 235px), 1fr)); align-items: stretch; gap: 16px; margin-top: 18px; }
+    .landing-match { display: flex; min-width: 0; flex-direction: column; overflow: hidden; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); box-shadow: 0 2px 7px rgba(23,35,27,.05); transition: box-shadow .18s ease, transform .18s ease; }
+    .landing-match:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(23,35,27,.12); }
+    .landing-match-media { display: grid; width: 100%; aspect-ratio: 1 / 1; place-items: center; overflow: hidden; color: var(--muted); background: #f7f8f6; }
+    .landing-match-media img { display: block; width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; }
+    .landing-match-placeholder { display: grid; justify-items: center; gap: 8px; color: var(--muted); font-size: 10px; }
+    .landing-match-details { display: flex; flex: 1; flex-direction: column; align-items: flex-start; padding: 13px 14px 0; }
+    .landing-match h3 { margin: 0 0 6px; color: var(--ink); font: 700 15px/1.4 var(--display); }
+    .landing-match p { margin: 3px 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
+    .landing-match .landing-match-status { color: var(--green); font-size: 10px; font-weight: 700; }
+    .landing-match strong { display: block; margin: 9px 0 12px; color: var(--ink); font: 800 20px var(--display); }
+    .landing-match > .btn { width: calc(100% - 28px); min-height: 42px; margin: 0 14px 14px; padding-inline: 10px; font-size: 11px; }
+    .landing-match-actions { display: grid; gap: 8px; padding: 0 14px 14px; }
+    .landing-match-actions .btn { width: 100%; min-height: 42px; padding-inline: 10px; font-size: 11px; }
+    .landing-search-empty { grid-column: 1 / -1; padding: 16px; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: var(--muted); font-size: 13px; }
+    @media (max-width: 600px) { .landing-search-results { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; } .landing-match-details { padding: 10px 10px 0; } .landing-match h3 { font-size: 13px; } .landing-match p { font-size: 10px; } .landing-match strong { font-size: 17px; } .landing-match > .btn { width: calc(100% - 20px); margin: 0 10px 10px; font-size: 10px; } }
+    @media (max-width: 360px) { .landing-search-results { grid-template-columns: 1fr; } }
+    @media (max-width: 600px) {
+      .cookie-banner { right: 10px; bottom: max(10px, env(safe-area-inset-bottom)); width: calc(100% - 20px); padding: 16px; }
+      .cookie-actions { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .cookie-actions button { min-height: 44px; padding-inline: 8px; }
+      .cookie-actions .cookie-primary { grid-column: 1 / -1; }
+      .cookie-dialog-inner { padding: 18px; }
+      .cookie-dialog-actions { display: grid; grid-template-columns: 1fr; }
+      .cookie-dialog-actions button { min-height: 44px; }
+    }
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
       *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
     }
-  
-/* ZimShop marketplace results: Alibaba-inspired single-product rows */
-.zs-live-results{margin-top:26px;padding:clamp(16px,2.5vw,28px);border:1px solid #e5ebe6;border-radius:18px;background:#f7faf7}
-.zs-live-results-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid #e6ece7}
-.zs-live-results-head h3{margin:6px 0 0;color:#203328;font-size:clamp(21px,2.5vw,28px);font-weight:800}
-.zs-live-grid{display:flex;flex-direction:column;gap:12px}
-.zs-live-card{display:grid;grid-template-columns:190px minmax(0,1fr);gap:0;min-width:0;padding:14px;border:1px solid #e5eae6;border-radius:13px;background:#fff;box-shadow:0 2px 8px rgba(23,54,35,.035);transition:border-color .18s ease,box-shadow .18s ease}
-.zs-live-card:hover{transform:none;border-color:#b9d8c3;box-shadow:0 7px 22px rgba(20,55,35,.08)}
-.zs-live-card-image{height:180px;min-height:180px;border-radius:9px;background:#f3f6f3;display:grid;place-items:center;overflow:hidden;color:#8a978e}
-.zs-live-card-image img{width:100%;height:100%;object-fit:contain;padding:8px}
-.zs-live-card-body{min-width:0;padding:3px 4px 3px 20px;display:grid;grid-template-columns:minmax(0,1fr) 190px;gap:20px;align-items:center}
-.zs-live-card-copy{min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:9px}
-.zs-live-card h4{font-size:17px;line-height:1.4;margin:0;color:#203328;font-weight:750}
-.zs-live-description{margin:0;color:#6c796f;font-size:12px;line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.zs-live-meta{display:flex;flex-wrap:wrap;gap:6px 16px;color:#68766d;font-size:11px;line-height:1.5}
-.zs-live-meta strong{color:#34483a;font-weight:700}
-.zs-live-source{align-self:flex-start;border-radius:4px;padding:5px 8px;background:#edf7ef;color:#267345;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.035em}
-.zs-live-card-side{height:100%;min-height:130px;padding-left:18px;border-left:1px solid #edf0ed;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:5px}
-.zs-live-price{font-size:22px;font-weight:850;color:#16834b;line-height:1.2;overflow-wrap:anywhere}
-.zs-live-price-note{font-size:10px;color:#89948c}
-.zs-live-card button,.zs-live-back{width:100%;border:0;border-radius:7px;padding:11px 12px;background:#16834b;color:#fff;font-size:12px;font-weight:750;cursor:pointer;margin-top:10px;text-align:center}
-.zs-live-card button:hover,.zs-live-back:hover{background:#10683b}
-.zs-live-empty{padding:26px;text-align:center;color:#68766d;border:1px dashed #d7e2da;border-radius:13px;background:#fff}
-.zs-live-details{margin-top:18px;border:1px solid #e1e9e3;border-radius:14px;padding:20px;background:#fff}
-.zs-live-detail-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:start}
-.zs-live-detail-image{min-height:300px;border-radius:13px;overflow:hidden;background:#f0f4f0;display:grid;place-items:center;color:#849188}
-.zs-live-detail-image img{width:100%;height:100%;max-height:430px;object-fit:contain}
-.zs-live-detail-copy h3{font-size:clamp(22px,3vw,32px);margin:12px 0;color:#1c2c21}
-.zs-live-detail-copy p{color:#68756c;line-height:1.7;font-size:14px}
-.zs-live-detail-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
-.zs-live-detail-actions a{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;padding:12px 16px;border-radius:8px;background:#16834b;color:#fff;font-weight:750;font-size:13px}
-.zs-live-detail-actions a.secondary{background:#eaf4ed;color:#17683d}
-@media(max-width:760px){.zs-live-card{grid-template-columns:145px minmax(0,1fr)}.zs-live-card-image{height:160px;min-height:160px}.zs-live-card-body{grid-template-columns:minmax(0,1fr);gap:12px;padding-left:15px}.zs-live-card-side{min-height:0;padding:11px 0 0;border-left:0;border-top:1px solid #edf0ed;display:grid;grid-template-columns:minmax(0,1fr) minmax(130px,auto);align-items:center}.zs-live-card-side button{grid-column:2;grid-row:1/3;margin:0}.zs-live-price{font-size:19px}}
-@media(max-width:520px){.zs-live-results{padding:13px}.zs-live-card{grid-template-columns:1fr;padding:11px;gap:11px}.zs-live-card-image{height:190px;min-height:190px}.zs-live-card-body{padding:0;gap:12px}.zs-live-card-copy{gap:8px}.zs-live-card-side{grid-template-columns:minmax(0,1fr) minmax(120px,auto)}.zs-live-card h4{font-size:16px}.zs-live-detail-layout{grid-template-columns:1fr}.zs-live-detail-image{min-height:220px}.zs-live-results-head{align-items:flex-start;flex-direction:column}}
+  </style>
 
-</style>
-\n<style id="zs-live-marketplace-styles">
-.zs-live-results{margin-top:28px;padding:24px;border:1px solid #e6e9e7;border-radius:20px;background:#fff;box-shadow:0 14px 40px rgba(15,45,31,.07)}
-.zs-live-results[hidden],.zs-live-notice[hidden],.zs-live-details[hidden]{display:none!important}
-.zs-live-results-head{display:flex;align-items:end;justify-content:space-between;gap:14px;margin-bottom:18px}
-.zs-live-results-head h3{font-size:clamp(21px,3vw,29px);margin:7px 0 0;color:#172b21}
-.zs-live-mode{font-size:12px;font-weight:700;color:#16834b;background:#eaf8ef;border-radius:30px;padding:8px 12px}
-.zs-live-notice{padding:13px 15px;margin:0 0 16px;border-radius:10px;background:#fff7e8;color:#805b17;font-size:13px;line-height:1.5}
-/* One product per card, stacked vertically in a single column */
-.zs-live-grid{display:flex;flex-direction:column;align-items:stretch;gap:18px}
-.zs-live-card{width:100%;min-width:0;border:1px solid #e5eae6;border-radius:14px;overflow:hidden;background:#fff;display:flex;flex-direction:column;transition:box-shadow .18s ease,border-color .18s ease}
-.zs-live-card:hover{border-color:#b9d8c3;box-shadow:0 8px 24px rgba(20,55,35,.08)}
-.zs-live-card-image{height:230px;background:#f3f6f3;display:grid;place-items:center;overflow:hidden;color:#8a978e}
-.zs-live-card-image img{width:100%;height:100%;object-fit:contain;padding:12px}
-.zs-live-card-body{padding:18px;display:flex;flex-direction:column;align-items:flex-start;gap:11px}
-.zs-live-card-copy{width:100%;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:9px}
-.zs-live-card h4{font-size:18px;line-height:1.4;margin:0;color:#1d2c22}
-.zs-live-description{margin:0;color:#6c796f;font-size:13px;line-height:1.6}
-.zs-live-price{font-size:23px;font-weight:850;color:#138348}
-.zs-live-meta{display:flex;flex-wrap:wrap;gap:7px 16px;font-size:12px;color:#748078;line-height:1.5}
-.zs-live-source{align-self:flex-start;border-radius:30px;padding:5px 9px;background:#eef7f0;color:#267345;font-size:10px;font-weight:800}
-.zs-live-card-side{width:100%;padding-top:12px;border-top:1px solid #edf0ed;display:flex;flex-direction:column;align-items:flex-start;gap:5px}
-.zs-live-price-note{font-size:11px;color:#89948c}
-.zs-live-card button,.zs-live-back{width:100%;border:0;border-radius:9px;padding:12px 14px;background:#16834b;color:#fff;font-weight:750;cursor:pointer;margin-top:8px}
-.zs-live-card button:hover,.zs-live-back:hover{background:#10683b}
-.zs-live-empty{padding:26px;text-align:center;color:#68766d;border:1px dashed #d7e2da;border-radius:13px}
-.zs-live-details{margin-top:20px;border:1px solid #e6ece7;border-radius:16px;padding:20px;background:#fbfdfb}
-.zs-live-detail-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:start}
-.zs-live-detail-image{min-height:300px;border-radius:13px;overflow:hidden;background:#f0f4f0;display:grid;place-items:center;color:#849188}
-.zs-live-detail-image img{width:100%;height:100%;max-height:430px;object-fit:contain}
-.zs-live-detail-copy h3{font-size:clamp(22px,3vw,32px);margin:12px 0;color:#1c2c21}
-.zs-live-detail-copy p{color:#68756c;line-height:1.7;font-size:14px}
-.zs-live-detail-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
-.zs-live-detail-actions a{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;padding:12px 16px;border-radius:9px;background:#16834b;color:#fff;font-weight:750;font-size:13px}
-.zs-live-detail-actions a.secondary{background:#eaf4ed;color:#17683d}
-@media(max-width:600px){.zs-live-results{padding:15px}.zs-live-card-image{height:200px}.zs-live-card-body{padding:14px}.zs-live-detail-layout{grid-template-columns:1fr}.zs-live-detail-image{min-height:220px}.zs-live-results-head{align-items:flex-start;flex-direction:column}}
-
-/* Product trust cues and full-card interaction */
-.zs-live-card-clickable{cursor:pointer;outline-offset:3px}
-.zs-live-card-clickable:focus-visible{outline:3px solid rgba(22,131,75,.35);border-color:#16834b}
-.zs-live-card-reassurance{margin:0;color:#356448;background:#f0f8f2;border:1px solid #e0efe4;border-radius:8px;padding:9px 11px;font-size:11px;line-height:1.5}
-.zs-live-detail-heading{margin:18px 0 10px;color:#203328;font-size:15px}
-.zs-live-detail-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
-.zs-live-detail-fact{display:flex;flex-direction:column;gap:4px;padding:10px 11px;border:1px solid #e7eee8;border-radius:9px;background:#fff;min-width:0}
-.zs-live-detail-fact span{font-size:11px;color:#748078}
-.zs-live-detail-fact strong{font-size:12px;color:#263b2d;overflow-wrap:anywhere}
-.zs-live-detail-disclaimer{padding:12px;border-radius:9px;background:#fff8eb;border:1px solid #f2e5c8;color:#795d2b!important;font-size:12px!important}
-@media(max-width:600px){.zs-live-detail-facts{grid-template-columns:1fr}}
-</style>
-
-
-
-<style id="zs-alibaba-product-grid-override">
-/* ZimShop responsive ecommerce product grid */
-
-.zs-live-grid {
-  display: grid !important;
-  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-  gap: 18px !important;
-  align-items: stretch !important;
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://zimshopai.co.zw/#organization",
+      "name": "Zimshop AI",
+      "url": "https://zimshopai.co.zw/",
+      "description": "A Zimbabwe-focused platform for discovering products, comparing listed prices and connecting with local businesses."
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://zimshopai.co.zw/#website",
+      "url": "https://zimshopai.co.zw/",
+      "name": "Zimshop AI",
+      "description": "Find products, compare prices and discover local businesses across Zimbabwe.",
+      "inLanguage": "en-ZW",
+      "publisher": {
+        "@id": "https://zimshopai.co.zw/#organization"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://zimshopai.co.zw/#webpage",
+      "url": "https://zimshopai.co.zw/",
+      "name": "Find Products & Local Businesses in Zimbabwe | Zimshop AI",
+      "description": "Find products, compare prices and discover local businesses across Zimbabwe with Zimshop AI. Search smarter and connect directly with sellers.",
+      "isPartOf": {
+        "@id": "https://zimshopai.co.zw/#website"
+      },
+      "about": {
+        "@id": "https://zimshopai.co.zw/#organization"
+      },
+      "inLanguage": "en-ZW"
+    }
+  ]
 }
-
-.zs-live-card {
-  display: flex !important;
-  flex-direction: column !important;
-  width: 100% !important;
-  min-width: 0;
-  height: 100%;
-  padding: 0 !important;
-  overflow: hidden;
-  border: 1px solid #e5eae6;
-  border-radius: 12px;
-  background: #fff;
-  box-shadow: 0 2px 8px rgba(23,54,35,.045);
-  transition: border-color .18s, box-shadow .18s, transform .18s;
-}
-
-.zs-live-card:hover {
-  transform: translateY(-3px);
-  border-color: #b9d8c3;
-  box-shadow: 0 8px 22px rgba(20,55,35,.09);
-}
-
-.zs-live-card-image {
-  width: 100%;
-  height: auto !important;
-  min-height: 0 !important;
-  aspect-ratio: 1 / 1;
-  border-radius: 0 !important;
-  background: #f5f7f5;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-}
-
-.zs-live-card-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  padding: 12px;
-}
-
-.zs-live-card-body {
-  flex: 1;
-  min-width: 0;
-  padding: 14px !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: stretch !important;
-  gap: 10px !important;
-}
-
-.zs-live-card-copy {
-  width: 100%;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
-}
-
-.zs-live-card h4 {
-  margin: 0;
-  font-size: 15px;
-  line-height: 1.4;
-  color: #1d2c22;
-}
-
-.zs-live-description {
-  margin: 0;
-  font-size: 12px;
-  line-height: 1.5;
-  color: #66736a;
-}
-
-.zs-live-meta {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  width: 100%;
-  font-size: 11px;
-  color: #68756c;
-}
-
-.zs-live-card-reassurance {
-  font-size: 10px !important;
-  padding: 7px 8px !important;
-  margin-top: 1px !important;
-}
-
-.zs-live-card-side {
-  width: 100%;
-  margin-top: auto;
-  padding: 10px 0 0 !important;
-  border-top: 1px solid #edf0ed;
-  border-left: 0 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: stretch !important;
-  gap: 5px !important;
-}
-
-.zs-live-price {
-  font-size: 19px;
-  font-weight: 850;
-  color: #16834b;
-}
-
-.zs-live-price-note {
-  font-size: 10px;
-  color: #7b877e;
-}
-
-.zs-live-card button {
-  width: 100%;
-}
-
-/* Tablet */
-@media (max-width: 900px) {
-  .zs-live-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-    gap: 14px !important;
-  }
-}
-
-/* Mobile */
-@media (max-width: 600px) {
-  .zs-live-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 10px !important;
-  }
-
-  .zs-live-results {
-    padding: 12px !important;
-  }
-
-  .zs-live-card-body {
-    padding: 10px !important;
-  }
-
-  .zs-live-card h4 {
-    font-size: 13px;
-  }
-
-  .zs-live-price {
-    font-size: 17px;
-  }
-
-  .zs-live-card-image img {
-    padding: 7px;
-  }
-}
-
-/* Very narrow phones */
-@media (max-width: 360px) {
-  .zs-live-grid {
-    gap: 8px !important;
-  }
-
-  .zs-live-card-body {
-    padding: 8px !important;
-  }
-}
-</style>
-
+  </script>
 </head>
 
 <body>
@@ -750,8 +593,8 @@
       </nav>
 
       <div class="nav-actions">
-        <a class="btn btn-ghost" href="/login">Log in</a>
-        <a class="btn btn-primary" href="/signup">Create account <span class="arrow">↗</span></a>
+        <a class="btn btn-ghost" href="/workspace.html?auth=login">Log in</a>
+        <a class="btn btn-primary" href="/workspace.html?auth=register">Create account <span class="arrow">↗</span></a>
       </div>
     </div>
   </header>
@@ -765,7 +608,7 @@
           <p>Tell us what you're looking for, set your budget and location, then discover businesses with products that could be right for you.</p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="#discover">Find a product <span class="arrow">→</span></a>
-            <a class="btn btn-light" href="/signup?role=business">List your business</a>
+            <a class="btn btn-light" href="/workspace.html?auth=register">List your business</a>
           </div>
           <div class="hero-trust">
             <span>Local business discovery</span>
@@ -802,7 +645,7 @@
           <span class="section-kicker">Zimshop Smart Match</span>
           <h2>What are you looking for today?</h2>
           <p>Skip the endless searching. Describe the product, add your target price and choose an area. Zimshop AI can match your request against the product listings businesses have added to the marketplace.</p>
-          <div class="finder-note"><b>✦</b><span>Results depend on registered businesses and the accuracy of their latest product listings.</span></div>
+          <div class="finder-note"><b>✦</b><span>Results depend on registered businesses and the accuracy of their latest product listings. Contact links open a message draft for you to review; carrier charges may apply. An enquiry is not a completed purchase.</span></div>
         </div>
 
         <form class="finder-form" id="productSearch">
@@ -832,19 +675,14 @@
           <div class="field">
             <label for="sort">Sort results</label>
             <select id="sort" name="sort">
-              <option value="best_match">Best match</option><option value="price_low">Lowest listed price</option><option value="nearest">Nearest location</option>
+              <option value="best_match">Best match</option><option value="price">Lowest listed price</option>
             </select>
           </div>
           <button class="btn btn-primary" type="submit">Find matching businesses <span class="arrow">→</span></button>
           <div class="form-message" id="formMessage" role="status" aria-live="polite"></div>
         </form>
-        <section id="liveSearchResults" class="zs-live-results" aria-live="polite" hidden>
-          <div class="zs-live-results-head"><div><span class="section-kicker">Zimshop Smart Match</span><h3 id="liveResultsTitle">Matching products</h3></div><span id="liveResultsMode" class="zs-live-mode"></span></div>
-          <div id="liveResultsNotice" class="zs-live-notice" hidden></div>
-          <div id="liveResultsGrid" class="zs-live-grid"></div>
-          <div id="liveProductDetails" class="zs-live-details" hidden></div>
-        </section>
       </div>
+      <div class="container"><div id="smartMatchResults" class="landing-search-results" aria-live="polite"></div></div>
     </section>
 
     <section class="section categories" aria-labelledby="categories-title">
@@ -855,19 +693,19 @@
           <p>Browse popular shopping categories and find businesses listing the products you need.</p>
         </div>
         <div class="category-grid">
-          <a class="category-card" href="#discover" data-zs-category="electronics">
+          <a class="category-card" href="/search?category=electronics">
             <img src="https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=700&q=80" alt="Consumer electronics and computer equipment" loading="lazy">
             <span class="category-label"><strong>Electronics</strong><small>Phones, laptops & accessories</small></span>
           </a>
-          <a class="category-card" href="#discover" data-zs-category="home">
+          <a class="category-card" href="/search?category=home">
             <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=700&q=80" alt="Modern home furniture and interior decor" loading="lazy">
             <span class="category-label"><strong>Home & living</strong><small>Furniture, appliances & decor</small></span>
           </a>
-          <a class="category-card" href="#discover" data-zs-category="fashion">
+          <a class="category-card" href="/search?category=fashion">
             <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=700&q=80" alt="Fashion shoppers browsing clothes" loading="lazy">
             <span class="category-label"><strong>Fashion</strong><small>Clothing, shoes & accessories</small></span>
           </a>
-          <a class="category-card" href="#discover" data-zs-category="business">
+          <a class="category-card" href="/search?category=business">
             <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=700&q=80" alt="Small business team working together" loading="lazy">
             <span class="category-label"><strong>Business supplies</strong><small>Office & professional needs</small></span>
           </a>
@@ -884,23 +722,23 @@
           <p>From everyday essentials to business equipment, explore the kinds of products you can discover through local sellers.</p>
         </div>
         <div class="inspiration-grid">
-          <a class="inspiration-tile inspiration-wide" href="#discover" data-zs-category="electronics">
+          <a class="inspiration-tile inspiration-wide" href="/search?category=electronics">
             <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=1100&q=85" alt="Smartphone displayed on a desk" loading="lazy">
             <span><strong>Tech & gadgets</strong><small>Find devices and accessories</small></span>
           </a>
-          <a class="inspiration-tile" href="#discover" data-zs-category="home">
+          <a class="inspiration-tile" href="/search?category=home">
             <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=800&q=85" alt="Contemporary living room sofa" loading="lazy">
             <span><strong>Home furniture</strong><small>Make your space yours</small></span>
           </a>
-          <a class="inspiration-tile" href="#discover" data-zs-category="beauty">
+          <a class="inspiration-tile" href="/search?category=beauty">
             <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=800&q=85" alt="Beauty and personal care products" loading="lazy">
             <span><strong>Beauty & care</strong><small>Everyday personal essentials</small></span>
           </a>
-          <a class="inspiration-tile" href="#discover" data-zs-category="food">
+          <a class="inspiration-tile" href="/search?category=food">
             <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&q=85" alt="Fresh produce at a market" loading="lazy">
             <span><strong>Food & groceries</strong><small>Discover local suppliers</small></span>
           </a>
-          <a class="inspiration-tile inspiration-wide" href="#discover" data-zs-category="equipment">
+          <a class="inspiration-tile inspiration-wide" href="/search?category=equipment">
             <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1100&q=85" alt="Tools and technical equipment in a workshop" loading="lazy">
             <span><strong>Tools & equipment</strong><small>For projects, workshops and businesses</small></span>
           </a>
@@ -917,23 +755,23 @@
           <p>Explore products and services for home, work and everyday life — all through businesses listed on Zimshop AI.</p>
         </div>
         <div class="photo-mosaic">
-          <a class="mosaic-card mosaic-large" href="#discover" data-zs-category="electronics">
+          <a class="mosaic-card mosaic-large" href="/search?category=electronics">
             <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=85" alt="Team collaborating around laptops and technology" loading="lazy">
             <span><strong>Technology for work</strong><small>Devices, accessories and office tech</small></span>
           </a>
-          <a class="mosaic-card" href="#discover" data-zs-category="food">
+          <a class="mosaic-card" href="/search?category=food">
             <img src="https://images.unsplash.com/photo-1543168256-418811576931?auto=format&fit=crop&w=800&q=85" alt="Freshly prepared food and ingredients" loading="lazy">
             <span><strong>Food & essentials</strong><small>Discover everyday finds</small></span>
           </a>
-          <a class="mosaic-card" href="#discover" data-zs-category="fashion">
+          <a class="mosaic-card" href="/search?category=fashion">
             <img src="https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=800&q=85" alt="Clothing arranged in a fashion store" loading="lazy">
             <span><strong>Style & fashion</strong><small>Find your next look</small></span>
           </a>
-          <a class="mosaic-card" href="#discover" data-zs-category="home">
+          <a class="mosaic-card" href="/search?category=home">
             <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=800&q=85" alt="Comfortable modern living room interior" loading="lazy">
             <span><strong>Home inspiration</strong><small>Furniture and home decor</small></span>
           </a>
-          <a class="mosaic-card" href="#discover" data-zs-category="tools">
+          <a class="mosaic-card" href="/search?category=tools">
             <img src="https://images.unsplash.com/photo-1581147036324-c17ac41b9f2b?auto=format&fit=crop&w=800&q=85" alt="Tools arranged for repair and construction work" loading="lazy">
             <span><strong>Tools & projects</strong><small>Equipment for getting things done</small></span>
           </a>
@@ -986,7 +824,7 @@
             <div class="benefit"><span class="benefit-check">✓</span><div><strong>Receive relevant enquiries</strong><small>Get discovered by customers searching for products like yours.</small></div></div>
             <div class="benefit"><span class="benefit-check">✓</span><div><strong>Manage your business in one place</strong><small>Update listings and review enquiries through your dashboard.</small></div></div>
           </div>
-          <a class="btn btn-primary" href="/signup?role=business">Create a business account <span class="arrow">→</span></a>
+          <a class="btn btn-primary" href="/workspace.html?auth=register">Create a business account <span class="arrow">→</span></a>
         </div>
       </div>
     </section>
@@ -1010,18 +848,28 @@
     <section class="section pricing-section" id="pricing">
       <div class="container">
         <div class="section-heading">
-          <span class="section-kicker">Start free. Grow with confidence.</span>
-          <h2>Try Zimshop AI free for 7 days</h2>
-          <p>Explore the business tools first, then choose a plan that suits your business. No payment is needed to start your free trial.</p>
+          <span class="section-kicker" id="pric++ing-kicker">Free access</span>
+          <h2 id="pricing-heading">Free for customers and businesses</h2>
+          <p id="pricing-description">Discover products, create a seller account and publish listings without a subscription payment.</p>
         </div>
 
+        <div id="free-pricing-state" class="trial-banner">
+          <div class="trial-icon">0</div>
+          <div class="trial-copy">
+            <strong>No subscription payment required</strong>
+            <span>Paid subscriptions are currently paused. Seller registration, product listings and Smart Match remain available for free.</span>
+          </div>
+          <a class="btn btn-primary" href="/workspace.html?auth=register">List your business <span class="arrow">→</span></a>
+        </div>
+
+        <div id="paid-pricing-content" hidden>
         <div class="trial-banner">
           <div class="trial-icon">7</div>
           <div class="trial-copy">
-            <strong>7-day free business trial</strong>
+            <strong>Free business trial</strong>
             <span>Try the business dashboard, product listings and available automation features. Choose a paid plan when your trial ends.</span>
           </div>
-          <a class="btn btn-primary" href="/signup?role=business&trial=7-days">Start my free trial <span class="arrow">→</span></a>
+          <a class="btn btn-primary" href="/workspace.html?auth=register">Start my free trial <span class="arrow">→</span></a>
         </div>
 
         <div class="pricing-grid">
@@ -1035,7 +883,7 @@
               <li>Customer enquiry management</li>
               <li>Basic SMS notifications*</li>
             </ul>
-            <a class="btn btn-light plan-button" href="/signup?role=business&plan=starter">Choose Starter</a>
+            <a class="btn btn-light plan-button" href="/workspace.html?auth=register">Choose Starter</a>
           </article>
 
           <article class="plan-card plan-featured">
@@ -1050,7 +898,7 @@
               <li>Product performance insights</li>
               <li>More business automation tools</li>
             </ul>
-            <a class="btn btn-primary plan-button" href="/signup?role=business&plan=business">Choose Business <span class="arrow">→</span></a>
+            <a class="btn btn-primary plan-button" href="/workspace.html?auth=register">Choose Business <span class="arrow">→</span></a>
           </article>
 
           <article class="plan-card">
@@ -1064,7 +912,7 @@
               <li>Expanded automation options</li>
               <li>Priority support channel</li>
             </ul>
-            <a class="btn btn-light plan-button" href="/signup?role=business&plan=premium">Choose Premium</a>
+            <a class="btn btn-light plan-button" href="/workspace.html?auth=register">Choose Premium</a>
           </article>
         </div>
 
@@ -1077,6 +925,8 @@
           <span class="payment-secure">Secure checkout</span>
         </div>
         <p class="pricing-footnote">*SMS delivery charges or usage limits may be billed separately depending on your selected package. Plan prices and included limits should be confirmed in your account before payment. Your subscription is activated only after the payment provider confirms a successful payment.</p>
+        </div>
+        <p id="pricing-status-note" class="pricing-footnote" role="status">Checking current subscription availability…</p>
       </div>
     </section>
 
@@ -1086,7 +936,7 @@
         <h2>Make finding the right product easier.</h2>
         <p>Join a growing marketplace experience built to bring Zimbabwean customers and businesses closer together.</p>
         <a class="btn btn-primary" href="#discover">Start searching <span class="arrow">→</span></a>
-        <a class="btn btn-light" href="/signup?role=business">Join as a business</a>
+        <a class="btn btn-light" href="/workspace.html?auth=register">Join as a business</a>
       </div>
     </section>
 
@@ -1119,15 +969,112 @@
           <p>Discover products, connect with local businesses and make more informed shopping decisions with Zimshop AI.</p>
         </div>
         <div class="footer-col"><h3>Explore</h3><a href="#discover">Find a product</a><a href="#services">Our services</a><a href="#inspiration">Explore more</a><a href="#pricing">Business plans</a><a href="#how-it-works">How it works</a><a href="#businesses">For businesses</a></div>
-        <div class="footer-col"><h3>Your account</h3><a href="/dashboard">Dashboard</a><a href="/login">Log in</a><a href="/signup">Create account</a><a href="/signup?role=business">Register a business</a></div>
-        <div class="footer-col"><h3>Information</h3><a href="/privacy">Privacy policy</a><a href="/terms">Terms of service</a><a href="/contact">Contact us</a><a href="#faq">FAQs</a></div>
+        <div class="footer-col"><h3>Your account</h3><a href="/workspace.html">Dashboard</a><a href="/workspace.html?auth=login">Log in</a><a href="/workspace.html?auth=register">Create account</a><a href="/workspace.html?auth=register">Register a business</a></div>
+        <div class="footer-col"><h3>Terms &amp; policies</h3><a href="/privacy/index.html">Privacy policy</a><a href="/terms/index.html">Terms and conditions</a><a href="/contact/index.html">Contact us</a><a href="#faq">FAQs</a><button class="cookie-preferences-link" id="open-cookie-preferences" type="button">Cookie preferences</button></div>
       </div>
       <div class="footer-bottom"><span>© <span id="year"></span> Zimshop AI. All rights reserved.</span><span>Made for Zimbabwe 🇿🇼</span></div>
     </div>
   </footer>
 
+  <section class="cookie-banner" id="cookie-banner" aria-labelledby="cookie-banner-title" hidden>
+    <h2 id="cookie-banner-title">Your privacy choices</h2>
+    <p>Necessary storage supports core site functions. Analytics and advertising cookies are not currently used on this landing page. You can save your preferences or change them any time using the footer link. See our <a href="/privacy/index.html"><u>Privacy Policy</u></a>.</p>
+    <p class="cookie-banner-status" id="cookie-banner-status" role="status" aria-live="polite"></p>
+    <div class="cookie-actions">
+      <button class="cookie-primary" id="accept-cookies" type="button">Accept optional</button>
+      <button id="reject-cookies" type="button">Necessary only</button>
+      <button id="customize-cookies" type="button">Customize</button>
+    </div>
+  </section>
+  <dialog class="cookie-dialog" id="cookie-dialog" aria-labelledby="cookie-dialog-title">
+    <div class="cookie-dialog-inner">
+      <h2 id="cookie-dialog-title">Cookie preferences</h2>
+      <p>Necessary storage is always on. Optional analytics and advertising cookies are not currently used on this landing page. Your selections are saved for your preferences and will not activate tracking tools that are not in use.</p>
+      <div class="cookie-setting">
+        <div><strong>Necessary storage</strong><span>Required for core site and security functions. Always active.</span></div>
+        <input type="checkbox" checked disabled aria-label="Necessary storage always active">
+      </div>
+      <label class="cookie-setting" for="analytics-cookies">
+        <div><strong>Analytics cookies</strong><span>Allow optional audience measurement if introduced on this page.</span></div>
+        <input id="analytics-cookies" type="checkbox">
+      </label>
+      <label class="cookie-setting" for="advertising-cookies">
+        <div><strong>Advertising cookies</strong><span>Allow optional advertising measurement if introduced on this page.</span></div>
+        <input id="advertising-cookies" type="checkbox">
+      </label>
+      <p class="cookie-error" id="cookie-error" role="status" aria-live="polite"></p>
+      <div class="cookie-actions cookie-dialog-actions">
+        <button id="cancel-cookie-preferences" type="button">Cancel</button>
+        <button class="cookie-primary" id="save-cookie-preferences" type="button">Save preferences</button>
+      </div>
+    </div>
+  </dialog>
+
   <script>
     (() => {
+      const apiBase = location.hostname === "localhost" || location.hostname === "127.0.0.1"
+        ? ""
+        : "https://zimshop-ai.onrender.com";
+      const cookiePreferenceKey = "zimshop-cookie-preferences";
+      const cookieBanner = document.getElementById("cookie-banner");
+      const cookieDialog = document.getElementById("cookie-dialog");
+      const cookieError = document.getElementById("cookie-error");
+      const cookieBannerStatus = document.getElementById("cookie-banner-status");
+      const analyticsCookies = document.getElementById("analytics-cookies");
+      const advertisingCookies = document.getElementById("advertising-cookies");
+      let savedCookiePreferences = null;
+      try {
+        const storedPreferences = localStorage.getItem(cookiePreferenceKey);
+        if (storedPreferences) {
+          const parsedPreferences = JSON.parse(storedPreferences);
+          if (parsedPreferences && parsedPreferences.necessary === true &&
+              typeof parsedPreferences.analytics === "boolean" &&
+              typeof parsedPreferences.advertising === "boolean") {
+            savedCookiePreferences = parsedPreferences;
+          }
+        }
+      } catch {
+        cookieBannerStatus.textContent = "Your browser blocked preference storage. Your choice may not be remembered.";
+      }
+
+      const showCookiePreferences = () => {
+        cookieError.textContent = "";
+        analyticsCookies.checked = savedCookiePreferences ? savedCookiePreferences.analytics : false;
+        advertisingCookies.checked = savedCookiePreferences ? savedCookiePreferences.advertising : false;
+        cookieDialog.showModal();
+      };
+      const saveCookiePreferences = (analytics, advertising) => {
+        const preferences = {
+          necessary: true,
+          analytics,
+          advertising,
+          updatedAt: new Date().toISOString()
+        };
+        try {
+          localStorage.setItem(cookiePreferenceKey, JSON.stringify(preferences));
+        } catch {
+          const errorMessage = "Could not save your preferences in this browser. Check your storage settings and try again.";
+          cookieError.textContent = errorMessage;
+          cookieBannerStatus.textContent = errorMessage;
+          return;
+        }
+        savedCookiePreferences = preferences;
+        cookieBanner.hidden = true;
+        cookieError.textContent = "";
+        cookieBannerStatus.textContent = "";
+        if (cookieDialog.open) cookieDialog.close();
+      };
+
+      cookieBanner.hidden = Boolean(savedCookiePreferences);
+      document.getElementById("accept-cookies").addEventListener("click", () => saveCookiePreferences(true, true));
+      document.getElementById("reject-cookies").addEventListener("click", () => saveCookiePreferences(false, false));
+      document.getElementById("customize-cookies").addEventListener("click", showCookiePreferences);
+      document.getElementById("open-cookie-preferences").addEventListener("click", showCookiePreferences);
+      document.getElementById("cancel-cookie-preferences").addEventListener("click", () => cookieDialog.close());
+      document.getElementById("save-cookie-preferences").addEventListener("click", () =>
+        saveCookiePreferences(analyticsCookies.checked, advertisingCookies.checked)
+      );
+
       const menuButton = document.getElementById("menuToggle");
       const nav = document.getElementById("navLinks");
 
@@ -1157,177 +1104,219 @@
         });
       });
 
-      // Production API is the same backend used by MarketplaceWorkspace.tsx.
-      const ZIMSHOP_API_BASE = "https://zimshop-ai.onrender.com";
-      const searchForm = document.getElementById("productSearch");
-      const resultsSection = document.getElementById("liveSearchResults");
-      const resultsGrid = document.getElementById("liveResultsGrid");
-      const resultsTitle = document.getElementById("liveResultsTitle");
-      const resultsMode = document.getElementById("liveResultsMode");
-      const resultsNotice = document.getElementById("liveResultsNotice");
-      const detailsPanel = document.getElementById("liveProductDetails");
-      let currentResults = [];
-
-      const escapeHtml = value => String(value ?? "").replace(/[&<>"']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
-      const formatPrice = item => {
-        const currency = item.currency || "USD";
-        const raw = item.price ?? "Price on request";
-        const amount = Number(raw);
-        return Number.isFinite(amount) && String(raw).trim() !== "" ? `${currency} ${amount.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}` : `${currency} ${raw}`;
-      };
-      const imageUrl = value => {
-        if (!value) return "";
-        if (value.startsWith("/uploads/") || value.startsWith("/api/v1/marketplace/product-images/")) return `${ZIMSHOP_API_BASE}${value}`;
-        return value;
-      };
-      const normaliseResults = payload => {
-        if (Array.isArray(payload)) return {results:payload};
-        if (Array.isArray(payload?.results)) return payload;
-        if (Array.isArray(payload?.data)) return {results:payload.data};
-        if (Array.isArray(payload?.data?.results)) return {results:payload.data.results,understanding_mode:payload.data.understanding_mode};
-        return null;
-      };
-      const showNotice = message => {
-        resultsNotice.hidden = !message;
-        resultsNotice.textContent = message || "";
-      };
-      const renderResults = response => {
-        currentResults = response.results || [];
-        resultsGrid.innerHTML = "";
-        detailsPanel.hidden = true;
-        detailsPanel.innerHTML = "";
-        resultsMode.textContent = response.understanding_mode || "Product matching";
-        resultsTitle.textContent = `${currentResults.length} matching ${currentResults.length === 1 ? "result" : "results"}`;
-        if (!currentResults.length) {
-          resultsGrid.innerHTML = '<div class="zs-live-empty">No matching products were found. Try a different product name or remove some filters.</div>';
-          return;
-        }
-        currentResults.forEach((item,index) => {
-          const image = imageUrl(item.image_url);
-          const card = document.createElement("article");
-          card.className = "zs-live-card";
-          const seller = item.business_name || "Listed on ZimShop AI";
-          const location = item.location || "Location not specified";
-          const description = item.description || "Contact the seller for product specifications and more information.";
-          const stock = item.in_stock === true ? "Seller reports in stock" : (item.availability || "Confirm availability with seller");
-          const condition = item.condition ? String(item.condition).replace(/_/g, " ") : "Not specified";
-          const freshness = item.details_confirmed_at || item.updated_at || item.updatedAt;
-          const freshnessLabel = freshness && !Number.isNaN(Date.parse(freshness)) ? new Date(freshness).toLocaleDateString() : "Ask seller to confirm";
-          card.className = "zs-live-card zs-live-card-clickable";
-          card.tabIndex = 0;
-          card.setAttribute("role", "button");
-          card.setAttribute("aria-label", `View details for ${item.product_name || "product"}`);
-          card.innerHTML = `<div class="zs-live-card-image">${image ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(item.product_name || "Product")}" loading="lazy">` : "<span>Product photo unavailable</span>"}</div><div class="zs-live-card-body"><div class="zs-live-card-copy"><span class="zs-live-source">${item.source === "marketplace" ? "Seller listing" : "Bot Catalog"}</span><h4>${escapeHtml(item.product_name || "Product")}</h4><p class="zs-live-description">${escapeHtml(description)}</p><div class="zs-live-meta"><span><strong>Business:</strong> ${escapeHtml(seller)}</span><span><strong>Location:</strong> ${escapeHtml(location)}</span><span><strong>Availability:</strong> ${escapeHtml(stock)}</span><span><strong>Condition:</strong> ${escapeHtml(condition)}</span><span><strong>Details updated:</strong> ${escapeHtml(freshnessLabel)}</span></div><p class="zs-live-card-reassurance">Review seller details and confirm price, stock and delivery before paying.</p></div><div class="zs-live-card-side"><div class="zs-live-price">${escapeHtml(formatPrice(item))}</div><span class="zs-live-price-note">Seller-listed price · confirm before purchase</span><button type="button" data-product-index="${index}">View full product details <span aria-hidden="true">→</span></button></div></div>`;
-          resultsGrid.appendChild(card);
-        });
-      };
-      const showProductDetails = index => {
-        const item = currentResults[index];
-        if (!item) return;
-        const image = imageUrl(item.image_url);
-        const phone = String(item.phone_number || "").replace(/[^\d+]/g, "");
-        const smsText = encodeURIComponent(`Hello ${item.business_name || "there"}, I found ${item.product_name || "this product"} on ZimShop AI and would like to enquire. Please confirm availability and the final price.`);
-        const phoneActions = phone ? `<a href="sms:${escapeHtml(phone)}?body=${smsText}">Send SMS</a><a class="secondary" href="tel:${escapeHtml(phone)}">Call seller</a>` : "";
-        const purchaseAction = item.purchase_url ? `<a class="secondary" href="${escapeHtml(item.purchase_url)}" target="_blank" rel="noopener noreferrer">Visit seller link</a>` : "";
-        const detailRows = [
-          ["Business / seller", item.business_name || "Not provided"],
-          ["Seller location", item.location || "Not provided"],
-          ["Contact number", item.phone_number || "Not provided"],
-          ["Product condition", item.condition ? String(item.condition).replace(/_/g, " ") : "Not specified"],
-          ["Availability", item.in_stock === true ? "Seller reports in stock" : (item.availability || "Please confirm with seller")],
-          ["Delivery", item.delivery_available ? `Seller indicates delivery is available${item.delivery_areas ? ` to ${item.delivery_areas}` : ""}` : "Not confirmed — ask seller"],
-          ["Warranty", item.warranty || item.warranty_information || "Not provided"],
-          ["Brand / model", [item.brand, item.model].filter(Boolean).join(" / ") || "Not provided"],
-          ["Category", item.category || "Not provided"],
-          ["Last updated", item.details_confirmed_at || item.updated_at || item.updatedAt || "Not provided"]
-        ];
-        const factsHtml = detailRows.map(([label,value]) => `<div class="zs-live-detail-fact"><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></div>`).join("");
-        const deliveryInfo = item.delivery_available ? `Delivery is listed as available${item.delivery_areas ? ` to ${escapeHtml(item.delivery_areas)}` : ""}. Confirm delivery fees and timing directly with the seller.` : "Delivery has not been confirmed. Ask the seller about collection and delivery options.";
-        detailsPanel.innerHTML = `<button type="button" class="zs-live-back" id="backToLiveResults">← Back to results</button><div class="zs-live-detail-layout"><div class="zs-live-detail-image">${image ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(item.product_name)}">` : "Product photo unavailable"}</div><div class="zs-live-detail-copy"><span class="zs-live-source">${item.source === "marketplace" ? "Seller listing" : "Bot Catalog"}</span><h3>${escapeHtml(item.product_name || "Product")}</h3><div class="zs-live-price">${escapeHtml(formatPrice(item))}</div><p>${escapeHtml(item.description || "Contact the provider to confirm product specifications and what is included.")}</p><h4 class="zs-live-detail-heading">Product and seller information</h4><div class="zs-live-detail-facts">${factsHtml}</div><h4 class="zs-live-detail-heading">Delivery information</h4><p>${deliveryInfo}</p><p class="zs-live-detail-disclaimer">Important: Product information, price and stock are supplied by the seller or catalogue provider and are not independently guaranteed by ZimShop AI. Confirm all details, total cost and payment arrangements directly with the seller before paying.</p><div class="zs-live-detail-actions">${phoneActions}${purchaseAction}</div></div></div>`;
-        detailsPanel.hidden = false;
-        resultsGrid.hidden = true;
-        detailsPanel.scrollIntoView({behavior:"smooth",block:"start"});
-        document.getElementById("backToLiveResults").addEventListener("click",() => {detailsPanel.hidden=true;resultsGrid.hidden=false;});
-      };
-      const openProductFromTarget = target => {
-        const card = target.closest(".zs-live-card-clickable");
-        if (!card) return;
-        const button = target.closest("[data-product-index]");
-        const index = button ? Number(button.dataset.productIndex) : Array.from(resultsGrid.children).indexOf(card);
-        if (index >= 0) showProductDetails(index);
-      };
-      resultsGrid.addEventListener("click", event => openProductFromTarget(event.target));
-      resultsGrid.addEventListener("keydown", event => {
-        if ((event.key === "Enter" || event.key === " ") && event.target.matches(".zs-live-card-clickable")) {
-          event.preventDefault();
-          openProductFromTarget(event.target);
-        }
-      });
-
-      async function runMarketplaceSearch(query, options = {}) {
-        const product = String(query || "").trim();
+      document.getElementById("productSearch").addEventListener("submit", async event => {
+        event.preventDefault();
+        const product = document.getElementById("product").value.trim();
         const message = document.getElementById("formMessage");
+        const resultsElement = document.getElementById("smartMatchResults");
         if (!product) {
           message.textContent = "Please enter a product or service to search.";
           document.getElementById("product").focus();
           return;
         }
-        message.textContent = "Searching the ZimShop marketplace…";
-        resultsSection.hidden = false;
-        resultsGrid.hidden = false;
-        detailsPanel.hidden = true;
-        showNotice("");
-        resultsTitle.textContent = "Searching for matching products…";
-        resultsMode.textContent = "AI search";
-        resultsGrid.innerHTML = '<div class="zs-live-empty">Connecting to ZimShop AI marketplace…</div>';
-        resultsSection.scrollIntoView({behavior:"smooth",block:"start"});
-        const budgetValue = document.getElementById("budget").value;
-        const locationValue = document.getElementById("location").value;
-        const conditionValue = document.getElementById("condition").value || "any";
-        const sortValue = document.getElementById("sort").value;
-        const payload = {
-          query: product,
-          max_budget: options.max_budget ?? (budgetValue ? Number(budgetValue) : null),
-          currency: "USD",
-          location: options.location ?? locationValue,
-          condition: options.condition ?? conditionValue,
-          sort_by: options.sort_by ?? (sortValue === "price_low" ? "price" : "best_match")
-        };
+        message.textContent = "Searching listed products…";
+        resultsElement.replaceChildren();
+        const sortBy = document.getElementById("sort").value;
         try {
-          const response = await fetch(`${ZIMSHOP_API_BASE}/api/v1/marketplace/search`, {
-            method:"POST", credentials:"include",
-            headers:{"Content-Type":"application/json"}, body:JSON.stringify(payload)
+          const response = await fetch(`${apiBase}/api/v1/marketplace/search`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              query: product,
+              max_budget: document.getElementById("budget").value || null,
+              currency: "USD",
+              location: document.getElementById("location").value === "Other" ? "" : document.getElementById("location").value,
+              condition: document.getElementById("condition").value,
+              sort_by: sortBy,
+            }),
           });
-          const bodyText = await response.text();
-          let data = null;
-          try { data = bodyText ? JSON.parse(bodyText) : null; } catch { throw new Error("The marketplace returned an invalid response. Please try again."); }
-          if (!response.ok) throw new Error(data?.detail || `Search failed (${response.status}). Please try again.`);
-          const normalised = normaliseResults(data);
-          if (!normalised) throw new Error("The search service did not return a product list. Please try again.");
-          renderResults(normalised);
-          message.textContent = "";
+          const body = await response.text();
+          let payload = null;
+          if (body.trim()) {
+            try {
+              payload = JSON.parse(body);
+            } catch {
+              if (response.ok) throw new Error("Search returned an invalid response. Please try again.");
+            }
+          }
+          if (!response.ok) {
+            const detail = payload && typeof payload === "object" && "detail" in payload
+              ? String(payload.detail)
+              : body.trim() || `Search failed (${response.status}). Please try again.`;
+            throw new Error(detail);
+          }
+          const responseData = payload && typeof payload === "object" && !Array.isArray(payload)
+            ? payload.data
+            : null;
+          const searchResults = Array.isArray(payload)
+            ? payload
+            : payload && typeof payload === "object" && Array.isArray(payload.results)
+              ? payload.results
+              : Array.isArray(responseData)
+                ? responseData
+                : responseData && typeof responseData === "object" && Array.isArray(responseData.results)
+                  ? responseData.results
+                  : null;
+          if (!searchResults) {
+            throw new Error("The search service did not return a product list. Please refresh and try again.");
+          }
+          const responseMode = payload && typeof payload === "object" && typeof payload.understanding_mode === "string"
+            ? payload.understanding_mode
+            : responseData && typeof responseData === "object" && typeof responseData.understanding_mode === "string"
+              ? responseData.understanding_mode
+              : null;
+          const understandingMode = responseMode
+            ? responseMode
+            : "product matching";
+          message.textContent = `${searchResults.length} matching ${searchResults.length === 1 ? "listing" : "listings"} · ${understandingMode}. SMS opens a draft for you to review; carrier charges may apply.`;
+          if (!searchResults.length) {
+            const empty = document.createElement("p");
+            empty.className = "landing-search-empty";
+            empty.textContent = "No matching product listings yet. Try a shorter search or a wider location.";
+            resultsElement.append(empty);
+          }
+          searchResults.forEach(listing => {
+            const card = document.createElement("article");
+            card.className = "landing-match";
+            const isSellerListing = listing.source === "marketplace";
+            const media = document.createElement("div");
+            media.className = "landing-match-media";
+            if (typeof listing.image_url === "string" && listing.image_url) {
+              const image = document.createElement("img");
+              image.src = listing.image_url.startsWith("/")
+                ? `${apiBase}${listing.image_url}`
+                : listing.image_url;
+              image.alt = listing.product_name;
+              image.loading = "lazy";
+              image.onerror = () => {
+                media.replaceChildren();
+                const placeholder = document.createElement("span");
+                placeholder.className = "landing-match-placeholder";
+                placeholder.textContent = "Product photo unavailable";
+                media.append(placeholder);
+              };
+              media.append(image);
+            } else {
+              const placeholder = document.createElement("span");
+              placeholder.className = "landing-match-placeholder";
+              placeholder.textContent = "No product photo";
+              media.append(placeholder);
+            }
+            card.append(media);
+            const details = document.createElement("div");
+            details.className = "landing-match-details";
+            const name = document.createElement("h3");
+            name.textContent = listing.product_name;
+            const seller = document.createElement("p");
+            seller.textContent = isSellerListing
+              ? [listing.business_name, listing.location].filter(Boolean).join(" · ") || "Independent seller"
+              : "Bot Catalog · verify details with the provider";
+            const listingStatus = document.createElement("p");
+            listingStatus.className = "landing-match-status";
+            const conditionLabel = typeof listing.condition === "string"
+              ? listing.condition === "grey_market"
+                ? "Grey market"
+                : `${listing.condition[0].toUpperCase()}${listing.condition.slice(1)}`
+              : "";
+            listingStatus.textContent = isSellerListing
+              ? [conditionLabel, listing.in_stock ? "Seller reports in stock" : "Confirm availability"].filter(Boolean).join(" · ")
+              : `Catalog: ${listing.availability || "Confirm availability"}`;
+            const description = document.createElement("p");
+            description.textContent = listing.description || "No extra details provided.";
+            const price = document.createElement("strong");
+            const numericPrice = Number(listing.price);
+            price.textContent = listing.currency && Number.isFinite(numericPrice)
+              ? `${listing.currency} ${numericPrice.toLocaleString()}`
+              : listing.price || "Price not provided";
+            details.append(name, seller, listingStatus, description, price);
+            if (!isSellerListing && typeof listing.phone_number === "string" && listing.phone_number) {
+              const contact = document.createElement("p");
+              contact.textContent = `Contact: ${listing.phone_number}`;
+              details.append(contact);
+            }
+            if (isSellerListing && typeof listing.phone_number === "string") {
+              const phone = listing.phone_number.replace(/[^\d+]/g, "");
+              if (phone) {
+                const contact = document.createElement("a");
+                contact.className = "btn btn-primary";
+                const separator = /iPhone|iPad|iPod/i.test(navigator.userAgent) ? "&" : "?";
+                const customerLocation = document.getElementById("location").value;
+                const listedPrice = listing.currency && Number.isFinite(numericPrice)
+                  ? `${listing.currency} ${numericPrice.toLocaleString()}`
+                  : listing.price;
+                const orderMessage = [
+                  `Hello ${listing.business_name || "there"},`,
+                  "",
+                  "I found your product on Zimshop AI and would like to place an order.",
+                  "",
+                  `Product: ${listing.product_name}`,
+                  `Listed Price: ${listedPrice}`,
+                  "Quantity: 1",
+                  `My location: ${customerLocation && customerLocation !== "Other" ? customerLocation : "Not specified"}`,
+                  "",
+                  "Please confirm availability, final price, any additional charges and delivery options.",
+                  "",
+                  "Thank you.",
+                ].join("\n");
+                contact.href = `sms:${phone}${separator}body=${encodeURIComponent(orderMessage)}`;
+                contact.textContent = "Place Order via SMS";
+                card.append(details, contact);
+              } else {
+                card.append(details);
+              }
+            } else if (!isSellerListing && ((typeof listing.phone_number === "string" && listing.phone_number) || typeof listing.purchase_url === "string")) {
+              const actions = document.createElement("div");
+              actions.className = "landing-match-actions";
+              const phone = typeof listing.phone_number === "string" ? listing.phone_number.replace(/[^\d+]/g, "") : "";
+              if (phone) {
+                const call = document.createElement("a");
+                call.className = "btn btn-primary";
+                call.href = `tel:${phone}`;
+                call.textContent = "Call provider";
+                actions.append(call);
+              }
+              if (typeof listing.purchase_url === "string") {
+                const providerLink = document.createElement("a");
+                providerLink.className = "btn btn-light";
+                providerLink.href = listing.purchase_url;
+                providerLink.target = "_blank";
+                providerLink.rel = "noopener noreferrer";
+                providerLink.textContent = "View provider link";
+                actions.append(providerLink);
+              }
+              card.append(details, actions);
+            } else {
+              card.append(details);
+            }
+            resultsElement.append(card);
+          });
         } catch (error) {
-          resultsTitle.textContent = "We could not complete that search";
-          resultsGrid.innerHTML = "";
-          showNotice(error instanceof Error ? error.message : "Could not connect to the marketplace. Please try again.");
-          message.textContent = "Search could not be completed.";
+          message.textContent = error instanceof Error ? error.message : "Could not search listings. Please try again.";
         }
-      }
+      });
 
-      searchForm.addEventListener("submit", event => {
-        event.preventDefault();
-        void runMarketplaceSearch(document.getElementById("product").value);
-      });
-      // Category and inspiration links run a real marketplace search instead of navigating to /search.
-      document.querySelectorAll("a[data-zs-category]").forEach(link => {
-        link.addEventListener("click", event => {
-          event.preventDefault();
-          const category = link.dataset.zsCategory || "products";
-          document.getElementById("product").value = category.replace(/[-_]/g," ");
-          document.getElementById("discover").scrollIntoView({behavior:"smooth",block:"start"});
-          void runMarketplaceSearch(category.replace(/[-_]/g," "), {condition:"any"});
+      const pricingStatus = document.getElementById("pricing-status-note");
+      fetch(`${apiBase}/api/v1/subscriptions/settings`)
+        .then(response => {
+          if (!response.ok) throw new Error("Could not check subscription availability.");
+          return response.json();
+        })
+        .then(settings => {
+          const enabled = settings && settings.enabled === true;
+          document.getElementById("free-pricing-state").hidden = enabled;
+          document.getElementById("paid-pricing-content").hidden = !enabled;
+          document.getElementById("pricing-kicker").textContent = enabled ? "Business plans" : "Free access";
+          document.getElementById("pricing-heading").textContent = enabled ? "Choose a business plan" : "Free for customers and businesses";
+          document.getElementById("pricing-description").textContent = enabled
+            ? "Review plan features, monthly prices and payment details before subscribing."
+            : "Discover products, create a seller account and publish listings without a subscription payment.";
+          pricingStatus.textContent = enabled
+            ? "Subscription payments are processed through Paynow. SMS and data charges from your mobile provider may apply separately."
+            : "Paid subscriptions are currently paused. No subscription payment is required to use the marketplace.";
+        })
+        .catch(() => {
+          pricingStatus.textContent = "Subscription availability could not be checked. Paid checkout remains subject to the status shown by the billing service.";
         });
-      });
 
       document.getElementById("year").textContent = new Date().getFullYear();
     })();
