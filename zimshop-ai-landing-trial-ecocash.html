@@ -589,6 +589,7 @@
           <li><a href="#pricing">Pricing</a></li>
           <li><a href="#how-it-works">How it works</a></li>
           <li><a href="#businesses">For businesses</a></li>
+          <li><a href="/alba-express/">Alba Express</a></li>
         </ul>
       </nav>
 
@@ -609,6 +610,7 @@
           <div class="hero-actions">
             <a class="btn btn-primary" href="#discover">Find a product <span class="arrow">→</span></a>
             <a class="btn btn-light" href="/workspace.html?auth=register">List your business</a>
+            <a class="btn btn-light" href="/alba-express/">Buy on Alba Express <span class="arrow">→</span></a>
           </div>
           <div class="hero-trust">
             <span>Local business discovery</span>
@@ -1107,6 +1109,13 @@
       document.getElementById("productSearch").addEventListener("submit", async event => {
         event.preventDefault();
         const product = document.getElementById("product").value.trim();
+
+        // Alba Express is a dedicated marketplace destination, not a product query.
+        if (/\balba\s+express\b/i.test(product)) {
+          window.location.assign("/alba-express/");
+          return;
+        }
+
         const message = document.getElementById("formMessage");
         const resultsElement = document.getElementById("smartMatchResults");
         if (!product) {

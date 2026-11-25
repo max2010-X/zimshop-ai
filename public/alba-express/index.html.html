@@ -1,0 +1,2391 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0e7a3f">
+  <meta name="description" content="Alba Express is a Zimbabwe shopping marketplace, sponsored by ZimShop AI. Discover products, compare listed prices and connect directly with local sellers.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://zimshopai.co.zw/alba-express/">
+  <meta property="og:site_name" content="Alba Express">
+  <meta property="og:url" content="https://zimshopai.co.zw/alba-express/">
+  <meta property="og:locale" content="en_ZW">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Alba Express Marketplace | Shop Zimbabwe with Zimshop AI">
+  <meta name="twitter:description" content="Alba Express is a Zimbabwe shopping marketplace, sponsored by ZimShop AI. Discover products, compare listed prices and connect directly with local sellers.">
+  <meta property="og:title" content="Alba Express — Zimbabwe Shopping Marketplace">
+  <meta property="og:description" content="Shop products from Zimbabwean businesses, compare listings and contact sellers directly.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2064%2064%27%3E%3Crect%20width%3D%2764%27%20height%3D%2764%27%20rx%3D%2717%27%20fill%3D%27%230e7a3f%27/%3E%3Cpath%20d%3D%27M23%2027v-4.5a9%209%200%200%201%2018%200V27%27%20fill%3D%27none%27%20stroke%3D%27%23fff%27%20stroke-width%3D%273.6%27%20stroke-linecap%3D%27round%27/%3E%3Cpath%20d%3D%27M14.5%2027h35l-2.6%2025.2a3.6%203.6%200%200%201-3.6%203.3H20.7a3.6%203.6%200%200%201-3.6-3.3z%27%20fill%3D%27%23fff%27/%3E%3Cpath%20d%3D%27M25%2049.5%2032%2031l7%2018.5%27%20fill%3D%27none%27%20stroke%3D%27%23f47a20%27%20stroke-width%3D%274.6%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27/%3E%3Cpath%20d%3D%27M28%2043.5h8%27%20stroke%3D%27%23f47a20%27%20stroke-width%3D%273.6%27%20stroke-linecap%3D%27round%27/%3E%3C/svg%3E">
+  <title>Alba Express Marketplace | Shop Zimbabwe with Zimshop AI</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://images.unsplash.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --paper: #f2f4f0;
+      --surface: #ffffff;
+      --ink: #17231b;
+      --muted: #758078;
+      --line: #e2e8df;
+      --green: #0e7a3f;
+      --green-dark: #095a2e;
+      --green-bright: #f47a20;
+      --mint: #e3f3e8;
+      --red: #b7483a;
+      --gold-soft: #fff3e8;
+      --display: "Manrope", sans-serif;
+      --body: "DM Sans", sans-serif;
+      --mono: "DM Mono", monospace;
+      --shadow: 0 18px 50px rgba(23, 35, 27, .10);
+      --radius: 16px;
+      --container: 1280px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+    body {
+      margin: 0; min-width: 320px; background: var(--paper); color: var(--ink);
+      font-family: var(--body); -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button, input, select { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    :focus-visible { outline: 3px solid rgba(244,122,32,.9); outline-offset: 3px; }
+    .container { width: min(var(--container), calc(100% - 48px)); margin-inline: auto; }
+    .section { padding: 96px 0; }
+    .section-kicker {
+      display: inline-flex; align-items: center; gap: 9px; color: var(--green);
+      font: 500 10px var(--mono); letter-spacing: .12em; text-transform: uppercase;
+    }
+    .section-kicker::before { content: ""; width: 22px; height: 2px; background: var(--green-bright); }
+    .section-heading { max-width: 650px; margin: 0 auto 46px; text-align: center; }
+    .section-heading h2 {
+      margin: 13px 0 12px; font: 800 clamp(30px, 4vw, 45px)/1.12 var(--display);
+      letter-spacing: -.045em; color: var(--ink);
+    }
+    .section-heading p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.8; }
+    .btn {
+      min-height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 0 21px; border: 1px solid transparent; border-radius: 9px;
+      font-size: 13px; font-weight: 700; cursor: pointer; transition: .2s ease;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { background: var(--green); color: #fff; box-shadow: 0 5px 14px rgba(14,122,63,.17); }
+    .btn-primary:hover { background: var(--green-dark); }
+    .btn-light { background: #fff; color: var(--green); border-color: var(--line); }
+    .btn-light:hover { background: var(--mint); }
+    .btn-ghost { color: var(--ink); border-color: var(--line); background: transparent; }
+    .btn-ghost:hover { background: var(--mint); }
+    .arrow { font-size: 17px; line-height: 1; }
+
+    /* Header */
+    .site-header {
+      position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,.94);
+      border-bottom: 1px solid rgba(226,232,223,.9); backdrop-filter: blur(16px);
+    }
+    .nav-wrap { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; flex: 0 0 auto; }
+    .brand-mark {
+      width: 38px; height: 38px; display: grid; place-items: center; border-radius: 10px;
+      background: var(--green); color: #fff; font: 800 19px var(--display);
+      box-shadow: 0 5px 12px rgba(14,122,63,.18);
+    }
+    .brand-mark-image {
+      width: 48px; height: 46px; display: block; object-fit: contain;
+      border-radius: 0; background: transparent; box-shadow: none;
+    }
+    .brand-name { font: 800 19px/1 var(--display); letter-spacing: -.06em; }
+    .brand-name span { color: var(--green); }
+    .brand-caption { display: block; margin-top: 5px; color: var(--muted); font: 8px var(--mono); letter-spacing: .13em; }
+    .nav-links { display: flex; align-items: center; gap: 29px; margin: 0; padding: 0; list-style: none; }
+    .nav-links a { color: #566259; font-size: 12px; font-weight: 600; transition: color .2s; }
+    .nav-links a:hover { color: var(--green); }
+    .nav-actions { display: flex; align-items: center; gap: 10px; }
+    .nav-actions .btn { min-height: 41px; padding-inline: 16px; font-size: 12px; }
+    .menu-toggle {
+      display: none; width: 42px; height: 42px; border: 1px solid var(--line);
+      border-radius: 9px; background: white; color: var(--ink); font-size: 21px; cursor: pointer;
+    }
+
+    /* Hero */
+    .hero {
+      position: relative; overflow: hidden; padding: 75px 0 78px;
+      background:
+        radial-gradient(ellipse at 4% 8%, rgba(244,122,32,.16), transparent 27rem),
+        linear-gradient(135deg, #f9faf6 0%, #eef4eb 100%);
+    }
+    .hero-grid { display: grid; grid-template-columns: 1.02fr .98fr; align-items: center; gap: 58px; }
+    .hero-copy { position: relative; z-index: 2; }
+    .hero-pill {
+      display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px;
+      border: 1px solid #d9e5d7; border-radius: 99px; background: rgba(255,255,255,.72);
+      color: var(--green); font: 10px var(--mono); letter-spacing: .04em;
+    }
+    .hero-pill b { width: 7px; height: 7px; border-radius: 50%; background: var(--green-bright); }
+    .hero h1 {
+      max-width: 650px; margin: 22px 0 18px; font: 800 clamp(43px, 5.7vw, 70px)/1.02 var(--display);
+      letter-spacing: -.065em;
+    }
+    .hero h1 em { color: var(--green); font-style: normal; }
+    .hero-copy > p { max-width: 550px; margin: 0; color: #68766c; font-size: 16px; line-height: 1.8; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+    .hero-trust { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 25px; color: #69786d; font: 10px var(--mono); }
+    .hero-trust span::before { content: "✓"; margin-right: 7px; color: var(--green); font-weight: 700; }
+    .hero-visual { position: relative; min-width: 0; }
+    .hero-photo {
+      width: 100%; height: 480px; object-fit: cover; border-radius: 22px;
+      box-shadow: var(--shadow); background: #dce6da;
+    }
+    .photo-overlay {
+      position: absolute; inset: auto 18px 18px; padding: 18px; border: 1px solid rgba(255,255,255,.55);
+      border-radius: 14px; background: rgba(255,255,255,.93); backdrop-filter: blur(12px);
+      box-shadow: 0 10px 35px rgba(23,35,27,.12);
+    }
+    .photo-overlay-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .photo-overlay strong { display: block; font: 700 14px var(--display); }
+    .photo-overlay small { color: var(--muted); font-size: 10px; }
+    .live-tag { padding: 5px 8px; border-radius: 99px; background: var(--mint); color: var(--green); font: 9px var(--mono); }
+    .photo-overlay p { margin: 10px 0 0; color: #657268; font-size: 11px; line-height: 1.5; }
+    .hero-stamp {
+      position: absolute; top: 26px; left: -24px; width: 84px; height: 84px; display: grid; place-items: center;
+      border: 5px solid var(--paper); border-radius: 50%; background: var(--green-bright);
+      color: var(--ink); text-align: center; font: 800 11px/1.2 var(--display); transform: rotate(-9deg);
+    }
+
+    /* Value strip */
+    .value-strip { background: var(--green); color: #fff; }
+    .value-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
+    .value-item { display: flex; align-items: center; justify-content: center; gap: 13px; padding: 25px 18px; border-right: 1px solid rgba(255,255,255,.18); }
+    .value-item:last-child { border: 0; }
+    .value-icon { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 10px; background: rgba(255,255,255,.13); font-size: 18px; }
+    .value-item strong { display: block; font: 700 13px var(--display); }
+    .value-item small { display: block; margin-top: 3px; color: #d6e5d8; font-size: 10px; }
+
+    /* Search feature */
+    .finder-section { background: var(--paper); }
+    .finder-card {
+      display: grid; grid-template-columns: .85fr 1.15fr; gap: 35px; align-items: center;
+      padding: 34px; border: 1px solid var(--line); border-radius: 20px; background: #fff;
+      box-shadow: 0 12px 35px rgba(23,35,27,.045);
+    }
+    .finder-copy h2 { margin: 12px 0; font: 800 clamp(27px,3.5vw,39px)/1.13 var(--display); letter-spacing: -.05em; }
+    .finder-copy p { color: var(--muted); font-size: 13px; line-height: 1.8; }
+    .finder-note { display: flex; align-items: flex-start; gap: 9px; margin-top: 20px; color: #66736a; font-size: 11px; }
+    .finder-note b { color: var(--green); }
+    .finder-form { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 19px; border-radius: 14px; background: #f7f9f5; border: 1px solid var(--line); }
+    .field { display: grid; gap: 7px; min-width: 0; }
+    .field.full { grid-column: 1 / -1; }
+    .field label { color: #647168; font: 9px var(--mono); letter-spacing: .04em; text-transform: uppercase; }
+    .field input, .field select {
+      width: 100%; min-height: 44px; padding: 0 12px; border: 1px solid #dfe7dc;
+      border-radius: 7px; background: #fff; color: var(--ink); outline: none; font-size: 12px;
+    }
+    .field input:focus, .field select:focus { border-color: #5b9669; box-shadow: 0 0 0 3px #e5f0e6; }
+    .finder-form button { grid-column: 1 / -1; width: 100%; }
+    .form-message { grid-column: 1 / -1; min-height: 16px; color: var(--red); font-size: 11px; }
+
+    /* Categories */
+    .categories { background: #fff; }
+    .category-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 17px; }
+    .category-card { position: relative; overflow: hidden; min-height: 220px; border-radius: 13px; background: #dfe8df; }
+    .category-card img { width: 100%; height: 220px; object-fit: cover; transition: transform .5s; }
+    .category-card:hover img { transform: scale(1.06); }
+    .category-card::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 25%, rgba(10,28,17,.78)); }
+    .category-label { position: absolute; z-index: 1; left: 17px; right: 17px; bottom: 16px; color: #fff; }
+    .category-label strong { display: block; font: 700 15px var(--display); }
+    .category-label small { color: #e0e9df; font-size: 10px; }
+
+
+    .inspiration-section { background: #fff; }
+    .inspiration-grid {
+      display: grid; grid-template-columns: 1.2fr 1fr 1fr; grid-auto-rows: 210px; gap: 14px;
+    }
+    .inspiration-tile {
+      position: relative; display: block; overflow: hidden; min-width: 0;
+      border-radius: 13px; background: #dfe8df;
+    }
+    .inspiration-tile img {
+      width: 100%; height: 100%; object-fit: cover; transition: transform .45s ease;
+    }
+    .inspiration-tile:hover img { transform: scale(1.055); }
+    .inspiration-tile::after {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent 30%, rgba(10,28,17,.78));
+    }
+    .inspiration-tile > span {
+      position: absolute; z-index: 1; left: 18px; right: 18px; bottom: 16px; color: #fff;
+    }
+    .inspiration-tile strong { display: block; font: 700 15px var(--display); }
+    .inspiration-tile small { display: block; margin-top: 4px; color: #e0e9df; font-size: 10px; }
+    .inspiration-wide { grid-column: span 2; }
+
+
+    .more-inspiration { background: var(--paper); }
+    .photo-mosaic {
+      display: grid; grid-template-columns: 1.35fr 1fr 1fr;
+      grid-template-rows: 205px 205px; gap: 14px;
+    }
+    .mosaic-card {
+      position: relative; display: block; min-width: 0; overflow: hidden;
+      border-radius: 14px; background: #dfe8df;
+    }
+    .mosaic-card img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .45s ease;
+    }
+    .mosaic-card:hover img { transform: scale(1.055); }
+    .mosaic-card::after {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent 25%, rgba(10,28,17,.78));
+    }
+    .mosaic-card > span {
+      position: absolute; z-index: 1; left: 17px; right: 17px; bottom: 15px; color: #fff;
+    }
+    .mosaic-card strong { display: block; font: 700 14px var(--display); }
+    .mosaic-card small { display: block; margin-top: 4px; color: #e0e9df; font-size: 10px; }
+    .mosaic-large { grid-row: span 2; }
+
+    /* Services */
+    .services { background: var(--paper); }
+    .service-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 17px; }
+    .service-card {
+      padding: 25px; border: 1px solid var(--line); border-radius: 13px; background: #fff;
+      transition: transform .22s, box-shadow .22s, border-color .22s;
+    }
+    .service-card:hover { transform: translateY(-4px); border-color: #c6d8c5; box-shadow: var(--shadow); }
+    .service-icon {
+      width: 45px; height: 45px; display: grid; place-items: center; margin-bottom: 19px;
+      border-radius: 11px; background: var(--mint); color: var(--green); font-size: 21px;
+    }
+    .service-card:nth-child(3n + 2) .service-icon { background: var(--gold-soft); color: #94701e; }
+    .service-card h3 { margin: 0 0 9px; font: 700 16px var(--display); }
+    .service-card p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.8; }
+
+    /* How it works */
+    .how-section { background: #fff; }
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
+    .step { position: relative; padding: 27px 24px; border: 1px solid var(--line); border-radius: 13px; background: #fff; text-align: center; }
+    .step-num { width: 43px; height: 43px; display: grid; place-items: center; margin: 0 auto 17px; border-radius: 50%; background: var(--green); color: #fff; font: 800 14px var(--display); }
+    .step h3 { margin: 0 0 8px; font: 700 16px var(--display); }
+    .step p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.75; }
+
+    /* Business feature */
+    .business-section { background: var(--mint); }
+    .business-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 55px; align-items: center; }
+    .business-photo { width: 100%; height: 430px; object-fit: cover; border-radius: 18px; box-shadow: var(--shadow); }
+    .business-copy h2 { margin: 13px 0 16px; font: 800 clamp(30px,4vw,44px)/1.1 var(--display); letter-spacing: -.05em; }
+    .business-copy > p { color: #647268; font-size: 13px; line-height: 1.8; }
+    .benefit-list { display: grid; gap: 15px; margin: 24px 0 27px; }
+    .benefit { display: flex; align-items: flex-start; gap: 12px; }
+    .benefit-check { width: 23px; height: 23px; flex: 0 0 23px; display: grid; place-items: center; border-radius: 50%; background: #fff; color: var(--green); font-size: 12px; font-weight: 800; }
+    .benefit strong { display: block; font: 700 12px var(--display); }
+    .benefit small { display: block; margin-top: 3px; color: #69786e; font-size: 11px; line-height: 1.5; }
+
+    /* Trust & CTA */
+    .trust-section { background: var(--paper); }
+    .trust-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .trust-card { padding: 23px; border: 1px solid var(--line); border-radius: 12px; background: #fff; }
+    .trust-card span { color: var(--green); font-size: 21px; }
+    .trust-card h3 { margin: 12px 0 7px; font: 700 14px var(--display); }
+    .trust-card p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.7; }
+    .final-cta { padding: 72px 0; background: var(--green); color: #fff; text-align: center; }
+    .final-cta .section-kicker { color: #ffd2ae; }
+    .final-cta h2 { max-width: 700px; margin: 14px auto 13px; font: 800 clamp(32px,4.5vw,48px)/1.1 var(--display); letter-spacing: -.05em; }
+    .final-cta p { max-width: 590px; margin: 0 auto 25px; color: #d8e6da; font-size: 13px; line-height: 1.8; }
+    .final-cta .btn-primary { background: var(--green-bright); color: var(--ink); box-shadow: none; }
+    .final-cta .btn-primary:hover { background: #ffb877; }
+    .final-cta .btn-light { margin-left: 8px; border-color: rgba(255,255,255,.35); background: transparent; color: #fff; }
+    .final-cta .btn-light:hover { background: rgba(255,255,255,.1); }
+
+
+    /* Pricing and free trial */
+    .pricing-section { background: #fff; }
+    #paid-pricing-content[hidden], #free-pricing-state[hidden] { display: none !important; }
+    .trial-banner {
+      display: flex; align-items: center; gap: 18px; margin: 0 0 24px; padding: 21px 24px;
+      border: 1px solid #d8e6d8; border-radius: 15px; background: linear-gradient(105deg, #edf5eb, #fff4ea);
+    }
+    .trial-icon {
+      width: 55px; height: 55px; flex: 0 0 55px; display: grid; place-items: center;
+      border-radius: 14px; background: var(--green); color: #fff; font: 800 25px var(--display);
+    }
+    .trial-copy { flex: 1; min-width: 0; }
+    .trial-copy strong { display: block; font: 800 15px var(--display); }
+    .trial-copy span { display: block; margin-top: 5px; color: var(--muted); font-size: 11px; line-height: 1.6; }
+    .trial-banner .btn { flex: 0 0 auto; }
+    .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 17px; align-items: stretch; }
+    .plan-card {
+      position: relative; display: flex; flex-direction: column; min-width: 0; padding: 25px;
+      border: 1px solid var(--line); border-radius: 15px; background: #fff;
+      box-shadow: 0 8px 24px rgba(23,35,27,.045);
+    }
+    .plan-featured { border: 2px solid var(--green); box-shadow: 0 14px 34px rgba(14,122,63,.12); }
+    .popular-label {
+      position: absolute; top: -12px; right: 18px; padding: 6px 10px; border-radius: 99px;
+      background: var(--green-bright); color: var(--ink); font: 500 8px var(--mono); letter-spacing: .06em;
+    }
+    .plan-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .plan-name { font: 800 17px var(--display); }
+    .plan-tag { color: var(--muted); font-size: 9px; text-align: right; }
+    .plan-price { display: flex; align-items: baseline; gap: 6px; margin: 20px 0 8px; }
+    .plan-price strong { font: 800 43px/1 var(--display); letter-spacing: -.06em; }
+    .plan-price span { color: var(--muted); font-size: 11px; }
+    .plan-description { min-height: 43px; margin: 0; color: var(--muted); font-size: 11px; line-height: 1.65; }
+    .plan-card ul { display: grid; gap: 12px; margin: 21px 0 25px; padding: 18px 0 0; border-top: 1px solid var(--line); list-style: none; }
+    .plan-card li { position: relative; padding-left: 20px; color: #526056; font-size: 11px; line-height: 1.5; }
+    .plan-card li::before { content: "✓"; position: absolute; left: 0; color: var(--green); font-weight: 800; }
+    .plan-button { width: 100%; margin-top: auto; }
+    .payment-note {
+      display: flex; align-items: center; gap: 14px; margin-top: 23px; padding: 17px 19px;
+      border: 1px solid var(--line); border-radius: 12px; background: #f8faf6;
+    }
+    .ecocash-mark {
+      width: 39px; height: 39px; flex: 0 0 39px; display: grid; place-items: center;
+      border-radius: 10px; background: #e8f2e8; color: var(--green); font: 800 19px var(--display);
+    }
+    .payment-note > div:nth-child(2) { flex: 1; }
+    .payment-note strong { display: block; font: 700 12px var(--display); }
+    .payment-note span { display: block; margin-top: 4px; color: var(--muted); font-size: 10px; line-height: 1.6; }
+    .payment-note .payment-secure {
+      margin: 0; padding: 6px 9px; border-radius: 99px; background: var(--mint);
+      color: var(--green); font: 9px var(--mono); white-space: nowrap;
+    }
+    .pricing-footnote { max-width: 850px; margin: 13px auto 0; color: #818b83; font-size: 9px; line-height: 1.7; text-align: center; }
+
+    /* FAQ and footer */
+    .faq-section { background: #fff; }
+    .faq-list { max-width: 790px; margin: auto; display: grid; gap: 10px; }
+    .faq-item { border: 1px solid var(--line); border-radius: 10px; background: #fff; overflow: hidden; }
+    .faq-question {
+      width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 15px;
+      padding: 18px 19px; border: 0; background: transparent; color: var(--ink); text-align: left;
+      font: 700 12px var(--display); cursor: pointer;
+    }
+    .faq-question span { color: var(--green); font-size: 19px; }
+    .faq-answer { display: none; padding: 0 19px 18px; color: var(--muted); font-size: 12px; line-height: 1.8; }
+    .faq-item.open .faq-answer { display: block; }
+    footer { padding: 54px 0 22px; background: #14271b; color: #fff; }
+    .footer-grid { display: grid; grid-template-columns: 1.7fr 1fr 1fr 1fr; gap: 35px; padding-bottom: 35px; }
+    footer .brand-name { color: #fff; }
+    footer .brand-caption { color: #b8c8bb; }
+    .footer-about p { max-width: 320px; margin: 17px 0 0; color: #b8c8bb; font-size: 11px; line-height: 1.8; }
+    .footer-col h3 { margin: 4px 0 15px; font: 700 12px var(--display); }
+    .footer-col a { display: block; margin: 10px 0; color: #b8c8bb; font-size: 11px; }
+    .footer-col a:hover { color: var(--green-bright); }
+    .footer-bottom { display: flex; justify-content: space-between; gap: 15px; padding-top: 19px; border-top: 1px solid rgba(255,255,255,.13); color: #a9b9ac; font: 9px var(--mono); }
+    .footer-bottom a { color: #d9e6d9; }
+    .cookie-banner {
+      position: fixed; z-index: 20; right: 20px; bottom: 20px; width: min(460px, calc(100% - 32px));
+      padding: 20px; border: 1px solid var(--line); border-radius: 14px; background: #fff;
+      box-shadow: 0 16px 48px rgba(0,0,0,.2);
+    }
+    .cookie-banner[hidden] { display: none; }
+    .cookie-banner h2, .cookie-dialog h2 { margin: 0 0 8px; font: 800 17px var(--display); }
+    .cookie-banner p, .cookie-dialog p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.7; }
+    .cookie-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 16px; }
+    .cookie-actions button, .cookie-dialog button {
+      min-height: 40px; padding: 0 14px; border: 1px solid var(--line); border-radius: 8px;
+      background: #fff; color: var(--ink); font-size: 11px; font-weight: 700; cursor: pointer;
+    }
+    .cookie-actions .cookie-primary, .cookie-dialog .cookie-primary { border-color: var(--green); background: var(--green); color: #fff; }
+    .cookie-dialog { width: min(520px, calc(100% - 32px)); padding: 0; border: 0; border-radius: 14px; box-shadow: 0 20px 60px rgba(0,0,0,.25); }
+    .cookie-dialog::backdrop { background: rgba(15,26,18,.62); }
+    .cookie-dialog-inner { padding: 24px; }
+    .cookie-setting { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; padding: 16px 0; border-top: 1px solid var(--line); }
+    .cookie-setting strong { display: block; margin-bottom: 4px; font: 700 12px var(--display); }
+    .cookie-setting span { display: block; color: var(--muted); font-size: 11px; line-height: 1.6; }
+    .cookie-setting input { width: 18px; height: 18px; accent-color: var(--green); }
+    .cookie-setting input:disabled { opacity: .7; }
+    .cookie-error { min-height: 18px; margin-top: 8px !important; color: var(--red) !important; }
+    .cookie-banner-status { margin-top: 8px !important; color: var(--red) !important; }
+    .cookie-dialog-actions { justify-content: flex-end; }
+    .cookie-preferences-link { padding: 0; border: 0; background: none; color: #d9e6d9; font: inherit; text-decoration: underline; cursor: pointer; }
+
+    @media (max-width: 980px) {
+      .pricing-grid { grid-template-columns: 1fr 1fr; }
+      .plan-featured { grid-row: span 2; }
+      .photo-mosaic { grid-template-rows: 180px 180px; }
+      .nav-links { gap: 17px; }
+      .hero-grid { gap: 35px; }
+      .hero-photo { height: 420px; }
+      .category-grid { grid-template-columns: repeat(2, 1fr); }
+      .inspiration-grid { grid-template-columns: 1fr 1fr; grid-auto-rows: 165px; }
+      .inspiration-wide { grid-column: span 2; }
+      .footer-grid { grid-template-columns: 1.5fr 1fr 1fr; }
+      .footer-col:last-child { grid-column: 2 / 4; }
+    }
+
+    @media (max-width: 980px) {
+      .pricing-grid { grid-template-columns: 1fr 1fr; }
+      .plan-featured { grid-row: span 2; }
+      .photo-mosaic { grid-template-rows: 180px 180px; }
+      .inspiration-grid { grid-auto-rows: 185px; }
+    }
+
+    @media (max-width: 760px) {
+      .pricing-grid { grid-template-columns: 1fr; }
+      .plan-featured { grid-row: auto; }
+      .trial-banner { align-items: flex-start; flex-wrap: wrap; }
+      .trial-banner .btn { width: 100%; }
+      .payment-note { align-items: flex-start; flex-wrap: wrap; }
+      .payment-note .payment-secure { margin-left: 53px; }
+      .photo-mosaic { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(3, 165px); }
+      .mosaic-large { grid-row: span 2; }
+      .container { width: min(100% - 36px, var(--container)); }
+      .section { padding: 72px 0; }
+      .menu-toggle { display: inline-grid; place-items: center; margin-left: auto; }
+      .nav-wrap { min-height: 68px; flex-wrap: wrap; gap: 12px; padding-block: 10px; }
+      .nav-links {
+        display: none; order: 4; flex: 0 0 100%; align-items: stretch; gap: 0;
+        padding: 7px 0 12px; border-top: 1px solid var(--line);
+      }
+      .nav-links.open { display: flex; flex-direction: column; }
+      .nav-links li a { display: block; padding: 12px 5px; }
+      .nav-actions { margin-left: 0; }
+      .nav-actions .btn { min-height: 38px; padding-inline: 12px; }
+      .hero { padding: 58px 0 62px; }
+      .hero-grid, .finder-card, .business-grid { grid-template-columns: 1fr; }
+      .hero-grid { gap: 34px; }
+      .hero h1 { max-width: 620px; font-size: clamp(42px, 10vw, 62px); }
+      .hero-photo { height: min(440px, 88vw); }
+      .hero-stamp { left: -8px; width: 70px; height: 70px; }
+      .value-grid { grid-template-columns: 1fr; }
+      .value-item { justify-content: flex-start; padding: 17px 5px; border-right: 0; border-bottom: 1px solid rgba(255,255,255,.18); }
+      .value-item:last-child { border-bottom: 0; }
+      .finder-card { padding: 23px; gap: 20px; }
+      .service-grid { grid-template-columns: repeat(2, 1fr); }
+      .steps { grid-template-columns: 1fr; gap: 12px; }
+      .business-grid { gap: 28px; }
+      .business-photo { height: min(390px, 75vw); }
+      .trust-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 27px; }
+      .footer-about { grid-column: 1 / -1; }
+      .footer-col:last-child { grid-column: auto; }
+    }
+    @media (max-width: 480px) {
+      .photo-mosaic { gap: 9px; grid-template-rows: repeat(3, 140px); }
+      .mosaic-card > span { left: 10px; right: 10px; bottom: 10px; }
+      .mosaic-card strong { font-size: 12px; }
+      .container { width: calc(100% - 30px); }
+      .brand-mark { width: 34px; height: 34px; }
+      .brand-name { font-size: 17px; }
+      .nav-actions { gap: 6px; }
+      .nav-actions .btn { font-size: 10px; padding-inline: 9px; }
+      .hero h1 { font-size: 42px; }
+      .hero-copy > p { font-size: 14px; }
+      .hero-actions { display: grid; grid-template-columns: 1fr; }
+      .hero-trust { gap: 10px 14px; font-size: 9px; }
+      .photo-overlay { inset: auto 10px 10px; padding: 13px; }
+      .finder-card { padding: 17px; }
+      .finder-form { grid-template-columns: 1fr; padding: 13px; }
+      .field.full, .finder-form button, .form-message { grid-column: auto; }
+      .category-grid { gap: 10px; }
+      .inspiration-grid { gap: 9px; grid-auto-rows: 145px; }
+      .category-card, .category-card img { min-height: 165px; height: 165px; }
+      .category-label { left: 11px; right: 10px; bottom: 11px; }
+      .category-label strong { font-size: 12px; }
+      .category-label small { font-size: 9px; }
+      .service-grid { grid-template-columns: 1fr; }
+      .service-card { padding: 21px; }
+      .final-cta .btn { width: 100%; margin: 5px 0; }
+      .final-cta .btn-light { margin-left: 0; }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 22px 15px; }
+      .footer-bottom { flex-direction: column; line-height: 1.7; }
+    }
+    @media (max-width: 600px) {
+      .cookie-banner { right: 10px; bottom: max(10px, env(safe-area-inset-bottom)); width: calc(100% - 20px); padding: 16px; }
+      .cookie-actions { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .cookie-actions button { min-height: 44px; padding-inline: 8px; }
+      .cookie-actions .cookie-primary { grid-column: 1 / -1; }
+      .cookie-dialog-inner { padding: 18px; }
+      .cookie-dialog-actions { display: grid; grid-template-columns: 1fr; }
+      .cookie-dialog-actions button { min-height: 44px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+    }
+
+
+
+    /* =====================================================================
+       AlBA EXPRESS — marketplace layer (green + orange, Alibaba-inspired)
+       ===================================================================== */
+    :root {
+      --orange: #f47a20; --orange-dark: #d9650f; --orange-soft: #fff3e8;
+      --ok: #0e7a3f; --warn: #9a5b00; --bad: #b3261e;
+      --card-shadow: 0 1px 2px rgba(16,32,23,.06), 0 6px 18px rgba(16,32,23,.06);
+    }
+    body { background: #f2f4f0; }
+    body:has(dialog[open]) { overflow: hidden; }
+    .ax-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    .ax-logo { width: 44px; height: 44px; flex: 0 0 auto; display: block; }
+    .brand-logo { width: 44px; height: 44px; display: block; flex: 0 0 auto; }
+
+    /* ---- top bar ---- */
+    .ax-topbar { background: var(--green-dark); color: #e2f2e8; font-size: 12px; }
+    .ax-topbar .container { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 36px; }
+    .ax-sponsor { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; }
+    .ax-sponsor b { background: var(--orange); color: #fff; border-radius: 4px; padding: 2px 7px; font: 700 10px var(--mono); letter-spacing: .06em; }
+    .ax-toplinks { display: flex; gap: 18px; }
+    .ax-toplinks a:hover { color: #fff; text-decoration: underline; }
+
+    /* ---- header ---- */
+    .site-header.ax-header { background: #fff; backdrop-filter: none; border-bottom: 0; box-shadow: 0 1px 0 var(--line); }
+    .ax-head-row { display: flex; align-items: center; gap: 22px; padding: 12px 0; }
+    .ax-brand { display: inline-flex; align-items: center; gap: 10px; flex: 0 0 auto; }
+    .ax-brand .brand-name { font: 800 21px/1 var(--display); letter-spacing: -.05em; }
+    .ax-brand .brand-name span { color: var(--orange); }
+    .ax-sponsor-mini { display: block; margin-top: 5px; color: var(--green); font: 600 9.5px var(--mono); letter-spacing: .04em; white-space: nowrap; }
+    .ax-search { position: relative; flex: 1 1 auto; min-width: 0; }
+    .ax-search-box { display: flex; align-items: center; border: 2.5px solid var(--orange); border-radius: 999px; background: #fff; padding: 3px 3px 3px 20px; transition: box-shadow .2s; }
+    .ax-search-box:focus-within { box-shadow: 0 0 0 4px rgba(244,122,32,.18); }
+    .ax-search-box input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; height: 42px; font-size: 15px; color: var(--ink); }
+    .ax-search-box input::placeholder { color: #8a948d; }
+    .ax-search-btn { flex: 0 0 auto; height: 42px; padding: 0 28px; border: 0; border-radius: 999px; background: var(--orange); color: #fff; font: 800 14px var(--display); cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+    .ax-search-btn:hover { background: var(--orange-dark); }
+    .ax-suggest { position: absolute; z-index: 60; left: 8px; right: 8px; top: calc(100% + 6px); margin: 0; padding: 6px; list-style: none; background: #fff; border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 18px 40px rgba(16,32,23,.18); max-height: 380px; overflow: auto; }
+    .ax-suggest li { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 12px; border-radius: 9px; cursor: pointer; font-size: 14px; }
+    .ax-suggest li[aria-selected="true"], .ax-suggest li:hover { background: var(--orange-soft); }
+    .ax-suggest .ax-sg-type { flex: 0 0 auto; font: 600 10px var(--mono); text-transform: uppercase; letter-spacing: .06em; color: var(--green); background: var(--mint); border-radius: 99px; padding: 3px 8px; }
+    .ax-suggest .ax-sg-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ax-actions { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; }
+    .ax-actions .btn { min-height: 42px; padding-inline: 16px; font-size: 13px; border-radius: 999px; }
+    .ax-cart-btn { position: relative; background: #fff; color: var(--green); border: 2px solid var(--green); }
+    .ax-cart-btn:hover { background: var(--mint); }
+    .ax-cart-btn .ax-badge { min-width: 20px; height: 20px; padding: 0 5px; display: inline-grid; place-items: center; border-radius: 99px; background: var(--orange); color: #fff; font: 700 11px var(--mono); }
+    .btn-orange { background: var(--orange); color: #fff; box-shadow: 0 5px 14px rgba(244,122,32,.25); }
+    .btn-orange:hover { background: var(--orange-dark); }
+    .ax-menu-btn { display: none; width: 42px; height: 42px; border: 1px solid var(--line); border-radius: 10px; background: #fff; font-size: 20px; cursor: pointer; }
+
+    .ax-catbar { background: var(--green); }
+    .ax-catbar .container { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+    .ax-cats { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; margin: 0; padding: 0; list-style: none; }
+    .ax-cats::-webkit-scrollbar { display: none; }
+    .ax-cats button, .ax-navlinks a { border: 0; background: transparent; color: #eaf7ee; font: 600 13px var(--body); padding: 12px 13px; cursor: pointer; white-space: nowrap; border-radius: 0; }
+    .ax-cats button:hover, .ax-navlinks a:hover { background: rgba(255,255,255,.14); color: #fff; }
+    .ax-cats .ax-all { background: var(--orange); color: #fff; font-weight: 800; }
+    .ax-navlinks { display: flex; gap: 0; margin: 0; padding: 0; list-style: none; flex: 0 0 auto; }
+    .ax-navlinks a { display: block; color: #ffe2c9; }
+
+    /* ---- hero ---- */
+    .ax-hero { padding: 18px 0 8px; }
+    .ax-hero-grid { display: grid; grid-template-columns: 235px minmax(0, 1fr) 270px; gap: 14px; align-items: stretch; }
+    .ax-side { background: #fff; border-radius: 14px; box-shadow: var(--card-shadow); padding: 12px 8px; }
+    .ax-side h2 { margin: 4px 10px 8px; font: 800 14px var(--display); color: var(--green); }
+    .ax-side ul { margin: 0; padding: 0; list-style: none; }
+    .ax-side button { width: 100%; display: flex; align-items: center; gap: 10px; text-align: left; border: 0; background: transparent; padding: 9px 10px; border-radius: 9px; font: 600 13px var(--body); color: var(--ink); cursor: pointer; }
+    .ax-side button:hover { background: var(--orange-soft); color: var(--orange-dark); }
+    .ax-side .ax-ico { width: 24px; text-align: center; font-size: 16px; }
+    .ax-banner { position: relative; overflow: hidden; border-radius: 14px; min-height: 360px; display: flex; align-items: center; color: #fff; background: linear-gradient(115deg, #075c2f 0%, #0e7a3f 55%, #11924f 100%); }
+    .ax-banner > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .26; mix-blend-mode: luminosity; }
+    .ax-banner::after { content: ""; position: absolute; right: -60px; top: -60px; width: 260px; height: 260px; border-radius: 50%; background: radial-gradient(circle, rgba(244,122,32,.9), rgba(244,122,32,0) 70%); }
+    .ax-banner-copy { position: relative; z-index: 2; padding: 34px 38px; max-width: 560px; }
+    .ax-pill { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.3); border-radius: 99px; padding: 6px 12px; font: 600 11px var(--mono); letter-spacing: .04em; }
+    .ax-pill b { width: 8px; height: 8px; border-radius: 50%; background: var(--orange); }
+    .ax-banner h1 { margin: 16px 0 12px; font: 800 clamp(30px, 3.6vw, 46px)/1.08 var(--display); letter-spacing: -.04em; }
+    .ax-banner h1 em { font-style: normal; color: #ffb067; }
+    .ax-banner p { margin: 0 0 22px; font-size: 15px; line-height: 1.7; color: #e3f4e9; }
+    .ax-banner .ax-cta { display: flex; flex-wrap: wrap; gap: 10px; }
+    .ax-banner .btn-light { background: rgba(255,255,255,.95); }
+    .ax-points { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 20px; font: 500 11px var(--mono); color: #d4efdc; }
+    .ax-points span::before { content: "✓"; color: #ffb067; margin-right: 6px; font-weight: 700; }
+    .ax-welcome { display: flex; flex-direction: column; gap: 10px; background: #fff; border-radius: 14px; box-shadow: var(--card-shadow); padding: 18px; }
+    .ax-welcome h2 { margin: 0; font: 800 17px/1.25 var(--display); }
+    .ax-welcome p { margin: 0; color: var(--muted); font-size: 12.5px; line-height: 1.6; }
+    .ax-welcome .btn { min-height: 42px; width: 100%; font-size: 13px; border-radius: 999px; }
+    .ax-welcome hr { border: 0; border-top: 1px dashed var(--line); width: 100%; margin: 4px 0; }
+    .ax-sponsor-card { margin-top: auto; border: 1.5px dashed var(--orange); background: var(--orange-soft); border-radius: 12px; padding: 12px; font-size: 12px; line-height: 1.5; color: #7a3d08; }
+    .ax-sponsor-card strong { display: block; font: 800 13px var(--display); color: var(--orange-dark); }
+
+    .ax-trust { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 14px 0 0; }
+    .ax-trust div { display: flex; gap: 11px; align-items: center; background: #fff; border-radius: 12px; padding: 12px 14px; box-shadow: var(--card-shadow); }
+    .ax-trust span { width: 36px; height: 36px; flex: 0 0 auto; display: grid; place-items: center; border-radius: 10px; background: var(--mint); color: var(--green); font-size: 17px; }
+    .ax-trust strong { display: block; font: 800 13px var(--display); }
+    .ax-trust small { color: var(--muted); font-size: 11px; line-height: 1.4; }
+
+    /* ---- marketplace ---- */
+    .ax-market { padding: 34px 0 54px; }
+    .ax-market-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 14px; }
+    .ax-market-head h2 { margin: 0 0 4px; font: 800 clamp(24px, 3vw, 32px)/1.15 var(--display); letter-spacing: -.035em; }
+    .ax-market-head h2::after { content: ""; display: block; width: 54px; height: 4px; border-radius: 4px; background: var(--orange); margin-top: 8px; }
+    .ax-market-head p { margin: 8px 0 0; color: var(--muted); font-size: 13px; }
+    .ax-popular { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 12px; color: var(--muted); }
+    .ax-popular button { border: 1px solid var(--line); background: #fff; color: var(--green); border-radius: 99px; padding: 6px 13px; font: 600 12px var(--body); cursor: pointer; }
+    .ax-popular button:hover { background: var(--orange-soft); border-color: var(--orange); color: var(--orange-dark); }
+
+    .ax-sellers { background: #fff; border-radius: 14px; box-shadow: var(--card-shadow); padding: 14px 16px; margin-bottom: 14px; }
+    .ax-sellers h3 { margin: 0 0 10px; font: 800 14px var(--display); }
+    .ax-seller-row { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 4px; }
+    .ax-seller-chip { flex: 0 0 auto; display: flex; align-items: center; gap: 10px; border: 1px solid var(--line); background: #fff; border-radius: 12px; padding: 8px 12px 8px 8px; cursor: pointer; text-align: left; font: inherit; max-width: 260px; }
+    .ax-seller-chip:hover { border-color: var(--orange); background: var(--orange-soft); }
+    .ax-seller-chip strong { display: block; font: 700 13px var(--display); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ax-seller-chip small { color: var(--muted); font-size: 11px; }
+    .ax-avatar { width: 40px; height: 40px; flex: 0 0 auto; border-radius: 10px; background: var(--mint); color: var(--green); display: grid; place-items: center; font: 800 16px var(--display); overflow: hidden; }
+    .ax-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .ax-avatar.lg { width: 74px; height: 74px; border-radius: 16px; font-size: 28px; }
+
+    .ax-toolbar { background: #fff; border-radius: 14px; box-shadow: var(--card-shadow); padding: 14px 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(135px, 1fr)); gap: 12px; align-items: end; margin-bottom: 12px; }
+    .ax-toolbar label { display: grid; gap: 5px; font: 600 11px var(--mono); color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+    .ax-toolbar select, .ax-toolbar input[type="number"] { height: 40px; border: 1px solid var(--line); border-radius: 9px; background: #fff; padding: 0 10px; font-size: 13px; color: var(--ink); width: 100%; }
+    .ax-toolbar select:focus, .ax-toolbar input:focus { outline: 2px solid var(--orange); outline-offset: 1px; }
+    .ax-check { display: flex !important; grid-template-columns: none; align-items: center; gap: 8px !important; height: 40px; text-transform: none !important; letter-spacing: 0 !important; font: 600 13px var(--body) !important; color: var(--ink) !important; }
+    .ax-check input { width: 18px; height: 18px; accent-color: var(--orange); }
+    .ax-reset { height: 40px; border: 1px solid var(--line); border-radius: 9px; background: #fff; color: var(--green); font: 700 12px var(--body); cursor: pointer; }
+    .ax-reset:hover { background: var(--mint); }
+    .ax-chips { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 0 0 10px; font-size: 12px; color: var(--muted); }
+    .ax-chips button { border: 1px solid var(--line); background: #fff; border-radius: 99px; padding: 5px 12px; font: 600 12px var(--body); color: var(--green); cursor: pointer; }
+    .ax-chips button:hover { border-color: var(--orange); color: var(--orange-dark); }
+    .ax-chips .ax-active { background: var(--green); color: #fff; border-color: var(--green); }
+    .ax-meta { margin: 0 0 12px; color: var(--muted); font: 500 12px/1.6 var(--body); }
+    .ax-meta strong { color: var(--ink); }
+    .ax-notice { background: var(--orange-soft); border: 1px solid #ffd2ae; color: #7a3d08; border-radius: 10px; padding: 10px 14px; font-size: 12.5px; margin-bottom: 12px; }
+
+    .ax-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(212px, 1fr)); gap: 14px; }
+    .ax-card { position: relative; display: flex; flex-direction: column; min-width: 0; background: #fff; border-radius: 14px; overflow: hidden; box-shadow: var(--card-shadow); border: 1px solid transparent; transition: transform .18s, box-shadow .18s, border-color .18s; }
+    .ax-card:hover { transform: translateY(-3px); border-color: #ffd2ae; box-shadow: 0 14px 30px rgba(16,32,23,.14); }
+    .ax-card-media { display: grid; place-items: center; width: 100%; aspect-ratio: 1 / 1; padding: 0; border: 0; background: #eef2ec; cursor: pointer; overflow: hidden; }
+    .ax-card-media img { width: 100%; height: 100%; object-fit: cover; }
+    .ax-noimg { display: grid; justify-items: center; gap: 6px; color: var(--muted); font-size: 11px; padding: 10px; text-align: center; }
+    .ax-noimg i { font-style: normal; font-size: 30px; opacity: .6; }
+    .ax-card-body { display: flex; flex-direction: column; gap: 6px; padding: 12px 13px 4px; flex: 1; }
+    .ax-card-title { border: 0; background: none; padding: 0; text-align: left; cursor: pointer; font: 700 14px/1.38 var(--display); color: var(--ink); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 2.76em; }
+    .ax-card-title:hover { color: var(--green); text-decoration: underline; }
+    .ax-price { color: var(--orange-dark); font: 800 19px var(--display); letter-spacing: -.02em; }
+    .ax-price small { font-size: 11px; font-weight: 700; margin-right: 3px; color: #b3541a; }
+    .ax-rating { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; font-size: 11.5px; color: var(--muted); }
+    .ax-stars { color: #f5a300; letter-spacing: 1px; font-size: 13px; }
+    .ax-stars i { font-style: normal; color: #d8ddd6; }
+    .ax-rating b { color: var(--ink); font-weight: 700; }
+    .ax-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+    .ax-tag { display: inline-flex; align-items: center; gap: 4px; border-radius: 6px; padding: 2px 7px; font: 600 10.5px var(--body); background: #eef2ec; color: #4b5a50; }
+    .ax-tag.in { background: #e3f4e9; color: var(--ok); }
+    .ax-tag.out { background: #fde7e5; color: var(--bad); }
+    .ax-tag.ver { background: #e3f4e9; color: var(--ok); }
+    .ax-tag.unver { background: #f1f1ee; color: #6c756e; }
+    .ax-seller-box { border-top: 1px dashed var(--line); margin-top: 4px; padding-top: 8px; display: grid; gap: 4px; font-size: 11.5px; color: var(--muted); }
+    .ax-seller-link { border: 0; background: none; padding: 0; text-align: left; cursor: pointer; font: 700 12.5px var(--display); color: var(--green); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }
+    .ax-seller-link:hover { color: var(--orange-dark); text-decoration: underline; }
+    .ax-line { display: flex; gap: 6px; align-items: flex-start; line-height: 1.4; }
+    .ax-line span:first-child { flex: 0 0 auto; }
+    .ax-card-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; padding: 10px 13px 13px; }
+    .ax-btn { min-height: 38px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; border-radius: 999px; padding: 0 12px; font: 700 12px var(--body); cursor: pointer; border: 1.5px solid var(--green); background: #fff; color: var(--green); text-align: center; transition: background .15s, color .15s; }
+    .ax-btn:hover { background: var(--mint); }
+    .ax-btn.primary { background: var(--orange); border-color: var(--orange); color: #fff; }
+    .ax-btn.primary:hover { background: var(--orange-dark); border-color: var(--orange-dark); }
+    .ax-btn.green { background: var(--green); color: #fff; }
+    .ax-btn.green:hover { background: var(--green-dark); }
+    .ax-btn[aria-disabled="true"], .ax-btn:disabled { opacity: .5; cursor: not-allowed; pointer-events: none; }
+    .ax-skel { pointer-events: none; }
+    .ax-skel .sk { background: linear-gradient(90deg, #eef2ec 25%, #f7f9f5 40%, #eef2ec 60%); background-size: 200% 100%; animation: axsh 1.3s linear infinite; border-radius: 8px; }
+    .ax-skel .sk.img { aspect-ratio: 1/1; border-radius: 0; }
+    .ax-skel .sk.l { height: 14px; margin: 10px 13px 0; }
+    .ax-skel .sk.s { height: 11px; width: 55%; margin: 10px 13px 14px; }
+    @keyframes axsh { to { background-position: -200% 0; } }
+    .ax-panel { grid-column: 1 / -1; text-align: center; background: #fff; border-radius: 14px; box-shadow: var(--card-shadow); padding: 44px 22px; }
+    .ax-panel .ax-big { font-size: 40px; margin-bottom: 6px; }
+    .ax-panel h3 { margin: 0 0 6px; font: 800 19px var(--display); }
+    .ax-panel p { margin: 0 auto 16px; max-width: 520px; color: var(--muted); font-size: 13.5px; line-height: 1.65; }
+    .ax-panel .ax-btn { display: inline-flex; padding: 0 22px; }
+    .ax-more { text-align: center; margin-top: 22px; }
+    .ax-more .ax-btn { padding: 0 34px; min-height: 44px; }
+    .ax-disclaimer { margin-top: 22px; display: flex; gap: 10px; background: #fff; border-left: 4px solid var(--orange); border-radius: 10px; padding: 12px 14px; font-size: 12px; line-height: 1.6; color: #5b665e; box-shadow: var(--card-shadow); }
+
+    /* ---- dialogs ---- */
+    .ax-dialog { width: min(1040px, calc(100% - 24px)); max-height: 92vh; border: 0; border-radius: 16px; padding: 0; background: #fff; color: var(--ink); box-shadow: 0 30px 80px rgba(0,0,0,.35); overflow: auto; overscroll-behavior: contain; }
+    .ax-dialog::backdrop { background: rgba(10,28,18,.62); backdrop-filter: blur(3px); }
+    .ax-dialog.narrow { width: min(640px, calc(100% - 24px)); }
+    .ax-dhead { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 18px; background: #fff; border-bottom: 1px solid var(--line); }
+    .ax-dhead strong { font: 800 15px var(--display); }
+    .ax-x { width: 36px; height: 36px; border: 0; border-radius: 50%; background: var(--mint); color: var(--green); font-size: 22px; line-height: 1; cursor: pointer; }
+    .ax-x:hover { background: var(--orange-soft); color: var(--orange-dark); }
+    .ax-pd { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr); gap: 28px; padding: 22px; }
+    .ax-gal-main { aspect-ratio: 1/1; border-radius: 14px; overflow: hidden; background: #eef2ec; display: grid; place-items: center; }
+    .ax-gal-main img { width: 100%; height: 100%; object-fit: contain; background: #fff; }
+    .ax-thumbs { display: flex; gap: 8px; margin-top: 10px; overflow-x: auto; padding-bottom: 4px; }
+    .ax-thumbs button { flex: 0 0 62px; height: 62px; padding: 0; border: 2px solid var(--line); border-radius: 10px; overflow: hidden; background: #fff; cursor: pointer; }
+    .ax-thumbs button[aria-current="true"] { border-color: var(--orange); }
+    .ax-thumbs img { width: 100%; height: 100%; object-fit: cover; }
+    .ax-info h2 { margin: 4px 0 8px; font: 800 clamp(20px, 2.4vw, 27px)/1.22 var(--display); letter-spacing: -.03em; }
+    .ax-crumb { font: 600 11px var(--mono); color: var(--green); text-transform: uppercase; letter-spacing: .06em; }
+    .ax-info .ax-price { font-size: 32px; margin: 10px 0 4px; background: var(--orange-soft); border-radius: 12px; padding: 10px 14px; display: block; }
+    .ax-facts { display: grid; gap: 9px; margin: 14px 0; }
+    .ax-fact { display: grid; grid-template-columns: 110px 1fr; gap: 10px; font-size: 13px; line-height: 1.5; }
+    .ax-fact b { color: var(--muted); font-weight: 600; }
+    .ax-qty { display: inline-flex; align-items: center; border: 1.5px solid var(--line); border-radius: 999px; overflow: hidden; background: #fff; }
+    .ax-qty button { width: 34px; height: 34px; border: 0; background: transparent; font-size: 18px; cursor: pointer; color: var(--green); }
+    .ax-qty button:hover { background: var(--mint); }
+    .ax-qty span { min-width: 30px; text-align: center; font: 700 13px var(--mono); }
+    .ax-buy { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 16px 0 6px; }
+    .ax-buy .ax-btn { min-height: 46px; padding: 0 24px; font-size: 14px; }
+    .ax-contact { display: none; margin-top: 10px; background: var(--mint); border-radius: 12px; padding: 12px; gap: 8px; flex-wrap: wrap; }
+    .ax-contact.open { display: flex; }
+    .ax-contact p { margin: 0; width: 100%; font-size: 12.5px; color: #3d4d42; }
+    .ax-sec { grid-column: 1 / -1; border-top: 1px solid var(--line); padding-top: 18px; }
+    .ax-sec h3 { margin: 0 0 10px; font: 800 17px var(--display); }
+    .ax-sec p { margin: 0 0 8px; font-size: 13.5px; line-height: 1.75; color: #3e4a42; white-space: pre-line; }
+    .ax-muted { color: var(--muted) !important; }
+    .ax-spec { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .ax-spec th, .ax-spec td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    .ax-spec th { width: 34%; background: #f6f8f4; font-weight: 600; color: #4b5a50; }
+    .ax-two { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .ax-list { margin: 0; padding-left: 18px; font-size: 13.5px; line-height: 1.75; color: #3e4a42; }
+    .ax-review { padding: 12px 0; border-bottom: 1px solid var(--line); }
+    .ax-review header { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; font-size: 12px; color: var(--muted); }
+    .ax-review header b { color: var(--ink); }
+    .ax-review p { margin: 6px 0 0; }
+    .ax-sellercard { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; background: #f6f8f4; border-radius: 14px; padding: 14px; }
+    .ax-sellercard .grow { flex: 1; min-width: 200px; }
+    .ax-sellercard h4 { margin: 0 0 4px; font: 800 16px var(--display); }
+    .ax-caution { background: var(--orange-soft); border: 1px solid #ffd2ae; border-radius: 12px; padding: 12px 14px; font-size: 12.5px; line-height: 1.65; color: #7a3d08; }
+    .ax-bhead { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; padding: 22px; background: linear-gradient(120deg, #075c2f, #0e7a3f); color: #fff; }
+    .ax-bhead h2 { margin: 0 0 6px; font: 800 24px/1.2 var(--display); letter-spacing: -.03em; }
+    .ax-bhead .ax-rating, .ax-bhead .ax-line { color: #d4efdc; }
+    .ax-bhead .ax-rating b { color: #fff; }
+    .ax-bhead .ax-tag { background: rgba(255,255,255,.18); color: #fff; }
+    .ax-bhead .ax-tag.ver { background: #fff; color: var(--ok); }
+    .ax-bhead .ax-avatar { background: #fff; }
+    .ax-bbody { padding: 22px; display: grid; gap: 22px; }
+    .ax-bbody .ax-sec { border-top: 0; padding-top: 0; }
+    .ax-bgrid { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }
+
+    /* ---- cart ---- */
+    .ax-cart-body { padding: 6px 18px 4px; max-height: 56vh; overflow: auto; }
+    .ax-group { padding: 12px 0 6px; border-bottom: 1px solid var(--line); }
+    .ax-group-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
+    .ax-group-head button.ax-seller-link { font-size: 14px; }
+    .ax-crow { display: grid; grid-template-columns: 58px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 9px 0; }
+    .ax-crow img, .ax-crow .ph { width: 58px; height: 58px; object-fit: cover; border-radius: 10px; background: #eef2ec; display: grid; place-items: center; }
+    .ax-crow strong { display: block; font: 700 13px/1.35 var(--display); }
+    .ax-crow small { color: var(--muted); font-size: 11.5px; }
+    .ax-crow .ax-qty { margin-top: 5px; }
+    .ax-crow .ax-qty button { width: 28px; height: 28px; font-size: 16px; }
+    .ax-crow b { color: var(--orange-dark); font: 800 14px var(--display); text-align: right; }
+    .ax-crow .ax-rm { display: block; margin: 6px 0 0 auto; border: 0; background: none; color: var(--bad); font-size: 11px; cursor: pointer; text-decoration: underline; }
+    .ax-send { display: flex; flex-wrap: wrap; gap: 8px; padding: 6px 0 10px; }
+    .ax-cart-foot { padding: 14px 18px 18px; border-top: 1px solid var(--line); background: #fafbf9; }
+    .ax-total { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+    .ax-total strong { color: var(--orange-dark); font: 800 22px var(--display); }
+    .ax-cart-foot p { margin: 10px 0 0; color: #5b665e; font-size: 12px; line-height: 1.6; }
+
+    .ax-toast { position: fixed; z-index: 300; left: 50%; bottom: max(20px, env(safe-area-inset-bottom)); transform: translate(-50%, 30px); opacity: 0; pointer-events: none; display: flex; align-items: center; gap: 12px; background: #17231b; color: #fff; padding: 11px 16px; border-radius: 99px; font-size: 13px; box-shadow: 0 12px 30px rgba(0,0,0,.3); transition: .25s; max-width: calc(100% - 28px); }
+    .ax-toast.show { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+    .ax-toast button { border: 0; background: var(--orange); color: #fff; border-radius: 99px; padding: 5px 12px; font: 700 12px var(--body); cursor: pointer; }
+
+    /* existing sections: palette alignment */
+    .section-kicker { color: var(--green); }
+    .section-kicker::before { background: var(--orange); }
+    .btn-primary { background: var(--green); }
+    .category-card, .inspiration-tile, .mosaic-card { cursor: pointer; }
+    footer .brand-name, footer .brand-name span { color: #fff; }
+    footer .brand-name span { color: #ffb067; }
+    .ax-footer-sponsor { display: inline-flex; margin-top: 12px; gap: 8px; align-items: center; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.22); border-radius: 99px; padding: 6px 12px; font: 600 11px var(--mono); color: #ffe2c9; }
+
+    /* ---- responsive ---- */
+    @media (max-width: 1180px) {
+      .ax-hero-grid { grid-template-columns: minmax(0, 1fr) 270px; }
+      .ax-side { display: none; }
+    }
+    @media (max-width: 980px) {
+      .ax-navlinks { display: none; }
+      .ax-trust { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .ax-pd { grid-template-columns: 1fr; gap: 20px; }
+      .ax-two { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 860px) {
+      .ax-hero-grid { grid-template-columns: 1fr; }
+      .ax-welcome { flex-direction: row; flex-wrap: wrap; align-items: center; }
+      .ax-welcome h2, .ax-welcome p, .ax-sponsor-card, .ax-welcome hr { flex: 1 1 100%; }
+      .ax-welcome .btn { flex: 1 1 140px; width: auto; }
+      .ax-banner { min-height: 300px; }
+      .ax-toplinks { display: none; }
+      .ax-topbar .container { justify-content: center; }
+    }
+    @media (max-width: 760px) {
+      .ax-head-row { flex-wrap: wrap; gap: 10px 10px; padding: 10px 0; }
+      .ax-brand { order: 1; flex: 1 1 auto; }
+      .ax-actions { order: 2; }
+      .ax-actions .ax-hide-sm { display: none; }
+      .ax-menu-btn { display: inline-grid; place-items: center; order: 3; }
+      .ax-search { order: 4; flex: 1 1 100%; }
+      .ax-search-box input { height: 40px; font-size: 14px; }
+      .ax-search-btn { padding: 0 18px; height: 40px; }
+      .ax-search-btn .ax-txt { display: none; }
+      .ax-navlinks.open { display: flex; position: absolute; left: 0; right: 0; top: 100%; flex-direction: column; background: var(--green-dark); z-index: 40; padding: 6px 0; }
+      .ax-catbar .container { position: relative; }
+      .ax-navlinks.open a { padding: 13px 18px; }
+      .ax-banner-copy { padding: 26px 22px; }
+      .ax-market { padding-top: 24px; }
+      .ax-toolbar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .ax-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+      .ax-card-body { padding: 10px 10px 2px; }
+      .ax-card-title { font-size: 12.5px; }
+      .ax-price { font-size: 16px; }
+      .ax-card-actions { padding: 8px 10px 11px; gap: 5px; }
+      .ax-btn { font-size: 11px; padding: 0 6px; min-height: 36px; }
+      .ax-dialog { width: 100%; max-width: 100%; max-height: 100dvh; height: 100dvh; border-radius: 0; margin: 0; }
+      .ax-pd, .ax-bbody { padding: 14px; }
+      .ax-fact { grid-template-columns: 94px 1fr; }
+      .ax-crow { grid-template-columns: 50px minmax(0, 1fr) auto; gap: 9px; }
+      .ax-crow img, .ax-crow .ph { width: 50px; height: 50px; }
+      .ax-trust { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 380px) {
+      .ax-grid { grid-template-columns: 1fr; }
+      .ax-sponsor-mini { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) { .ax-skel .sk { animation: none; } .ax-card, .ax-toast { transition: none; } }
+    .ax-fill { width: 100%; height: 100%; display: grid; place-items: center; }
+    .ax-fill img { width: 100%; height: 100%; object-fit: cover; }
+    .ax-gal-main .ax-fill img { object-fit: contain; background: #fff; }
+    .ax-mobile-only { display: none; }
+    @media (max-width: 760px) { .ax-mobile-only { display: block; } }
+
+    html { scroll-padding-top: 130px; }
+    .ax-filter-toggle { display: none; width: 100%; min-height: 44px; margin-bottom: 10px; border: 1.5px solid var(--green); border-radius: 12px; background: #fff; color: var(--green); font: 700 13px var(--body); cursor: pointer; align-items: center; justify-content: center; gap: 8px; }
+    @media (max-width: 980px) {
+      .ax-head-row { flex-wrap: wrap; gap: 10px; padding: 10px 0; }
+      .ax-brand { order: 1; flex: 1 1 auto; }
+      .ax-actions { order: 2; }
+      .ax-menu-btn { display: inline-grid; place-items: center; order: 3; }
+      .ax-search { order: 4; flex: 1 1 100%; }
+      .ax-catbar .container { position: relative; }
+      .ax-navlinks.open { display: flex; position: absolute; left: 0; right: 0; top: 100%; flex-direction: column; background: var(--green-dark); z-index: 40; padding: 6px 0; box-shadow: 0 14px 30px rgba(0,0,0,.25); }
+      .ax-navlinks.open a { padding: 13px 18px; }
+      .ax-mobile-only { display: block; }
+    }
+    @media (max-width: 760px) {
+      .ax-filter-toggle { display: flex; }
+      .ax-toolbar.collapsed { display: none; }
+      .ax-dialog { inset: 0; margin: 0; }
+    }
+
+  </style>
+
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://zimshopai.co.zw/#organization",
+      "name": "Alba Express",
+      "url": "https://zimshopai.co.zw/alba-express/",
+      "description": "A Zimbabwe-focused platform for discovering products, comparing listed prices and connecting with local businesses."
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://zimshopai.co.zw/#website",
+      "url": "https://zimshopai.co.zw/alba-express/",
+      "name": "Alba Express",
+      "description": "Find products, compare prices and discover local businesses across Zimbabwe.",
+      "inLanguage": "en-ZW",
+      "publisher": {
+        "@id": "https://zimshopai.co.zw/#organization"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://zimshopai.co.zw/#webpage",
+      "url": "https://zimshopai.co.zw/alba-express/",
+      "name": "Alba Express | Zimbabwe Shopping Marketplace",
+      "description": "Alba Express is a Zimbabwe shopping marketplace. Discover products, compare listed prices and connect directly with local sellers.",
+      "isPartOf": {
+        "@id": "https://zimshopai.co.zw/#website"
+      },
+      "about": {
+        "@id": "https://zimshopai.co.zw/#organization"
+      },
+      "inLanguage": "en-ZW"
+    }
+  ]
+}
+  </script>
+</head>
+
+<body>
+  <a href="#main" style="position:absolute;left:-9999px;top:auto;z-index:999" onfocus="this.style.left='12px'" onblur="this.style.left='-9999px'">Skip to content</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="axLogoBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#13a05a"/><stop offset="1" stop-color="#075c2f"/>
+    </linearGradient>
+  </defs>
+  <symbol id="alba-logo" viewBox="0 0 64 64">
+    <rect width="64" height="64" rx="17" fill="url(#axLogoBg)"/>
+    <path d="M23 27v-4.5a9 9 0 0 1 18 0V27" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round"/>
+    <path d="M14.5 27h35l-2.6 25.2a3.6 3.6 0 0 1-3.6 3.3H20.7a3.6 3.6 0 0 1-3.6-3.3z" fill="#fff"/>
+    <path d="M25 49.5 32 31l7 18.5" fill="none" stroke="#f47a20" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M28 43.5h8" stroke="#f47a20" stroke-width="3.6" stroke-linecap="round"/>
+    <path d="M6.5 36.5h6M4 42h8.5M8 47.5h4.5" stroke="#ffb067" stroke-width="2.4" stroke-linecap="round" opacity=".95"/>
+    <circle cx="52.5" cy="11.5" r="5.2" fill="#f47a20" stroke="#fff" stroke-width="2.4"/>
+  </symbol>
+</svg>
+
+  <div class="ax-topbar">
+    <div class="container">
+      <span class="ax-sponsor"><b>SPONSORED</b> Sponsored by ZimShop AI</span>
+      <nav class="ax-toplinks" aria-label="Quick links">
+        <a href="/workspace.html?auth=register">Sell on Alba Express</a>
+        <a href="#pricing">Business plans</a>
+        <a href="#faq">Help &amp; FAQ</a>
+        <a href="/contact/index.html">Contact</a>
+      </nav>
+    </div>
+  </div>
+
+  <header class="site-header ax-header">
+    <div class="container ax-head-row">
+      <a class="ax-brand" href="/" aria-label="Alba Express home">
+        <svg class="ax-logo" aria-hidden="true" focusable="false"><use href="#alba-logo"/></svg>
+        <span>
+          <span class="brand-name">Alba <span>Express</span></span>
+          <span class="ax-sponsor-mini">Sponsored by ZimShop AI</span>
+        </span>
+      </a>
+
+      <form class="ax-search" id="axSearchForm" role="search" autocomplete="off">
+        <div class="ax-search-box">
+          <label class="ax-sr" for="axSearch">Search Alba Express</label>
+          <input id="axSearch" name="q" type="search" maxlength="120" enterkeyhint="search"
+                 placeholder="Search products, categories, brands, businesses or sellers"
+                 role="combobox" aria-expanded="false" aria-controls="axSuggest" aria-autocomplete="list" autocomplete="off">
+          <button class="ax-search-btn" type="submit" aria-label="Search"><span aria-hidden="true">⌕</span><span class="ax-txt">Search</span></button>
+        </div>
+        <ul class="ax-suggest" id="axSuggest" role="listbox" aria-label="Search suggestions" hidden></ul>
+      </form>
+
+      <div class="ax-actions">
+        <button class="btn ax-cart-btn" id="axOpenCart" type="button" aria-label="Open shopping cart">🛒 <span class="ax-hide-sm">Cart</span> <span class="ax-badge" id="axCartCount">0</span></button>
+        <a class="btn btn-ghost ax-hide-sm" href="/workspace.html?auth=login">Log in</a>
+        <a class="btn btn-orange ax-hide-sm" href="/workspace.html?auth=register">Join free</a>
+      </div>
+      <button class="ax-menu-btn" id="menuToggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="navLinks">☰</button>
+    </div>
+
+    <div class="ax-catbar">
+      <div class="container">
+        <ul class="ax-cats" aria-label="Product categories">
+          <li><button class="ax-all" type="button" data-category="" data-label="All products">☰ All products</button></li>
+          <li><button type="button" data-category="electronics">Electronics</button></li>
+          <li><button type="button" data-category="phones">Phones</button></li>
+          <li><button type="button" data-category="laptops">Laptops</button></li>
+          <li><button type="button" data-category="furniture" data-label="Home &amp; furniture">Home &amp; furniture</button></li>
+          <li><button type="button" data-category="fashion">Fashion</button></li>
+          <li><button type="button" data-category="beauty">Beauty</button></li>
+          <li><button type="button" data-category="food" data-label="Food &amp; groceries">Food</button></li>
+          <li><button type="button" data-category="tools" data-label="Tools &amp; equipment">Tools</button></li>
+          <li><button type="button" data-category="business supplies">Business supplies</button></li>
+        </ul>
+        <ul class="ax-navlinks" id="navLinks">
+          <li><a href="#how-it-works">How it works</a></li>
+          <li><a href="#businesses">For businesses</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li class="ax-mobile-only"><a href="/workspace.html?auth=login">Log in</a></li>
+          <li class="ax-mobile-only"><a href="/workspace.html?auth=register">Join free</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="ax-hero" aria-label="Welcome">
+      <div class="container">
+        <div class="ax-hero-grid">
+          <aside class="ax-side" aria-label="Browse categories">
+            <h2>Browse categories</h2>
+            <ul>
+              <li><button type="button" data-category="phones" data-label="Phones &amp; tablets"><span class="ax-ico">📱</span>Phones &amp; tablets</button></li>
+              <li><button type="button" data-category="laptops" data-label="Computers &amp; laptops"><span class="ax-ico">💻</span>Computers &amp; laptops</button></li>
+              <li><button type="button" data-category="electronics"><span class="ax-ico">🔌</span>Electronics</button></li>
+              <li><button type="button" data-category="furniture" data-label="Home &amp; furniture"><span class="ax-ico">🛋️</span>Home &amp; furniture</button></li>
+              <li><button type="button" data-category="fridges" data-label="Appliances &amp; fridges"><span class="ax-ico">🧊</span>Appliances &amp; fridges</button></li>
+              <li><button type="button" data-category="fashion" data-label="Fashion &amp; shoes"><span class="ax-ico">👗</span>Fashion &amp; shoes</button></li>
+              <li><button type="button" data-category="beauty" data-label="Beauty &amp; care"><span class="ax-ico">💄</span>Beauty &amp; care</button></li>
+              <li><button type="button" data-category="food" data-label="Food &amp; groceries"><span class="ax-ico">🛒</span>Food &amp; groceries</button></li>
+              <li><button type="button" data-category="tools" data-label="Tools &amp; equipment"><span class="ax-ico">🛠️</span>Tools &amp; equipment</button></li>
+              <li><button type="button" data-category="business supplies"><span class="ax-ico">🏢</span>Business supplies</button></li>
+            </ul>
+          </aside>
+
+          <div class="ax-banner">
+            <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1400&q=70" alt="" fetchpriority="high">
+            <div class="ax-banner-copy">
+              <span class="ax-pill"><b></b> ZIMBABWE'S ONLINE MARKETPLACE</span>
+              <h1>Buy from local businesses.<br><em>Directly. Simply.</em></h1>
+              <p>Search real listings from Zimbabwean sellers, compare listed prices, check seller details and send your order straight to the business.</p>
+              <div class="ax-cta">
+                <a class="btn btn-orange" href="#marketplace">Browse listings <span class="arrow">→</span></a>
+                <a class="btn btn-light" href="/workspace.html?auth=register">Become a seller</a>
+              </div>
+              <div class="ax-points"><span>Live seller listings</span><span>Prices as listed by sellers</span><span>Direct seller contact</span></div>
+            </div>
+          </div>
+
+          <aside class="ax-welcome" aria-label="Account">
+            <h2>Welcome to Alba Express</h2>
+            <p>Shop from local businesses or open your own store on the marketplace.</p>
+            <a class="btn btn-orange" href="/workspace.html?auth=login">Log in</a>
+            <a class="btn btn-light" href="/workspace.html?auth=register">Create account</a>
+            <hr>
+            <a class="btn btn-ghost" href="/workspace.html?auth=register">Sell on Alba Express</a>
+            <div class="ax-sponsor-card"><strong>Sponsored by ZimShop AI</strong>Alba Express is powered by ZimShop AI's business and product listing platform.</div>
+          </aside>
+        </div>
+
+        <div class="ax-trust" aria-label="Marketplace highlights">
+          <div><span>⌕</span><p style="margin:0"><strong>One search</strong><small>Products, categories, brands &amp; sellers</small></p></div>
+          <div><span>✔</span><p style="margin:0"><strong>Verified when confirmed</strong><small>Badges only appear when the platform confirms them</small></p></div>
+          <div><span>$</span><p style="margin:0"><strong>Transparent prices</strong><small>Price and currency shown exactly as listed</small></p></div>
+          <div><span>🚚</span><p style="margin:0"><strong>Delivery &amp; returns</strong><small>Shown when the seller provides them</small></p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ax-market" id="marketplace" aria-labelledby="marketplace-title">
+      <div class="container">
+        <div class="ax-market-head">
+          <div>
+            <h2 id="marketplace-title">Marketplace listings</h2>
+            <p id="axSubtitle">Products from registered Zimbabwean businesses, loaded live.</p>
+          </div>
+          <div class="ax-popular" aria-label="Popular marketplace searches">
+            <span>Popular:</span>
+            <button type="button" data-market-query="phones">Phones</button>
+            <button type="button" data-market-query="laptops">Laptops</button>
+            <button type="button" data-market-query="fridges">Fridges</button>
+            <button type="button" data-market-query="furniture">Furniture</button>
+            <button type="button" data-market-query="fashion">Fashion</button>
+          </div>
+        </div>
+
+        <div class="ax-sellers" id="axSellers" hidden>
+          <h3 id="axSellersTitle">Sellers</h3>
+          <div class="ax-seller-row" id="axSellerRow"></div>
+        </div>
+
+        <button class="ax-filter-toggle" id="axFilterToggle" type="button" aria-expanded="false" aria-controls="axToolbar">⚙ Filters &amp; sort</button>
+        <div class="ax-toolbar collapsed" id="axToolbar" role="group" aria-label="Filter and sort listings">
+          <label>Location
+            <select id="axLocation">
+              <option value="">Any location</option>
+              <option>Harare</option><option>Bulawayo</option><option>Chitungwiza</option>
+              <option>Mutare</option><option>Gweru</option><option>Masvingo</option><option>Kwekwe</option>
+            </select>
+          </label>
+          <label>Condition
+            <select id="axCondition">
+              <option value="any">Any condition</option><option value="new">New</option><option value="used">Used</option>
+            </select>
+          </label>
+          <label>Min price (USD)<input id="axMin" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0"></label>
+          <label>Max price (USD)<input id="axMax" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Any"></label>
+          <label>Sort by
+            <select id="axSort">
+              <option value="best_match">Best match</option>
+              <option value="price_asc">Price: low to high</option>
+              <option value="price_desc">Price: high to low</option>
+              <option value="rating">Highest rated</option>
+            </select>
+          </label>
+          <label class="ax-check"><input id="axInStock" type="checkbox"> In stock only</label>
+          <label class="ax-check"><input id="axVerified" type="checkbox"> Verified sellers only</label>
+          <button class="ax-reset" id="axReset" type="button">Reset filters</button>
+        </div>
+
+        <div class="ax-chips" id="axChips" aria-label="Search and category filters"></div>
+        <div class="ax-meta" id="axMeta" role="status" aria-live="polite">Loading live listings…</div>
+        <div id="axNotice" class="ax-notice" hidden></div>
+        <div class="ax-grid" id="axGrid" aria-live="polite" aria-busy="true"></div>
+        <div class="ax-more"><button class="ax-btn" id="axMore" type="button" hidden>Show more listings</button></div>
+
+        <div class="ax-disclaimer"><b>ⓘ</b><span>Listings, prices, stock and delivery details are supplied by sellers and may change. Ratings, reviews and the Verified badge appear only when the Alba Express platform returns them; if they are missing, none have been recorded. Always confirm the final price, delivery, return terms and payment method with the seller before you pay.</span></div>
+      </div>
+    </section>
+
+    <section class="section categories" id="categories" aria-labelledby="categories-title">
+      <div class="container">
+        <div class="section-heading">
+          <span class="section-kicker">Explore the marketplace</span>
+          <h2 id="categories-title">Shop by category</h2>
+          <p>Explore product categories from sellers across Zimbabwe.</p>
+        </div>
+        <div class="category-grid">
+          <a class="category-card" href="#marketplace" data-category="electronics" data-label="Electronics">
+            <img src="https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=700&q=80" alt="Consumer electronics and computer equipment" loading="lazy">
+            <span class="category-label"><strong>Electronics</strong><small>Phones, laptops & accessories</small></span>
+          </a>
+          <a class="category-card" href="#marketplace" data-category="furniture" data-label="Home &amp; furniture">
+            <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=700&q=80" alt="Modern home furniture and interior decor" loading="lazy">
+            <span class="category-label"><strong>Home & living</strong><small>Furniture, appliances & decor</small></span>
+          </a>
+          <a class="category-card" href="#marketplace" data-category="fashion" data-label="Fashion">
+            <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=700&q=80" alt="Fashion shoppers browsing clothes" loading="lazy">
+            <span class="category-label"><strong>Fashion</strong><small>Clothing, shoes & accessories</small></span>
+          </a>
+          <a class="category-card" href="#marketplace" data-category="business supplies" data-label="Business supplies">
+            <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=700&q=80" alt="Small business team working together" loading="lazy">
+            <span class="category-label"><strong>Business supplies</strong><small>Office & professional needs</small></span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="section inspiration-section" id="inspiration">
+      <div class="container">
+        <div class="section-heading">
+          <span class="section-kicker">Explore more</span>
+          <h2>Ideas for your next find</h2>
+          <p>From everyday essentials to business equipment, explore the kinds of products you can discover through local sellers.</p>
+        </div>
+        <div class="inspiration-grid">
+          <a class="inspiration-tile inspiration-wide" href="#marketplace" data-category="electronics" data-label="Electronics">
+            <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=1100&q=85" alt="Smartphone displayed on a desk" loading="lazy">
+            <span><strong>Tech & gadgets</strong><small>Find devices and accessories</small></span>
+          </a>
+          <a class="inspiration-tile" href="#marketplace" data-category="furniture" data-label="Home &amp; furniture">
+            <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=800&q=85" alt="Contemporary living room sofa" loading="lazy">
+            <span><strong>Home furniture</strong><small>Make your space yours</small></span>
+          </a>
+          <a class="inspiration-tile" href="#marketplace" data-category="beauty" data-label="Beauty &amp; care">
+            <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=800&q=85" alt="Beauty and personal care products" loading="lazy">
+            <span><strong>Beauty & care</strong><small>Everyday personal essentials</small></span>
+          </a>
+          <a class="inspiration-tile" href="#marketplace" data-category="food" data-label="Food &amp; groceries">
+            <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&q=85" alt="Fresh produce at a market" loading="lazy">
+            <span><strong>Food & groceries</strong><small>Discover local suppliers</small></span>
+          </a>
+          <a class="inspiration-tile inspiration-wide" href="#marketplace" data-category="tools" data-label="Tools &amp; equipment">
+            <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1100&q=85" alt="Tools and technical equipment in a workshop" loading="lazy">
+            <span><strong>Tools & equipment</strong><small>For projects, workshops and businesses</small></span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="section more-inspiration" id="more-inspiration">
+      <div class="container">
+        <div class="section-heading">
+          <span class="section-kicker">A marketplace for everyday needs</span>
+          <h2>More to discover. More ways to grow.</h2>
+          <p>Explore products and services for home, work and everyday life — all through businesses listed on Alba Express.</p>
+        </div>
+        <div class="photo-mosaic">
+          <a class="mosaic-card mosaic-large" href="#marketplace" data-category="electronics" data-label="Electronics">
+            <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=85" alt="Team collaborating around laptops and technology" loading="lazy">
+            <span><strong>Technology for work</strong><small>Devices, accessories and office tech</small></span>
+          </a>
+          <a class="mosaic-card" href="#marketplace" data-category="food" data-label="Food &amp; groceries">
+            <img src="https://images.unsplash.com/photo-1543168256-418811576931?auto=format&fit=crop&w=800&q=85" alt="Freshly prepared food and ingredients" loading="lazy">
+            <span><strong>Food & essentials</strong><small>Discover everyday finds</small></span>
+          </a>
+          <a class="mosaic-card" href="#marketplace" data-category="fashion" data-label="Fashion">
+            <img src="https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=800&q=85" alt="Clothing arranged in a fashion store" loading="lazy">
+            <span><strong>Style & fashion</strong><small>Find your next look</small></span>
+          </a>
+          <a class="mosaic-card" href="#marketplace" data-category="furniture" data-label="Home &amp; furniture">
+            <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=800&q=85" alt="Comfortable modern living room interior" loading="lazy">
+            <span><strong>Home inspiration</strong><small>Furniture and home decor</small></span>
+          </a>
+          <a class="mosaic-card" href="#marketplace" data-category="tools" data-label="Tools &amp; equipment">
+            <img src="https://images.unsplash.com/photo-1581147036324-c17ac41b9f2b?auto=format&fit=crop&w=800&q=85" alt="Tools arranged for repair and construction work" loading="lazy">
+            <span><strong>Tools & projects</strong><small>Equipment for getting things done</small></span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section services" id="services">
+      <div class="container">
+        <div class="section-heading">
+          <span class="section-kicker">One connected platform</span>
+          <h2>Useful tools for shoppers and businesses</h2>
+          <p>Product discovery is at the heart of Alba Express, supported by practical tools that help businesses manage their presence and customer enquiries.</p>
+        </div>
+        <div class="service-grid">
+          <article class="service-card"><div class="service-icon">⌕</div><h3>AI product discovery</h3><p>Turn a natural-language product request into structured search criteria, then find relevant listings from the marketplace.</p></article>
+          <article class="service-card"><div class="service-icon">▦</div><h3>Business marketplace</h3><p>Create a business profile and publish product listings with descriptions, prices, stock information and contact details.</p></article>
+          <article class="service-card"><div class="service-icon">⇅</div><h3>Price comparison</h3><p>Compare listed prices and sort matching products to identify offers that fit your budget.</p></article>
+          <article class="service-card"><div class="service-icon">▤</div><h3>Business dashboard</h3><p>Manage your catalogue, business information and customer enquiries from one organised workspace.</p></article>
+          <article class="service-card"><div class="service-icon">✉</div><h3>SMS notifications</h3><p>Use supported SMS tools for enquiry alerts and customer updates, with appropriate consent and opt-out handling.</p></article>
+          <article class="service-card"><div class="service-icon">✧</div><h3>AI business tools</h3><p>Explore AI-assisted workflows that can help businesses prepare responses and handle routine tasks more efficiently.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section how-section" id="how-it-works">
+      <div class="container">
+        <div class="section-heading">
+          <span class="section-kicker">Simple by design</span>
+          <h2>From product search to seller connection</h2>
+          <p>A clear journey that helps shoppers find relevant listings and helps sellers get discovered.</p>
+        </div>
+        <div class="steps">
+          <article class="step"><div class="step-num">01</div><h3>Tell us what you need</h3><p>Enter a product or service, your target budget, preferred area and condition.</p></article>
+          <article class="step"><div class="step-num">02</div><h3>Review marketplace listings</h3><p>Explore businesses whose published listings match your search criteria.</p></article>
+          <article class="step"><div class="step-num">03</div><h3>Contact the business</h3><p>Use the seller's available contact details to confirm stock, price and delivery arrangements.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section business-section" id="businesses">
+      <div class="container business-grid">
+        <img class="business-photo" src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1100&q=85" alt="Small business owner serving a customer at a shop counter" loading="lazy">
+        <div class="business-copy">
+          <span class="section-kicker">For Zimbabwean businesses</span>
+          <h2>Let the right customers discover your business.</h2>
+          <p>Create your online business presence on Alba Express. Add your products, publish current prices and make it easier for customers to find and contact you.</p>
+          <div class="benefit-list">
+            <div class="benefit"><span class="benefit-check">✓</span><div><strong>Showcase your products</strong><small>Build a catalogue with descriptions, prices and product images.</small></div></div>
+            <div class="benefit"><span class="benefit-check">✓</span><div><strong>Receive relevant enquiries</strong><small>Get discovered by customers searching for products like yours.</small></div></div>
+            <div class="benefit"><span class="benefit-check">✓</span><div><strong>Manage your business in one place</strong><small>Update listings and review enquiries through your dashboard.</small></div></div>
+          </div>
+          <a class="btn btn-primary" href="/workspace.html?auth=register">Create a business account <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section trust-section">
+      <div class="container">
+        <div class="section-heading">
+          <span class="section-kicker">Shop with clarity</span>
+          <h2>Useful information. Better decisions.</h2>
+          <p>Alba Express helps you discover options. You stay in control of who you contact and what you buy.</p>
+        </div>
+        <div class="trust-grid">
+          <article class="trust-card"><span>◷</span><h3>Check listing freshness</h3><p>Product prices and availability can change. Look for the seller's latest update and confirm details before travelling or paying.</p></article>
+          <article class="trust-card"><span>◎</span><h3>Know who you're contacting</h3><p>Review the business profile and available contact details. A marketplace listing is not a guarantee of seller identity.</p></article>
+          <article class="trust-card"><span>◇</span><h3>Compare before you decide</h3><p>Compare product details, total costs, collection or delivery options and seller responses before making a purchase.</p></article>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="section pricing-section" id="pricing">
+      <div class="container">
+        <div class="section-heading">
+          <span class="section-kicker" id="pricing-kicker">Free access</span>
+          <h2 id="pricing-heading">Free for customers and businesses</h2>
+          <p id="pricing-description">Discover products, create a seller account and publish listings without a subscription payment.</p>
+        </div>
+
+        <div id="free-pricing-state" class="trial-banner">
+          <div class="trial-icon">0</div>
+          <div class="trial-copy">
+            <strong>No subscription payment required</strong>
+            <span>Paid subscriptions are currently paused. Seller registration, product listings and Smart Match remain available for free.</span>
+          </div>
+          <a class="btn btn-primary" href="/workspace.html?auth=register">Become a seller <span class="arrow">→</span></a>
+        </div>
+
+        <div id="paid-pricing-content" hidden>
+        <div class="trial-banner">
+          <div class="trial-icon">7</div>
+          <div class="trial-copy">
+            <strong>Free business trial</strong>
+            <span>Try the business dashboard, product listings and available automation features. Choose a paid plan when your trial ends.</span>
+          </div>
+          <a class="btn btn-primary" href="/workspace.html?auth=register">Start my free trial <span class="arrow">→</span></a>
+        </div>
+
+        <div class="pricing-grid">
+          <article class="plan-card">
+            <div class="plan-top"><span class="plan-name">Starter</span><span class="plan-tag">For getting started</span></div>
+            <div class="plan-price"><strong>$5</strong><span>/ month</span></div>
+            <p class="plan-description">Get your business online and start receiving product enquiries.</p>
+            <ul>
+              <li>Business profile and dashboard</li>
+              <li>Product catalogue and listings</li>
+              <li>Customer enquiry management</li>
+              <li>Basic SMS notifications*</li>
+            </ul>
+            <a class="btn btn-light plan-button" href="/workspace.html?auth=register">Choose Starter</a>
+          </article>
+
+          <article class="plan-card plan-featured">
+            <div class="popular-label">POPULAR CHOICE</div>
+            <div class="plan-top"><span class="plan-name">Business</span><span class="plan-tag">For growing businesses</span></div>
+            <div class="plan-price"><strong>$15</strong><span>/ month</span></div>
+            <p class="plan-description">Reach more customers and automate everyday business communication.</p>
+            <ul>
+              <li>Everything in Starter</li>
+              <li>AI-assisted customer chat tools</li>
+              <li>SMS enquiry alerts*</li>
+              <li>Product performance insights</li>
+              <li>More business automation tools</li>
+            </ul>
+            <a class="btn btn-primary plan-button" href="/workspace.html?auth=register">Choose Business <span class="arrow">→</span></a>
+          </article>
+
+          <article class="plan-card">
+            <div class="plan-top"><span class="plan-name">Premium</span><span class="plan-tag">For scaling operations</span></div>
+            <div class="plan-price"><strong>$30</strong><span>/ month</span></div>
+            <p class="plan-description">More tools and visibility for businesses ready to scale.</p>
+            <ul>
+              <li>Everything in Business</li>
+              <li>Advanced business analytics</li>
+              <li>Featured listing eligibility</li>
+              <li>Expanded automation options</li>
+              <li>Priority support channel</li>
+            </ul>
+            <a class="btn btn-light plan-button" href="/workspace.html?auth=register">Choose Premium</a>
+          </article>
+        </div>
+
+        <div class="payment-note">
+          <div class="ecocash-mark">E</div>
+          <div>
+            <strong>Pay with EcoCash</strong>
+            <span>Business subscriptions can be paid in USD through the Paynow checkout flow using supported EcoCash payment options.</span>
+          </div>
+          <span class="payment-secure">Secure checkout</span>
+        </div>
+        <p class="pricing-footnote">*SMS delivery charges or usage limits may be billed separately depending on your selected package. Plan prices and included limits should be confirmed in your account before payment. Your subscription is activated only after the payment provider confirms a successful payment.</p>
+        </div>
+        <p id="pricing-status-note" class="pricing-footnote" role="status">Checking current subscription availability…</p>
+      </div>
+    </section>
+
+    <section class="final-cta">
+      <div class="container">
+        <span class="section-kicker">Your next search starts here</span>
+        <h2>Make finding the right product easier.</h2>
+        <p>Join a growing marketplace experience built to bring Zimbabwean customers and businesses closer together.</p>
+        <a class="btn btn-primary" href="#marketplace">Start searching <span class="arrow">→</span></a>
+        <a class="btn btn-light" href="/workspace.html?auth=register">Join as a business</a>
+      </div>
+    </section>
+
+    <section class="section faq-section" id="faq">
+      <div class="container">
+        <div class="section-heading">
+          <span class="section-kicker">Frequently asked questions</span>
+          <h2>Good to know</h2>
+          <p>Quick answers about using the Alba Express marketplace.</p>
+        </div>
+        <div class="faq-list">
+          <div class="faq-item"><button class="faq-question" aria-expanded="false">What is Alba Express?<span>+</span></button><div class="faq-answer">Alba Express is a product discovery and business marketplace designed to help customers find products listed by businesses in Zimbabwe.</div></div>
+          <div class="faq-item"><button class="faq-question" aria-expanded="false">How does Smart Match work?<span>+</span></button><div class="faq-answer">You enter a product, optional budget, location and condition. The platform searches its registered product catalogue and presents listings that match the criteria it can verify.</div></div>
+          <div class="faq-item"><button class="faq-question" aria-expanded="false">Are prices and stock guaranteed?<span>+</span></button><div class="faq-answer">No. Listings are supplied by businesses and may become outdated. Contact the seller to confirm the current price, stock, condition and delivery before paying.</div></div>
+          <div class="faq-item"><button class="faq-question" aria-expanded="false">How can my business join?<span>+</span></button><div class="faq-answer">Choose “Join as a business” or “Create a business account”, register and complete your business profile and product catalogue.</div></div>
+          <div class="faq-item"><button class="faq-question" aria-expanded="false">Can I receive SMS notifications?<span>+</span></button><div class="faq-answer">Businesses can use available SMS features for appropriate enquiry alerts and customer communications. Marketing messages should only be sent with the required consent and opt-out options.</div></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <a class="brand" href="/" aria-label="Alba Express home">
+            <svg class="brand-logo" aria-hidden="true" focusable="false"><use href="#abba-logo"/></svg>
+            <span><span class="brand-name">Alba <span>Express</span></span><span class="brand-caption">ZIMBABWE SHOPPING MARKETPLACE</span></span>
+          </a>
+          <p>Discover products, connect with local businesses and make more informed shopping decisions with Alba Express.</p>
+          <span class="ax-footer-sponsor">Sponsored by ZimShop AI</span>
+        </div>
+        <div class="footer-col"><h3>Explore</h3><a href="#marketplace">Find a product</a><a href="#services">Our services</a><a href="#inspiration">Explore more</a><a href="#pricing">Business plans</a><a href="#how-it-works">How it works</a><a href="#businesses">For businesses</a></div>
+        <div class="footer-col"><h3>Your account</h3><a href="/workspace.html">Dashboard</a><a href="/workspace.html?auth=login">Log in</a><a href="/workspace.html?auth=register">Create account</a><a href="/workspace.html?auth=register">Register a business</a></div>
+        <div class="footer-col"><h3>Terms &amp; policies</h3><a href="/privacy/index.html">Privacy policy</a><a href="/terms/index.html">Terms and conditions</a><a href="/contact/index.html">Contact us</a><a href="#faq">FAQs</a><button class="cookie-preferences-link" id="open-cookie-preferences" type="button">Cookie preferences</button></div>
+      </div>
+      <div class="footer-bottom"><span>© <span id="year"></span> Alba Express. All rights reserved.</span><span>Sponsored by ZimShop AI · Made for Zimbabwe 🇿🇼</span></div>
+    </div>
+  </footer>
+
+  <section class="cookie-banner" id="cookie-banner" aria-labelledby="cookie-banner-title" hidden>
+    <h2 id="cookie-banner-title">Your privacy choices</h2>
+    <p>Necessary storage supports core site functions. Analytics and advertising cookies are not currently used on this landing page. You can save your preferences or change them any time using the footer link. See our <a href="/privacy/index.html"><u>Privacy Policy</u></a>.</p>
+    <p class="cookie-banner-status" id="cookie-banner-status" role="status" aria-live="polite"></p>
+    <div class="cookie-actions">
+      <button class="cookie-primary" id="accept-cookies" type="button">Accept optional</button>
+      <button id="reject-cookies" type="button">Necessary only</button>
+      <button id="customize-cookies" type="button">Customize</button>
+    </div>
+  </section>
+  <dialog class="cookie-dialog" id="cookie-dialog" aria-labelledby="cookie-dialog-title">
+    <div class="cookie-dialog-inner">
+      <h2 id="cookie-dialog-title">Cookie preferences</h2>
+      <p>Necessary storage is always on. Optional analytics and advertising cookies are not currently used on this landing page. Your selections are saved for your preferences and will not activate tracking tools that are not in use.</p>
+      <div class="cookie-setting">
+        <div><strong>Necessary storage</strong><span>Required for core site and security functions. Always active.</span></div>
+        <input type="checkbox" checked disabled aria-label="Necessary storage always active">
+      </div>
+      <label class="cookie-setting" for="analytics-cookies">
+        <div><strong>Analytics cookies</strong><span>Allow optional audience measurement if introduced on this page.</span></div>
+        <input id="analytics-cookies" type="checkbox">
+      </label>
+      <label class="cookie-setting" for="advertising-cookies">
+        <div><strong>Advertising cookies</strong><span>Allow optional advertising measurement if introduced on this page.</span></div>
+        <input id="advertising-cookies" type="checkbox">
+      </label>
+      <p class="cookie-error" id="cookie-error" role="status" aria-live="polite"></p>
+      <div class="cookie-actions cookie-dialog-actions">
+        <button id="cancel-cookie-preferences" type="button">Cancel</button>
+        <button class="cookie-primary" id="save-cookie-preferences" type="button">Save preferences</button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog id="axProductDialog" class="ax-dialog" aria-label="Product details">
+    <div class="ax-dhead"><strong>Product details</strong><button type="button" class="ax-x" data-ax-close="axProductDialog" aria-label="Close product details">×</button></div>
+    <div id="axProductBody"></div>
+  </dialog>
+
+  <dialog id="axBusinessDialog" class="ax-dialog" aria-label="Business profile">
+    <div class="ax-dhead"><strong>Business profile</strong><button type="button" class="ax-x" data-ax-close="axBusinessDialog" aria-label="Close business profile">×</button></div>
+    <div id="axBusinessBody"></div>
+  </dialog>
+
+  <dialog id="axCartDialog" class="ax-dialog narrow" aria-labelledby="axCartTitle">
+    <div class="ax-dhead"><strong id="axCartTitle">Your shopping cart</strong><button type="button" class="ax-x" data-ax-close="axCartDialog" aria-label="Close cart">×</button></div>
+    <div id="axCartBody" class="ax-cart-body"></div>
+    <div class="ax-cart-foot" id="axCartFoot"></div>
+  </dialog>
+
+  <div class="ax-toast" id="axToast" role="status" aria-live="polite"></div>
+
+  <script>
+    (() => {
+      "use strict";
+
+      /* ------------------------------------------------------------------
+         Configuration — existing backend, unchanged
+         ------------------------------------------------------------------ */
+      const apiBase = location.hostname === "localhost" || location.hostname === "127.0.0.1"
+        ? ""
+        : "https://zimshop-ai.onrender.com";
+      const ENDPOINTS = {
+        search: `${apiBase}/api/v1/marketplace/search`,
+        subscriptions: `${apiBase}/api/v1/subscriptions/settings`,
+      };
+      const PAGE_SIZE = 24;
+      const REQUEST_TIMEOUT_MS = 60000;
+      // Search terms used ONLY to ask the real API for listings when it will not
+      // return results for an empty query. These are queries, not products.
+      const DISCOVERY_TERMS = ["phones", "laptops", "electronics", "fridges", "furniture", "fashion", "shoes", "beauty", "food", "tools"];
+      const SEARCH_CATEGORIES = ["Electronics", "Phones", "Laptops", "Furniture", "Fashion", "Beauty", "Food & groceries", "Tools & equipment", "Business supplies"];
+
+      /* ------------------------------------------------------------------
+         Helpers
+         ------------------------------------------------------------------ */
+      const $ = id => document.getElementById(id);
+      const h = (tag, props = {}, ...kids) => {
+        const node = document.createElement(tag);
+        for (const [key, value] of Object.entries(props || {})) {
+          if (value === undefined || value === null || value === false) continue;
+          if (key === "class") node.className = value;
+          else if (key === "text") node.textContent = value;
+          else if (key.startsWith("on") && typeof value === "function") node.addEventListener(key.slice(2).toLowerCase(), value);
+          else node.setAttribute(key, value === true ? "" : String(value));
+        }
+        for (const kid of kids.flat(Infinity)) {
+          if (kid === undefined || kid === null || kid === false) continue;
+          node.append(kid.nodeType ? kid : document.createTextNode(String(kid)));
+        }
+        return node;
+      };
+      const getPath = (obj, path) => path.split(".").reduce((acc, part) => (acc === undefined || acc === null ? undefined : acc[part]), obj);
+      const first = (obj, paths) => {
+        for (const path of paths) {
+          const value = getPath(obj, path);
+          if (value !== undefined && value !== null && !(typeof value === "string" && value.trim() === "")) return value;
+        }
+        return undefined;
+      };
+      const str = v => (v === undefined || v === null ? "" : String(v).trim());
+      const toNum = v => {
+        if (v === undefined || v === null || v === "" || typeof v === "boolean") return null;
+        const n = typeof v === "number" ? v : Number(String(v).replace(/[^\d.\-]/g, ""));
+        return Number.isFinite(n) ? n : null;
+      };
+      const norm = s => str(s).toLowerCase();
+      const tokenize = s => norm(s).split(/[^a-z0-9]+/).filter(Boolean).map(t => (t.length > 3 && t.endsWith("s") ? t.slice(0, -1) : t));
+      const safeHttp = u => {
+        const s = str(u);
+        if (!s) return "";
+        try { const x = new URL(s); return x.protocol === "https:" || x.protocol === "http:" ? x.href : ""; } catch { return ""; }
+      };
+      const imgUrl = u => {
+        const s = str(u);
+        if (!s) return "";
+        if (s.startsWith("data:image/")) return s;
+        if (s.startsWith("//")) return "";
+        if (s.startsWith("/")) return `${apiBase}${s}`;
+        return safeHttp(s);
+      };
+      const toList = v => {
+        if (v === undefined || v === null || v === "") return [];
+        if (Array.isArray(v)) return v.map(x => (x && typeof x === "object" ? str(x.name || x.label || x.method || x.title || x.description || x.type) : str(x))).filter(Boolean);
+        if (typeof v === "object") return Object.entries(v).map(([k, val]) => (typeof val === "boolean" ? (val ? k.replace(/_/g, " ") : "") : `${k.replace(/_/g, " ")}: ${str(val)}`)).filter(Boolean);
+        return str(v).split(/\n|;/).map(s => s.trim()).filter(Boolean);
+      };
+      const toSpecs = v => {
+        if (!v) return [];
+        if (Array.isArray(v)) {
+          return v.map(x => {
+            if (x && typeof x === "object") return [str(x.name || x.label || x.key || x.title), str(x.value ?? x.val ?? x.detail)];
+            const s = str(x); const i = s.indexOf(":");
+            return i > 0 ? [s.slice(0, i).trim(), s.slice(i + 1).trim()] : ["", s];
+          }).filter(p => p[1] || p[0]);
+        }
+        if (typeof v === "object") return Object.entries(v).map(([k, val]) => [k.replace(/_/g, " "), str(typeof val === "object" ? JSON.stringify(val) : val)]).filter(p => p[1]);
+        return str(v).split("\n").map(line => { const i = line.indexOf(":"); return i > 0 ? [line.slice(0, i).trim(), line.slice(i + 1).trim()] : ["", line.trim()]; }).filter(p => p[1]);
+      };
+      const normReviews = v => {
+        if (!Array.isArray(v)) return [];
+        return v.map(r => {
+          if (typeof r === "string") return { author: "", rating: null, text: str(r), date: "" };
+          if (!r || typeof r !== "object") return null;
+          return {
+            author: str(first(r, ["author", "user", "reviewer", "customer_name", "customer", "name"])),
+            rating: toNum(first(r, ["rating", "stars", "score"])),
+            text: str(first(r, ["comment", "text", "body", "review", "content"])),
+            date: str(first(r, ["date", "created_at", "createdAt", "timestamp"])),
+          };
+        }).filter(r => r && (r.text || r.rating !== null));
+      };
+      const fmtMoney = (amount, currency) => `${currency} ${amount.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      const fmtDate = s => { const d = new Date(s); return Number.isNaN(d.getTime()) ? str(s) : d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }); };
+      const initials = name => (str(name).split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join("") || "A");
+      const waNumber = phone => {
+        let d = str(phone).replace(/[^\d+]/g, "");
+        if (d.startsWith("+")) d = d.slice(1);
+        else if (d.startsWith("00")) d = d.slice(2);
+        else if (d.startsWith("0")) d = `263${d.slice(1)}`;
+        return /^\d{8,15}$/.test(d) ? d : "";
+      };
+      const telNumber = phone => str(phone).replace(/[^\d+]/g, "");
+      const smsHref = (phone, body) => `sms:${telNumber(phone)}${/iPhone|iPad|iPod/i.test(navigator.userAgent) ? "&" : "?"}body=${encodeURIComponent(body)}`;
+      const debounce = (fn, ms) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
+
+      /* ------------------------------------------------------------------
+         Normalising whatever the backend returns. Nothing is invented:
+         every optional field stays null/empty when the API does not send it.
+         ------------------------------------------------------------------ */
+      const normalize = raw => {
+        if (!raw || typeof raw !== "object") return null;
+        const name = str(first(raw, ["product_name", "name", "title"]));
+        if (!name) return null;
+        const sellerName = str(first(raw, ["business_name", "seller_name", "store_name", "shop_name", "business.name", "seller.name"]));
+        const sellerIdRaw = first(raw, ["business_id", "seller_id", "shop_id", "business.id", "seller.id"]);
+        const images = [];
+        const pushImg = x => { const u = imgUrl(typeof x === "string" ? x : x && (x.url || x.src || x.image_url)); if (u && !images.includes(u)) images.push(u); };
+        pushImg(raw.image_url);
+        [raw.images, raw.image_urls, raw.gallery, raw.photos].forEach(arr => Array.isArray(arr) && arr.forEach(pushImg));
+
+        const priceRaw = first(raw, ["price", "unit_price", "amount"]);
+        const price = toNum(priceRaw);
+        const priceText = price === null && priceRaw !== undefined ? str(priceRaw) : "";
+        const reviews = normReviews(first(raw, ["reviews", "product_reviews"]));
+        let rating = toNum(first(raw, ["product_rating", "rating", "average_rating", "avg_rating"]));
+        const reviewCountRaw = toNum(first(raw, ["review_count", "reviews_count", "rating_count", "num_reviews", "total_reviews"]));
+        const reviewCount = reviewCountRaw !== null ? reviewCountRaw : (reviews.length || null);
+        if (rating !== null) rating = Math.max(0, Math.min(5, rating));
+        if (rating === 0 && !reviewCount) rating = null; // 0 with no reviews = unrated
+
+        let sellerRating = toNum(first(raw, ["business_rating", "seller_rating", "business.rating", "seller.rating", "store_rating"]));
+        if (sellerRating !== null) sellerRating = Math.max(0, Math.min(5, sellerRating));
+        const sellerReviews = normReviews(first(raw, ["business_reviews", "seller_reviews", "business.reviews", "seller.reviews"]));
+        let sellerRatingCount = toNum(first(raw, ["business_review_count", "seller_review_count", "business_reviews_count", "business.review_count", "seller.review_count"]));
+        if (sellerRatingCount === null && sellerReviews.length) sellerRatingCount = sellerReviews.length;
+        if (sellerRating === 0 && !sellerRatingCount) sellerRating = null;
+
+        const verRaw = first(raw, ["is_verified", "verified", "business_verified", "seller_verified", "business.is_verified", "business.verified", "seller.verified", "verification_status", "business.verification_status"]);
+        let verified = null;
+        if (verRaw === true || verRaw === 1 || /^(true|verified|approved|yes)$/i.test(String(verRaw))) verified = true;
+        else if (verRaw === false || verRaw === 0 || /^(false|unverified|pending|rejected|no|not verified)$/i.test(String(verRaw))) verified = false;
+
+        const inStockRaw = first(raw, ["in_stock", "is_available"]);
+        const qtyRaw = toNum(first(raw, ["stock_quantity", "stock", "quantity_available", "quantity"]));
+        const availText = str(first(raw, ["availability", "stock_status"]));
+        let availability = { state: "unknown", text: "Availability not confirmed" };
+        if (qtyRaw !== null) availability = qtyRaw > 0 ? { state: "in", text: `In stock · ${qtyRaw} available` } : { state: "out", text: "Out of stock" };
+        else if (typeof inStockRaw === "boolean") availability = inStockRaw ? { state: "in", text: "In stock (seller reported)" } : { state: "unknown", text: "Not marked in stock" };
+        else if (availText) {
+          if (/out of stock|sold out|unavailable/i.test(availText)) availability = { state: "out", text: availText };
+          else if (/^in stock|^available/i.test(availText)) availability = { state: "in", text: availText };
+          else availability = { state: "unknown", text: availText };
+        }
+
+        const key = String(first(raw, ["id", "product_id", "listing_id"]) ?? `${name}|${sellerName}|${priceRaw ?? ""}`);
+        return {
+          key, raw, name,
+          description: str(first(raw, ["description", "details", "long_description"])),
+          price, priceText, currency: str(first(raw, ["currency", "price_currency"])) || "USD",
+          images, rating, reviewCount, reviews,
+          brand: str(first(raw, ["brand", "brand_name", "manufacturer"])),
+          category: str(first(raw, ["category", "category_name", "product_category"])),
+          condition: str(raw.condition),
+          location: str(first(raw, ["location", "business_location", "city", "business.location", "seller.location"])),
+          availability, stockQty: qtyRaw,
+          delivery: toList(first(raw, ["delivery_info", "delivery", "delivery_options", "shipping_info", "shipping", "delivery_methods"])),
+          returnPolicy: toList(first(raw, ["return_policy", "returns", "returns_policy", "refund_policy"])),
+          specs: toSpecs(first(raw, ["specifications", "specs", "attributes", "features"])),
+          source: str(raw.source),
+          purchaseUrl: safeHttp(raw.purchase_url),
+          phone: str(first(raw, ["phone_number", "phone", "seller_phone", "business_phone", "business.phone", "seller.phone"])),
+          email: str(first(raw, ["email", "business_email", "seller_email", "business.email"])),
+          sellerName, sellerId: sellerIdRaw === undefined ? "" : String(sellerIdRaw),
+          sellerKey: sellerIdRaw !== undefined ? `id:${sellerIdRaw}` : (sellerName ? `name:${norm(sellerName)}` : ""),
+          sellerLogo: imgUrl(first(raw, ["business_logo", "seller_logo", "business_logo_url", "logo_url", "logo", "business.logo", "business.logo_url"])),
+          sellerDescription: str(first(raw, ["business_description", "seller_description", "business.description", "seller.description"])),
+          sellerAddress: str(first(raw, ["business_address", "address", "business.address"])),
+          sellerWebsite: safeHttp(first(raw, ["business_website", "website", "business.website"])),
+          sellerDelivery: toList(first(raw, ["business_delivery_options", "business.delivery_options", "seller_delivery"])),
+          sellerPayment: toList(first(raw, ["payment_options", "payment_methods", "accepted_payments", "business.payment_options", "business.payment_methods"])),
+          sellerRating, sellerRatingCount, sellerReviews, verified,
+        };
+      };
+
+      /* ------------------------------------------------------------------
+         API
+         ------------------------------------------------------------------ */
+      const parseSearchPayload = payload => {
+        const data = payload && typeof payload === "object" && !Array.isArray(payload) ? payload.data : null;
+        const list = Array.isArray(payload) ? payload
+          : payload && typeof payload === "object" && Array.isArray(payload.results) ? payload.results
+          : Array.isArray(data) ? data
+          : data && typeof data === "object" && Array.isArray(data.results) ? data.results
+          : null;
+        const mode = payload && typeof payload === "object" && typeof payload.understanding_mode === "string" ? payload.understanding_mode
+          : data && typeof data === "object" && typeof data.understanding_mode === "string" ? data.understanding_mode : "";
+        return { list, mode };
+      };
+      async function apiSearch({ query = "", maxBudget = "", location: loc = "", condition = "any", sort = "best_match" } = {}) {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+        try {
+          const response = await fetch(ENDPOINTS.search, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            signal: controller.signal,
+            body: JSON.stringify({ query, max_budget: maxBudget || null, currency: "USD", location: loc, condition, sort_by: sort }),
+          });
+          const body = await response.text();
+          let payload = null;
+          if (body.trim()) {
+            try { payload = JSON.parse(body); } catch { if (response.ok) throw new Error("The marketplace returned an invalid response. Please try again."); }
+          }
+          if (!response.ok) {
+            const detail = payload && typeof payload === "object" && "detail" in payload
+              ? (typeof payload.detail === "string" ? payload.detail : "The search request was not accepted.")
+              : body.trim().slice(0, 200) || `Search failed (${response.status}).`;
+            const err = new Error(detail); err.status = response.status; throw err;
+          }
+          const { list, mode } = parseSearchPayload(payload);
+          if (!list) throw new Error("The marketplace did not return a product list. Please refresh and try again.");
+          return { list, mode };
+        } catch (error) {
+          if (error && error.name === "AbortError") throw new Error("The marketplace took too long to respond. Please try again.");
+          if (error instanceof TypeError) throw new Error("Could not reach the marketplace service. Check your internet connection and try again.");
+          throw error;
+        } finally {
+          clearTimeout(timer);
+        }
+      }
+
+      /* ------------------------------------------------------------------
+         State
+         ------------------------------------------------------------------ */
+      const pool = new Map();             // every real listing the API has returned this session
+      let sellerCache = null;
+      const S = { q: "", label: "", status: "loading", error: "", notice: "", mode: "", apiKeys: new Set(), apiOrder: [], visible: PAGE_SIZE, reqId: 0, slow: false, slowTimer: 0 };
+
+      const addToPool = list => {
+        const keys = [];
+        for (const raw of list) { const l = normalize(raw); if (!l) continue; pool.set(l.key, l); keys.push(l.key); }
+        sellerCache = null;
+        return keys;
+      };
+      const sellerMap = () => {
+        if (sellerCache) return sellerCache;
+        const map = new Map();
+        for (const l of pool.values()) {
+          if (!l.sellerKey) continue;
+          let s = map.get(l.sellerKey);
+          if (!s) { s = { key: l.sellerKey, id: l.sellerId, name: l.sellerName, location: "", verified: null, rating: null, ratingCount: null, logo: "", description: "", phone: "", email: "", website: "", address: "", delivery: [], payment: [], reviews: [], listings: [] }; map.set(l.sellerKey, s); }
+          s.listings.push(l);
+          s.name = s.name || l.sellerName;
+          s.location = s.location || l.location;
+          s.logo = s.logo || l.sellerLogo;
+          s.description = s.description || l.sellerDescription;
+          s.phone = s.phone || l.phone;
+          s.email = s.email || l.email;
+          s.website = s.website || l.sellerWebsite;
+          s.address = s.address || l.sellerAddress;
+          if (!s.delivery.length) s.delivery = l.sellerDelivery;
+          if (!s.payment.length) s.payment = l.sellerPayment;
+          if (!s.reviews.length) s.reviews = l.sellerReviews;
+          if (s.rating === null) { s.rating = l.sellerRating; s.ratingCount = l.sellerRatingCount; }
+          if (l.verified === true) s.verified = true; else if (l.verified === false && s.verified === null) s.verified = false;
+        }
+        sellerCache = map;
+        return map;
+      };
+
+      const readFilters = () => ({
+        location: $("axLocation").value,
+        condition: $("axCondition").value,
+        min: toNum($("axMin").value),
+        max: toNum($("axMax").value),
+        inStock: $("axInStock").checked,
+        verified: $("axVerified").checked,
+        sort: $("axSort").value,
+      });
+      const apiFilters = () => {
+        const f = readFilters();
+        return { maxBudget: f.max !== null ? String(f.max) : "", location: f.location, condition: f.condition, sort: f.sort === "price_asc" ? "price" : "best_match" };
+      };
+
+      const haystack = l => norm([l.name, l.brand, l.category, l.sellerName, l.description, l.location].join(" "));
+      const matchesTokens = (l, tokens) => { if (!tokens.length) return true; const hs = tokenize(haystack(l)).join(" ") + " " + haystack(l); return tokens.every(t => hs.includes(t)); };
+
+      const getView = () => {
+        const f = readFilters();
+        const tokens = tokenize(S.q);
+        let items = [...pool.values()];
+        if (S.q) items = items.filter(l => S.apiKeys.has(l.key) || matchesTokens(l, tokens));
+        if (f.location) items = items.filter(l => norm(l.location).includes(norm(f.location)));
+        if (f.condition !== "any") items = items.filter(l => norm(l.condition) === f.condition);
+        if (f.min !== null) items = items.filter(l => l.price !== null && l.price >= f.min);
+        if (f.max !== null) items = items.filter(l => l.price !== null && l.price <= f.max);
+        if (f.inStock) items = items.filter(l => l.availability.state === "in");
+        if (f.verified) items = items.filter(l => l.verified === true);
+        const rank = new Map(S.apiOrder.map((k, i) => [k, i]));
+        const byRank = (a, b) => (rank.has(a.key) ? rank.get(a.key) : 1e9) - (rank.has(b.key) ? rank.get(b.key) : 1e9);
+        const priceCmp = dir => (a, b) => (a.price === null) - (b.price === null) || (a.price === null ? 0 : dir * (a.price - b.price)) || byRank(a, b);
+        if (f.sort === "price_asc") items.sort(priceCmp(1));
+        else if (f.sort === "price_desc") items.sort(priceCmp(-1));
+        else if (f.sort === "rating") items.sort((a, b) => (b.rating ?? -1) - (a.rating ?? -1) || (b.reviewCount ?? 0) - (a.reviewCount ?? 0) || byRank(a, b));
+        else items.sort(byRank);
+        return items;
+      };
+
+      /* ------------------------------------------------------------------
+         Rendering primitives
+         ------------------------------------------------------------------ */
+      const stars = (value, big) => {
+        const r = Math.round(value);
+        const s = h("span", { class: "ax-stars", role: "img", "aria-label": `Rated ${value.toFixed(1)} out of 5` });
+        s.append("★".repeat(r)); s.append(h("i", { text: "★".repeat(5 - r) }));
+        if (big) s.style.fontSize = "17px";
+        return s;
+      };
+      const ratingLine = (rating, count, noneText = "No ratings yet") => {
+        if (rating === null) return h("div", { class: "ax-rating" }, h("span", { text: noneText }));
+        return h("div", { class: "ax-rating" }, stars(rating), h("b", { text: rating.toFixed(1) }), count ? h("span", { text: `(${count.toLocaleString()} ${count === 1 ? "review" : "reviews"})` }) : null);
+      };
+      const priceNode = l => {
+        if (l.price !== null) return h("div", { class: "ax-price" }, h("small", { text: l.currency }), l.price.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+        return h("div", { class: "ax-price" }, h("small", { text: l.priceText || "Price on request" }));
+      };
+      const verifyTag = verified => verified === true
+        ? h("span", { class: "ax-tag ver", title: "Verified by the Alba Express platform", text: "✔ Verified seller" })
+        : h("span", { class: "ax-tag unver", title: "Verification has not been confirmed by the platform", text: "Not verified" });
+      const availTag = l => h("span", { class: `ax-tag ${l.availability.state === "in" ? "in" : l.availability.state === "out" ? "out" : ""}`, text: l.availability.text });
+      const conditionLabel = c => { const s = str(c); if (!s) return ""; return s === "grey_market" ? "Grey market" : s.replace(/_/g, " ").replace(/^./, m => m.toUpperCase()); };
+      const imageBox = (src, alt, className) => {
+        const box = h("div", { class: className || "" });
+        const placeholder = txt => h("span", { class: "ax-noimg" }, h("i", { text: "🛍️", "aria-hidden": "true" }), txt);
+        if (!src) { box.append(placeholder("No product photo")); return box; }
+        const img = h("img", { src, alt: alt || "", loading: "lazy", decoding: "async" });
+        img.addEventListener("error", () => { box.replaceChildren(placeholder("Photo unavailable")); });
+        box.append(img);
+        return box;
+      };
+      const avatar = (seller, large) => {
+        const box = h("span", { class: `ax-avatar${large ? " lg" : ""}`, "aria-hidden": "true" });
+        const fallback = () => { box.replaceChildren(initials(seller.name)); };
+        if (seller.logo) { const img = h("img", { src: seller.logo, alt: "", loading: "lazy" }); img.addEventListener("error", fallback); box.append(img); } else fallback();
+        return box;
+      };
+      const inquiryText = (l, qty = 1) => [
+        `Hello ${l.sellerName || "there"},`, "",
+        "I found your product on Alba Express and would like to place an order.", "",
+        `Product: ${l.name}`,
+        `Listed price: ${l.price !== null ? fmtMoney(l.price, l.currency) : (l.priceText || "not stated")}`,
+        `Quantity: ${qty}`, "",
+        "Please confirm availability, the final price, any additional charges, delivery options and your return policy.", "", "Thank you.",
+      ].join("\n");
+
+      /* ------------------------------------------------------------------
+         Toast
+         ------------------------------------------------------------------ */
+      let toastTimer = 0;
+      const toast = (message, actionLabel, action) => {
+        const el = $("axToast");
+        el.replaceChildren(h("span", { text: message }));
+        if (actionLabel) el.append(h("button", { type: "button", text: actionLabel, onClick: () => { el.classList.remove("show"); action && action(); } }));
+        el.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => el.classList.remove("show"), 4200);
+      };
+
+      /* ------------------------------------------------------------------
+         Cart (enquiry/order-request cart — persisted locally)
+         ------------------------------------------------------------------ */
+      const CART_KEY = "abba-express-cart-v1";
+      const cart = new Map();
+      const loadCart = () => {
+        try {
+          const data = JSON.parse(localStorage.getItem(CART_KEY) || "[]");
+          if (!Array.isArray(data)) return;
+          for (const it of data) {
+            if (!it || typeof it.key !== "string" || typeof it.name !== "string") continue;
+            const qty = Math.max(1, Math.min(99, parseInt(it.qty, 10) || 1));
+            cart.set(it.key, { key: it.key, name: it.name, sellerName: str(it.sellerName), sellerKey: str(it.sellerKey), price: toNum(it.price), currency: str(it.currency) || "USD", image: imgUrl(it.image), phone: str(it.phone), qty, max: toNum(it.max) });
+          }
+        } catch { /* storage unavailable or corrupt — start with an empty cart */ }
+      };
+      const saveCart = () => { try { localStorage.setItem(CART_KEY, JSON.stringify([...cart.values()])); } catch { /* ignore */ } };
+      const cartCount = () => [...cart.values()].reduce((n, it) => n + it.qty, 0);
+      const addToCart = (l, qty = 1) => {
+        if (l.availability.state === "out") { toast("This item is listed as out of stock."); return false; }
+        const cap = l.stockQty !== null && l.stockQty > 0 ? Math.min(99, l.stockQty) : 99;
+        const existing = cart.get(l.key);
+        if (existing) {
+          const next = existing.qty + qty;
+          if (next > cap) { existing.qty = cap; toast(`Only ${cap} available from this seller.`); } else existing.qty = next;
+        } else {
+          cart.set(l.key, { key: l.key, name: l.name, sellerName: l.sellerName, sellerKey: l.sellerKey, price: l.price, currency: l.currency, image: l.images[0] || "", phone: l.phone, qty: Math.min(qty, cap), max: l.stockQty });
+        }
+        saveCart(); updateCartUI();
+        return true;
+      };
+      const updateCartUI = () => {
+        $("axCartCount").textContent = String(cartCount());
+        if ($("axCartDialog").open) renderCart();
+      };
+      const renderCart = () => {
+        const body = $("axCartBody"), foot = $("axCartFoot");
+        body.replaceChildren(); foot.replaceChildren();
+        if (!cart.size) {
+          body.append(h("div", { class: "ax-panel", style: "box-shadow:none;padding:34px 10px" }, h("div", { class: "ax-big", text: "🛒" }), h("h3", { text: "Your cart is empty" }), h("p", { text: "Search the marketplace and choose Add to cart on any product." })));
+          return;
+        }
+        const groups = new Map();
+        for (const it of cart.values()) { const g = it.sellerKey || `solo:${it.key}`; if (!groups.has(g)) groups.set(g, []); groups.get(g).push(it); }
+        const totals = new Map(); let unpriced = 0;
+        for (const [, items] of groups) {
+          const sellerName = items[0].sellerName || "Marketplace seller";
+          const head = h("div", { class: "ax-group-head" },
+            items[0].sellerKey ? h("button", { class: "ax-seller-link", type: "button", text: `🏪 ${sellerName}`, onClick: () => openBusiness(items[0].sellerKey) }) : h("strong", { text: `🏪 ${sellerName}` }));
+          const group = h("div", { class: "ax-group" }, head);
+          for (const it of items) {
+            const minus = h("button", { type: "button", "aria-label": `Decrease quantity of ${it.name}`, text: "−", onClick: () => { it.qty--; if (it.qty <= 0) cart.delete(it.key); saveCart(); updateCartUI(); } });
+            const plus = h("button", { type: "button", "aria-label": `Increase quantity of ${it.name}`, text: "+", onClick: () => { const cap = it.max && it.max > 0 ? Math.min(99, it.max) : 99; if (it.qty >= cap) { toast(`Only ${cap} available from this seller.`); return; } it.qty++; saveCart(); updateCartUI(); } });
+            const line = it.price !== null ? it.price * it.qty : null;
+            if (line !== null) totals.set(it.currency, (totals.get(it.currency) || 0) + line); else unpriced++;
+            group.append(h("div", { class: "ax-crow" },
+              it.image ? h("img", { src: it.image, alt: "", loading: "lazy" }) : h("span", { class: "ph", text: "🛍️", "aria-hidden": "true" }),
+              h("div", {}, h("strong", { text: it.name }), h("small", { text: it.price !== null ? `${fmtMoney(it.price, it.currency)} each` : "Price to be confirmed" }), h("div", { class: "ax-qty" }, minus, h("span", { text: String(it.qty), "aria-live": "polite" }), plus)),
+              h("div", {}, h("b", { text: line !== null ? fmtMoney(line, it.currency) : "Price TBC" }), h("button", { class: "ax-rm", type: "button", text: "Remove", onClick: () => { cart.delete(it.key); saveCart(); updateCartUI(); } }))));
+          }
+          const lines = items.map(it => `${it.qty} x ${it.name} — ${it.price !== null ? fmtMoney(it.price, it.currency) : "price to confirm"}`);
+          const message = [`Hello ${sellerName},`, "", "I would like to order the following from Alba Express:", "", ...lines, "", "Please confirm availability, final price, delivery charges, payment method and return/warranty terms.", "", "Thank you."].join("\n");
+          const phone = items.find(i => i.phone)?.phone || "";
+          const send = h("div", { class: "ax-send" });
+          if (phone) {
+            send.append(h("a", { class: "ax-btn primary", href: smsHref(phone, message), text: "Checkout: send order by SMS" }));
+            const wa = waNumber(phone);
+            if (wa) send.append(h("a", { class: "ax-btn green", href: `https://wa.me/${wa}?text=${encodeURIComponent(message)}`, target: "_blank", rel: "noopener noreferrer", text: "Send via WhatsApp" }));
+          } else {
+            send.append(h("span", { class: "ax-muted", style: "font-size:12px", text: "This seller has not listed a phone number. Open the seller profile to find other contact options." }));
+          }
+          group.append(send);
+          body.append(group);
+        }
+        const totalRow = h("div", { class: "ax-total" }, h("span", { text: "Estimated listing total" }),
+          h("strong", { text: totals.size ? [...totals].map(([c, v]) => fmtMoney(v, c)).join(" + ") : "—" }));
+        foot.append(totalRow,
+          h("p", { text: `${unpriced ? `${unpriced} item(s) have no listed price and are not included. ` : ""}Checkout sends your order request to each seller. Agree the final price, delivery and payment method (for example EcoCash) directly with the seller. Alba Express does not take or confirm product payments on this page, so no order is complete until the seller confirms it.` }),
+          h("button", { class: "ax-btn", type: "button", style: "margin-top:10px;min-height:34px", text: "Clear cart", onClick: () => { cart.clear(); saveCart(); updateCartUI(); } }));
+      };
+
+      /* ------------------------------------------------------------------
+         Product card
+         ------------------------------------------------------------------ */
+      const productCard = l => {
+        const media = h("button", { class: "ax-card-media", type: "button", "aria-label": `View details for ${l.name}`, onClick: () => openProduct(l.key) }, imageBox(l.images[0], l.name, "ax-fill"));
+        const body = h("div", { class: "ax-card-body" },
+          h("button", { class: "ax-card-title", type: "button", text: l.name, onClick: () => openProduct(l.key) }),
+          priceNode(l),
+          ratingLine(l.rating, l.reviewCount),
+          h("div", { class: "ax-tags" }, l.condition ? h("span", { class: "ax-tag", text: conditionLabel(l.condition) }) : null, availTag(l)),
+          h("div", { class: "ax-seller-box" },
+            l.sellerName ? (l.sellerKey ? h("button", { class: "ax-seller-link", type: "button", title: `View ${l.sellerName} profile`, text: `🏪 ${l.sellerName}`, onClick: () => openBusiness(l.sellerKey) }) : h("span", { class: "ax-seller-link", text: `🏪 ${l.sellerName}` })) : h("span", { class: "ax-seller-link", text: "🏪 Independent seller" }),
+            h("div", { class: "ax-tags" }, verifyTag(l.verified)),
+            ratingLine(l.sellerRating, l.sellerRatingCount, "Seller: no ratings yet"),
+            h("div", { class: "ax-line" }, h("span", { text: "📍" }), h("span", { text: l.location || "Location not listed" })),
+            h("div", { class: "ax-line" }, h("span", { text: "🚚" }), h("span", { text: l.delivery[0] || "Delivery: ask the seller" }))));
+        const contact = l.phone
+          ? h("a", { class: "ax-btn", href: smsHref(l.phone, inquiryText(l)), text: "Contact seller" })
+          : h("button", { class: "ax-btn", type: "button", "aria-disabled": "true", disabled: true, title: "The seller has not listed contact details", text: "No contact" });
+        const add = h("button", { class: "ax-btn primary", type: "button", text: "＋ Add to cart", onClick: () => { if (addToCart(l)) toast(`Added “${l.name.slice(0, 40)}”`, "View cart", openCart); } });
+        return h("article", { class: "ax-card" }, media, body, h("div", { class: "ax-card-actions" }, contact, add));
+      };
+      const skeletonCard = () => h("div", { class: "ax-card ax-skel", "aria-hidden": "true" }, h("div", { class: "sk img" }), h("div", { class: "sk l" }), h("div", { class: "sk l", style: "width:70%" }), h("div", { class: "sk s" }));
+
+      /* ------------------------------------------------------------------
+         Main list rendering
+         ------------------------------------------------------------------ */
+      const panel = (icon, title, text, buttons = []) => h("div", { class: "ax-panel" }, h("div", { class: "ax-big", text: icon }), h("h3", { text: title }), h("p", { text }), buttons);
+      function render() {
+        const grid = $("axGrid");
+        const view = getView();
+        grid.setAttribute("aria-busy", String(S.status === "loading" && !view.length));
+        grid.replaceChildren();
+
+        // chips
+        const chips = $("axChips"); chips.replaceChildren();
+        if (S.q) chips.append(h("button", { class: "ax-active", type: "button", title: "Clear search", text: `${S.label || S.q}  ✕`, onClick: () => { $("axSearch").value = ""; runSearch(""); } }));
+        const catCounts = new Map();
+        for (const l of pool.values()) if (l.category) catCounts.set(l.category, (catCounts.get(l.category) || 0) + 1);
+        const cats = [...catCounts].sort((a, b) => b[1] - a[1]).slice(0, 8);
+        if (cats.length) { chips.append(h("span", { text: "Categories in current listings:" })); cats.forEach(([c]) => chips.append(h("button", { type: "button", text: c, onClick: () => { $("axSearch").value = c; runSearch(c, c); } }))); }
+
+        // sellers row
+        const sellers = [...sellerMap().values()];
+        const tokens = tokenize(S.q);
+        let shownSellers, sellersTitle;
+        if (S.q) { shownSellers = sellers.filter(s => tokens.length && tokens.every(t => norm(s.name).includes(t))); sellersTitle = "Matching sellers"; }
+        else { shownSellers = sellers.sort((a, b) => b.listings.length - a.listings.length); sellersTitle = "Sellers on Alba Express"; }
+        shownSellers = shownSellers.slice(0, 10);
+        $("axSellers").hidden = !shownSellers.length;
+        $("axSellersTitle").textContent = sellersTitle;
+        $("axSellerRow").replaceChildren(...shownSellers.map(s => h("button", { class: "ax-seller-chip", type: "button", onClick: () => openBusiness(s.key) }, avatar(s), h("span", {}, h("strong", { text: s.name }), h("small", { text: `${s.listings.length} ${s.listings.length === 1 ? "product" : "products"}${s.verified === true ? " · ✔ Verified" : ""}${s.location ? ` · ${s.location}` : ""}` })))));
+
+        // meta + notice
+        const meta = $("axMeta");
+        if (S.status === "loading") meta.textContent = view.length ? `Loading more listings… ${view.length} shown so far.` : (S.slow ? "The marketplace server is waking up — this can take up to a minute on first load. Thanks for waiting…" : "Loading live listings…");
+        else if (S.status === "error" && !view.length) meta.textContent = "";
+        else meta.replaceChildren(h("strong", { text: `${view.length.toLocaleString()} ${view.length === 1 ? "listing" : "listings"}` }), S.q ? ` for “${S.q}”` : " available", S.mode ? ` · ${S.mode}` : "");
+        $("axNotice").hidden = !S.notice; $("axNotice").textContent = S.notice;
+
+        // grid
+        if (view.length) {
+          view.slice(0, S.visible).forEach(l => grid.append(productCard(l)));
+        } else if (S.status === "loading") {
+          for (let i = 0; i < 8; i++) grid.append(skeletonCard());
+        } else if (S.status === "error") {
+          grid.append(panel("⚠️", "We couldn't load listings", S.error || "Something went wrong while contacting the marketplace.", h("button", { class: "ax-btn primary", type: "button", text: "Try again", onClick: () => runSearch(S.q, S.label) })));
+        } else if (S.q || readFilters().location || readFilters().min !== null || readFilters().max !== null || readFilters().inStock || readFilters().verified || readFilters().condition !== "any") {
+          grid.append(panel("🔍", "No matching listings", "We couldn't find any listings for this search and filter combination. Try a shorter search, a different spelling, or reset the filters.", h("button", { class: "ax-btn primary", type: "button", text: "Clear search & filters", onClick: resetAll })));
+        } else {
+          grid.append(panel("🏪", "No listings published yet", "No sellers have published product listings that we can show right now. Please check back soon — or open your own store and be the first.", h("a", { class: "ax-btn primary", href: "/workspace.html?auth=register", text: "Become a seller" })));
+        }
+        const more = $("axMore");
+        more.hidden = view.length <= S.visible;
+        more.textContent = `Show more listings (${Math.max(0, view.length - S.visible).toLocaleString()} more)`;
+      }
+
+      /* ------------------------------------------------------------------
+         Searching
+         ------------------------------------------------------------------ */
+      const setStatus = (status, error = "") => { S.status = status; S.error = error; };
+      async function browse(id) {
+        // 1) ask the real API for everything with an empty query
+        let firstError = null;
+        try {
+          const r = await apiSearch({ query: "", ...apiFilters() });
+          if (id !== S.reqId) return;
+          if (r.list.length) { const keys = addToPool(r.list); S.apiKeys = new Set(keys); S.apiOrder = keys; S.mode = r.mode; return; }
+        } catch (e) { firstError = e; }
+        if (id !== S.reqId) return;
+        // 2) fall back to several real queries run in parallel, rendering as each arrives
+        let failures = 0, lastError = firstError;
+        await Promise.all(DISCOVERY_TERMS.map(term => apiSearch({ query: term, ...apiFilters() }).then(r => {
+          if (id !== S.reqId) return;
+          const keys = addToPool(r.list);
+          keys.forEach(k => { if (!S.apiKeys.has(k)) { S.apiKeys.add(k); S.apiOrder.push(k); } });
+          if (S.mode === "") S.mode = r.mode;
+          render();
+        }).catch(e => { failures++; lastError = e; })));
+        if (id !== S.reqId) return;
+        if (failures === DISCOVERY_TERMS.length) throw lastError || new Error("Could not load listings.");
+      }
+      async function runSearch(q = S.q, label = "") {
+        S.q = str(q); S.label = S.q ? (label || S.q) : ""; S.visible = PAGE_SIZE; S.notice = ""; S.slow = false; S.mode = "";
+        const id = ++S.reqId;
+        S.apiKeys = new Set(); S.apiOrder = [];
+        setStatus("loading"); render();
+        clearTimeout(S.slowTimer);
+        S.slowTimer = setTimeout(() => { if (id === S.reqId && S.status === "loading") { S.slow = true; render(); } }, 7000);
+        try {
+          if (S.q) {
+            const r = await apiSearch({ query: S.q, ...apiFilters() });
+            if (id !== S.reqId) return;
+            const keys = addToPool(r.list); S.apiKeys = new Set(keys); S.apiOrder = keys; S.mode = r.mode;
+          } else {
+            await browse(id);
+          }
+          if (id !== S.reqId) return;
+          setStatus("ready");
+        } catch (error) {
+          if (id !== S.reqId) return;
+          const message = error instanceof Error ? error.message : "Could not load listings.";
+          if (getView().length) { S.notice = `Live search is unavailable right now (${message}) Showing matches from listings that were already loaded.`; setStatus("ready"); }
+          else setStatus("error", message);
+        } finally {
+          if (id === S.reqId) clearTimeout(S.slowTimer);
+        }
+        render();
+      }
+      function resetAll() {
+        $("axLocation").value = ""; $("axCondition").value = "any"; $("axMin").value = ""; $("axMax").value = "";
+        $("axInStock").checked = false; $("axVerified").checked = false; $("axSort").value = "best_match"; $("axSearch").value = "";
+        runSearch("");
+      }
+      const goToMarket = () => $("marketplace").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+
+      /* ------------------------------------------------------------------
+         Product details
+         ------------------------------------------------------------------ */
+      function contactPanel(contactable, subject) {
+        const panelEl = h("div", { class: "ax-contact", role: "region", "aria-label": "Seller contact options" });
+        const phone = contactable.phone;
+        if (phone) {
+          panelEl.append(h("a", { class: "ax-btn green", href: `tel:${telNumber(phone)}`, text: `📞 Call ${phone}` }),
+            h("a", { class: "ax-btn", href: smsHref(phone, subject), text: "💬 SMS" }));
+          const wa = waNumber(phone);
+          if (wa) panelEl.append(h("a", { class: "ax-btn", href: `https://wa.me/${wa}?text=${encodeURIComponent(subject)}`, target: "_blank", rel: "noopener noreferrer", text: "WhatsApp" }));
+        }
+        if (contactable.email) panelEl.append(h("a", { class: "ax-btn", href: `mailto:${contactable.email}?subject=${encodeURIComponent("Enquiry from Alba Express")}&body=${encodeURIComponent(subject)}`, text: "✉ Email" }));
+        if (!phone && !contactable.email) panelEl.append(h("p", { text: "This seller has not listed contact details yet. Please check the seller profile or try again later." }));
+        else panelEl.append(h("p", { text: "These options open your own phone, messaging or email app. Carrier charges may apply." }));
+        return panelEl;
+      }
+      const section = (title, ...kids) => h("section", { class: "ax-sec" }, h("h3", { text: title }), kids);
+      const reviewList = (reviews, emptyText) => reviews.length
+        ? h("div", {}, reviews.map(r => h("div", { class: "ax-review" }, h("header", {}, r.rating !== null ? stars(Math.max(0, Math.min(5, r.rating))) : null, r.author ? h("b", { text: r.author }) : null, r.date ? h("span", { text: fmtDate(r.date) }) : null), r.text ? h("p", { text: r.text }) : null)))
+        : h("p", { class: "ax-muted", text: emptyText });
+
+      function openProduct(key) {
+        const l = pool.get(key);
+        if (!l) return;
+        const seller = l.sellerKey ? sellerMap().get(l.sellerKey) : null;
+        let qty = 1;
+        const gal = h("div", { class: "ax-gal-main" });
+        const thumbs = h("div", { class: "ax-thumbs", role: "group", "aria-label": "Product photos" });
+        const showImage = i => {
+          gal.replaceChildren(imageBox(l.images[i], l.name, "ax-fill"));
+          [...thumbs.children].forEach((b, n) => b.setAttribute("aria-current", String(n === i)));
+        };
+        l.images.forEach((src, i) => thumbs.append(h("button", { type: "button", "aria-label": `Show photo ${i + 1}`, onClick: () => showImage(i) }, h("img", { src, alt: "", loading: "lazy" }))));
+        if (l.images.length) showImage(0); else gal.append(imageBox("", l.name, "ax-fill"));
+
+        const qtyNum = h("span", { text: "1", "aria-live": "polite" });
+        const cap = l.stockQty !== null && l.stockQty > 0 ? Math.min(99, l.stockQty) : 99;
+        const qtyBox = h("div", { class: "ax-qty", role: "group", "aria-label": "Quantity" },
+          h("button", { type: "button", "aria-label": "Decrease quantity", text: "−", onClick: () => { qty = Math.max(1, qty - 1); qtyNum.textContent = String(qty); } }), qtyNum,
+          h("button", { type: "button", "aria-label": "Increase quantity", text: "+", onClick: () => { if (qty >= cap) { toast(`Only ${cap} available from this seller.`); return; } qty++; qtyNum.textContent = String(qty); } }));
+        const contactInfo = { phone: l.phone, email: l.email || seller?.email || "" };
+        const contactBox = contactPanel(contactInfo, inquiryText(l, 1));
+        const outOfStock = l.availability.state === "out";
+        const buy = h("div", { class: "ax-buy" }, qtyBox,
+          h("button", { class: "ax-btn primary", type: "button", disabled: outOfStock, text: outOfStock ? "Out of stock" : "🛒 Add to cart", onClick: () => { if (addToCart(l, qty)) toast("Added to your cart", "View cart", openCart); } }),
+          h("button", { class: "ax-btn", type: "button", "aria-expanded": "false", text: "💬 Contact seller", onClick: e => { const open = contactBox.classList.toggle("open"); e.currentTarget.setAttribute("aria-expanded", String(open)); } }));
+
+        const fact = (label, value) => value ? h("div", { class: "ax-fact" }, h("b", { text: label }), h("span", {}, value)) : null;
+        const info = h("div", { class: "ax-info" },
+          l.category ? h("div", { class: "ax-crumb", text: l.category }) : null,
+          h("h2", { text: l.name }),
+          l.brand ? h("div", { class: "ax-muted", style: "font-size:13px", text: `Brand: ${l.brand}` }) : null,
+          h("div", { style: "margin-top:8px" }, ratingLine(l.rating, l.reviewCount, "No ratings yet for this product")),
+          (() => { const p = priceNode(l); return p; })(),
+          h("div", { class: "ax-facts" },
+            fact("Availability", availTag(l)),
+            fact("Condition", l.condition ? conditionLabel(l.condition) : null),
+            fact("Seller location", l.location || "Not listed"),
+            fact("Delivery", l.delivery.length ? l.delivery.join(" · ") : "Not published — ask the seller about cost and timing"),
+            fact("Returns", l.returnPolicy.length ? l.returnPolicy.join(" · ") : "Not published — ask the seller before paying")),
+          buy, contactBox);
+
+        const specRows = [];
+        if (l.brand) specRows.push(["Brand", l.brand]);
+        if (l.category) specRows.push(["Category", l.category]);
+        if (l.condition) specRows.push(["Condition", conditionLabel(l.condition)]);
+        specRows.push(...l.specs.map(p => [p[0] || "Detail", p[1]]));
+        const specNode = specRows.length
+          ? h("table", { class: "ax-spec" }, h("tbody", {}, specRows.map(([k, v]) => h("tr", {}, h("th", { scope: "row", text: k }), h("td", { text: v })))))
+          : h("p", { class: "ax-muted", text: "The seller has not published specifications for this product. Ask for exact specifications before you pay." });
+
+        const sellerCard = l.sellerName ? h("div", { class: "ax-sellercard" },
+          avatar(seller || { name: l.sellerName, logo: l.sellerLogo }, true),
+          h("div", { class: "grow" }, h("h4", { text: l.sellerName }), h("div", { class: "ax-tags" }, verifyTag(l.verified)), ratingLine(l.sellerRating, l.sellerRatingCount, "No seller ratings yet"),
+            h("div", { class: "ax-line", style: "margin-top:4px;font-size:12.5px;color:var(--muted)" }, h("span", { text: "📍" }), h("span", { text: l.location || "Location not listed" })),
+            l.phone ? h("div", { class: "ax-line", style: "font-size:12.5px;color:var(--muted)" }, h("span", { text: "📞" }), h("span", { text: l.phone })) : null),
+          l.sellerKey ? h("button", { class: "ax-btn green", type: "button", text: "View business profile", onClick: () => openBusiness(l.sellerKey) }) : null)
+          : h("p", { class: "ax-muted", text: "This listing does not name a business. Confirm who you are dealing with before paying." });
+
+        const root = h("div", { class: "ax-pd" },
+          h("div", {}, gal, l.images.length > 1 ? thumbs : null),
+          info,
+          section("Product description", h("p", { class: l.description ? "" : "ax-muted", text: l.description || "The seller has not provided a description. Contact the seller to confirm what is included." })),
+          section("Specifications", specNode),
+          section(`Ratings & reviews`, ratingLine(l.rating, l.reviewCount, "No ratings yet"), reviewList(l.reviews, l.reviewCount ? "Individual review comments are not available from the platform yet." : "No customer reviews have been recorded for this product yet.")),
+          h("div", { class: "ax-sec ax-two" },
+            h("div", {}, h("h3", { text: "Delivery information" }), l.delivery.length ? h("ul", { class: "ax-list" }, l.delivery.map(d => h("li", { text: d }))) : h("p", { class: "ax-muted", text: "The seller has not published delivery details. Ask about delivery areas, cost and timing before you pay." })),
+            h("div", {}, h("h3", { text: "Return policy" }), l.returnPolicy.length ? h("ul", { class: "ax-list" }, l.returnPolicy.map(d => h("li", { text: d }))) : h("p", { class: "ax-muted", text: "The seller has not published a return policy for this item. Ask for it in writing before you pay." }))),
+          section("Seller information", sellerCard),
+          h("div", { class: "ax-sec" }, h("div", { class: "ax-caution", text: "Before paying: confirm the seller's identity, exact specifications, stock, final price, delivery charges, payment method and return or warranty terms. Seller-submitted listing details are not independently checked by this page, and Alba Express does not process payment for this product here." })));
+        if (l.purchaseUrl) root.querySelector(".ax-buy").append(h("a", { class: "ax-btn", href: l.purchaseUrl, target: "_blank", rel: "noopener noreferrer", text: "Provider link ↗" }));
+        $("axProductBody").replaceChildren(root);
+        const dlg = $("axProductDialog"); dlg.scrollTop = 0;
+        if (!dlg.open) dlg.showModal();
+      }
+
+      /* ------------------------------------------------------------------
+         Business profile
+         ------------------------------------------------------------------ */
+      async function openBusiness(sellerKey) {
+        let seller = sellerMap().get(sellerKey);
+        if (!seller) return;
+        const body = $("axBusinessBody");
+        const productsHost = h("div", { class: "ax-grid ax-bgrid" });
+        const loadNote = h("p", { class: "ax-muted", style: "font-size:12px;margin:0 0 10px", text: "Checking for more products from this business…" });
+        const belongs = l => l.sellerKey === sellerKey || (l.sellerName && norm(l.sellerName) === norm(seller.name));
+        const fillProducts = () => {
+          seller = sellerMap().get(sellerKey) || seller;
+          const mine = [...pool.values()].filter(belongs);
+          productsHost.replaceChildren(...(mine.length ? mine.map(productCard) : [h("p", { class: "ax-muted", text: "No products from this business are loaded yet." })]));
+          return mine.length;
+        };
+        const detail = (label, value) => value ? h("div", { class: "ax-fact" }, h("b", { text: label }), h("span", {}, value)) : null;
+        const subject = `Hello ${seller.name},\n\nI found your business on Alba Express and would like to ask about your products.\n\nThank you.`;
+        const contactBox = contactPanel({ phone: seller.phone, email: seller.email }, subject);
+        const head = h("div", { class: "ax-bhead" }, avatar(seller, true),
+          h("div", { style: "flex:1;min-width:220px" }, h("h2", { text: seller.name }),
+            h("div", { class: "ax-tags", style: "margin-bottom:6px" }, verifyTag(seller.verified)),
+            ratingLine(seller.rating, seller.ratingCount, "No ratings yet"),
+            h("div", { class: "ax-line", style: "margin-top:4px" }, h("span", { text: "📍" }), h("span", { text: seller.location || "Location not listed" }))),
+          h("button", { class: "ax-btn primary", type: "button", "aria-expanded": "false", text: "💬 Contact business", onClick: e => { const open = contactBox.classList.toggle("open"); e.currentTarget.setAttribute("aria-expanded", String(open)); } }));
+        const website = seller.website ? h("a", { href: seller.website, target: "_blank", rel: "noopener noreferrer", style: "color:var(--green);text-decoration:underline", text: seller.website.replace(/^https?:\/\//, "") }) : null;
+        body.replaceChildren(head, h("div", { class: "ax-bbody" },
+          contactBox,
+          section("About this business", h("p", { class: seller.description ? "" : "ax-muted", text: seller.description || "This business has not added a description yet." })),
+          section("Contact details", h("div", { class: "ax-facts" },
+            detail("Phone", seller.phone), detail("Email", seller.email), detail("Website", website), detail("Address", seller.address), detail("Location", seller.location),
+            !(seller.phone || seller.email || seller.website || seller.address) ? h("p", { class: "ax-muted", style: "margin:0", text: "No contact details have been listed by this business." }) : null)),
+          h("div", { class: "ax-sec ax-two" },
+            h("div", {}, h("h3", { text: "Delivery options" }), seller.delivery.length ? h("ul", { class: "ax-list" }, seller.delivery.map(d => h("li", { text: d }))) : h("p", { class: "ax-muted", text: "Not published. Ask the business about delivery areas, cost and timing." })),
+            h("div", {}, h("h3", { text: "Payment options" }), seller.payment.length ? h("ul", { class: "ax-list" }, seller.payment.map(d => h("li", { text: d }))) : h("p", { class: "ax-muted", text: "Not published. Agree a payment method with the business before you pay." }))),
+          section("Customer reviews", ratingLine(seller.rating, seller.ratingCount, "No ratings yet"), reviewList(seller.reviews, seller.ratingCount ? "Individual review comments are not available from the platform yet." : "No customer reviews have been recorded for this business yet.")),
+          section(`Products from ${seller.name}`, loadNote, productsHost)));
+        fillProducts();
+        const dlg = $("axBusinessDialog"); dlg.scrollTop = 0;
+        if (!dlg.open) dlg.showModal();
+        // Ask the existing search API for other listings from this business.
+        try {
+          const r = await apiSearch({ query: seller.name });
+          addToPool(r.list);
+          const n = fillProducts();
+          loadNote.textContent = `${n} ${n === 1 ? "product" : "products"} listed by this business.`;
+          render();
+        } catch {
+          const n = fillProducts();
+          loadNote.textContent = `${n} ${n === 1 ? "product" : "products"} found so far. We couldn't check for more right now.`;
+        }
+      }
+
+      /* ------------------------------------------------------------------
+         Cart dialog
+         ------------------------------------------------------------------ */
+      function openCart() { renderCart(); const d = $("axCartDialog"); if (!d.open) d.showModal(); }
+
+      /* ------------------------------------------------------------------
+         Single search bar: suggestions across products, categories,
+         brands and businesses
+         ------------------------------------------------------------------ */
+      const suggestBox = $("axSuggest"), searchInput = $("axSearch");
+      let suggestItems = [], suggestIndex = -1;
+      const hideSuggest = () => { suggestBox.hidden = true; searchInput.setAttribute("aria-expanded", "false"); suggestIndex = -1; };
+      const buildSuggestions = text => {
+        const tokens = tokenize(text);
+        if (!tokens.length) return [];
+        const hit = s => tokens.every(t => norm(s).includes(t));
+        const out = [], seen = new Set();
+        const push = (type, label, action) => { const id = `${type}:${norm(label)}`; if (!seen.has(id)) { seen.add(id); out.push({ type, label, action }); } };
+        SEARCH_CATEGORIES.filter(hit).slice(0, 2).forEach(c => push("Category", c, () => submitSearch(c)));
+        const listings = [...pool.values()];
+        listings.filter(l => l.category && hit(l.category)).slice(0, 40).forEach(l => out.length < 12 && push("Category", l.category, () => submitSearch(l.category)));
+        listings.filter(l => hit(l.name)).slice(0, 4).forEach(l => push("Product", l.name, () => submitSearch(l.name)));
+        listings.filter(l => l.brand && hit(l.brand)).forEach(l => push("Brand", l.brand, () => submitSearch(l.brand)));
+        [...sellerMap().values()].filter(s => hit(s.name)).slice(0, 3).forEach(s => push("Business", s.name, () => openBusiness(s.key)));
+        return out.slice(0, 9);
+      };
+      const showSuggest = () => {
+        suggestItems = buildSuggestions(searchInput.value);
+        suggestIndex = -1;
+        suggestBox.replaceChildren(...suggestItems.map((it, i) => h("li", { role: "option", id: `axSg${i}`, "aria-selected": "false", onMousedown: e => { e.preventDefault(); chooseSuggest(i); } }, h("span", { class: "ax-sg-text", text: it.label }), h("span", { class: "ax-sg-type", text: it.type }))));
+        const open = suggestItems.length > 0;
+        suggestBox.hidden = !open; searchInput.setAttribute("aria-expanded", String(open));
+      };
+      const chooseSuggest = i => { const it = suggestItems[i]; if (!it) return; hideSuggest(); if (it.type !== "Business") searchInput.value = it.label; it.action(); };
+      const markSuggest = () => { [...suggestBox.children].forEach((li, i) => li.setAttribute("aria-selected", String(i === suggestIndex))); if (suggestIndex >= 0) searchInput.setAttribute("aria-activedescendant", `axSg${suggestIndex}`); else searchInput.removeAttribute("aria-activedescendant"); };
+      function submitSearch(text, label) { hideSuggest(); searchInput.value = text; runSearch(text, label); goToMarket(); }
+
+      searchInput.addEventListener("input", debounce(showSuggest, 120));
+      searchInput.addEventListener("focus", () => { if (searchInput.value.trim()) showSuggest(); });
+      searchInput.addEventListener("blur", () => setTimeout(hideSuggest, 120));
+      searchInput.addEventListener("keydown", e => {
+        if (suggestBox.hidden) return;
+        if (e.key === "ArrowDown") { e.preventDefault(); suggestIndex = (suggestIndex + 1) % suggestItems.length; markSuggest(); }
+        else if (e.key === "ArrowUp") { e.preventDefault(); suggestIndex = (suggestIndex - 1 + suggestItems.length) % suggestItems.length; markSuggest(); }
+        else if (e.key === "Enter" && suggestIndex >= 0) { e.preventDefault(); chooseSuggest(suggestIndex); }
+        else if (e.key === "Escape") hideSuggest();
+      });
+      $("axSearchForm").addEventListener("submit", e => { e.preventDefault(); submitSearch(searchInput.value.trim()); });
+
+      // categories, popular searches, tiles
+      document.addEventListener("click", e => {
+        const cat = e.target.closest("[data-category]");
+        if (cat) {
+          e.preventDefault();
+          const term = cat.dataset.category;
+          const label = cat.dataset.label || cat.textContent.replace(/^[^A-Za-z]+/, "").trim();
+          searchInput.value = term; submitSearch(term, term ? label : ""); if (!term) searchInput.value = "";
+          return;
+        }
+        const pop = e.target.closest("[data-market-query]");
+        if (pop) { e.preventDefault(); submitSearch(pop.dataset.marketQuery); }
+      });
+
+      // filters
+      ["axLocation", "axCondition"].forEach(id => $(id).addEventListener("change", () => runSearch(S.q, S.label)));
+      ["axInStock", "axVerified", "axSort"].forEach(id => $(id).addEventListener("change", () => { S.visible = PAGE_SIZE; render(); }));
+      ["axMin", "axMax"].forEach(id => $(id).addEventListener("input", debounce(() => { S.visible = PAGE_SIZE; render(); }, 250)));
+      // the max price is also passed to the API (max_budget), so re-query once typing pauses
+      $("axMax").addEventListener("input", debounce(() => runSearch(S.q, S.label), 700));
+      $("axReset").addEventListener("click", resetAll);
+      $("axMore").addEventListener("click", () => { S.visible += PAGE_SIZE; render(); });
+
+      // mobile: collapsible filters and a shorter search placeholder
+      $("axFilterToggle").addEventListener("click", e => {
+        const collapsed = $("axToolbar").classList.toggle("collapsed");
+        e.currentTarget.setAttribute("aria-expanded", String(!collapsed));
+      });
+      const fullPlaceholder = searchInput.placeholder, mq = matchMedia("(max-width: 760px)");
+      const syncPlaceholder = () => { searchInput.placeholder = mq.matches ? "Search products, brands, sellers" : fullPlaceholder; };
+      syncPlaceholder(); mq.addEventListener("change", syncPlaceholder);
+
+      // header: cart, dialogs, mobile menu
+      $("axOpenCart").addEventListener("click", openCart);
+      document.querySelectorAll("[data-ax-close]").forEach(btn => btn.addEventListener("click", () => $(btn.dataset.axClose).close()));
+      document.querySelectorAll("dialog.ax-dialog").forEach(dlg => dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); }));
+      const menuButton = $("menuToggle"), nav = $("navLinks");
+      menuButton.addEventListener("click", () => {
+        const isOpen = nav.classList.toggle("open");
+        menuButton.setAttribute("aria-expanded", String(isOpen));
+        menuButton.setAttribute("aria-label", isOpen ? "Close navigation" : "Open navigation");
+        menuButton.textContent = isOpen ? "×" : "☰";
+      });
+      nav.querySelectorAll("a").forEach(link => link.addEventListener("click", () => {
+        nav.classList.remove("open"); menuButton.setAttribute("aria-expanded", "false"); menuButton.setAttribute("aria-label", "Open navigation"); menuButton.textContent = "☰";
+      }));
+
+      // ---- preserved from the original page: cookies, FAQ, subscription/EcoCash availability ----
+      const cookiePreferenceKey = "zimshop-cookie-preferences";
+      const cookieBanner = document.getElementById("cookie-banner");
+      const cookieDialog = document.getElementById("cookie-dialog");
+      const cookieError = document.getElementById("cookie-error");
+      const cookieBannerStatus = document.getElementById("cookie-banner-status");
+      const analyticsCookies = document.getElementById("analytics-cookies");
+      const advertisingCookies = document.getElementById("advertising-cookies");
+      let savedCookiePreferences = null;
+      try {
+        const storedPreferences = localStorage.getItem(cookiePreferenceKey);
+        if (storedPreferences) {
+          const parsedPreferences = JSON.parse(storedPreferences);
+          if (parsedPreferences && parsedPreferences.necessary === true &&
+              typeof parsedPreferences.analytics === "boolean" &&
+              typeof parsedPreferences.advertising === "boolean") {
+            savedCookiePreferences = parsedPreferences;
+          }
+        }
+      } catch {
+        cookieBannerStatus.textContent = "Your browser blocked preference storage. Your choice may not be remembered.";
+      }
+
+      const showCookiePreferences = () => {
+        cookieError.textContent = "";
+        analyticsCookies.checked = savedCookiePreferences ? savedCookiePreferences.analytics : false;
+        advertisingCookies.checked = savedCookiePreferences ? savedCookiePreferences.advertising : false;
+        cookieDialog.showModal();
+      };
+      const saveCookiePreferences = (analytics, advertising) => {
+        const preferences = {
+          necessary: true,
+          analytics,
+          advertising,
+          updatedAt: new Date().toISOString()
+        };
+        try {
+          localStorage.setItem(cookiePreferenceKey, JSON.stringify(preferences));
+        } catch {
+          const errorMessage = "Could not save your preferences in this browser. Check your storage settings and try again.";
+          cookieError.textContent = errorMessage;
+          cookieBannerStatus.textContent = errorMessage;
+          return;
+        }
+        savedCookiePreferences = preferences;
+        cookieBanner.hidden = true;
+        cookieError.textContent = "";
+        cookieBannerStatus.textContent = "";
+        if (cookieDialog.open) cookieDialog.close();
+      };
+
+      cookieBanner.hidden = Boolean(savedCookiePreferences);
+      document.getElementById("accept-cookies").addEventListener("click", () => saveCookiePreferences(true, true));
+      document.getElementById("reject-cookies").addEventListener("click", () => saveCookiePreferences(false, false));
+      document.getElementById("customize-cookies").addEventListener("click", showCookiePreferences);
+      document.getElementById("open-cookie-preferences").addEventListener("click", showCookiePreferences);
+      document.getElementById("cancel-cookie-preferences").addEventListener("click", () => cookieDialog.close());
+      document.getElementById("save-cookie-preferences").addEventListener("click", () =>
+        saveCookiePreferences(analyticsCookies.checked, advertisingCookies.checked)
+      );
+
+
+
+      const pricingStatus = document.getElementById("pricing-status-note");
+      fetch(`${apiBase}/api/v1/subscriptions/settings`)
+        .then(response => {
+          if (!response.ok) throw new Error("Could not check subscription availability.");
+          return response.json();
+        })
+        .then(settings => {
+          const enabled = settings && settings.enabled === true;
+          document.getElementById("free-pricing-state").hidden = enabled;
+          document.getElementById("paid-pricing-content").hidden = !enabled;
+          document.getElementById("pricing-kicker").textContent = enabled ? "Business plans" : "Free access";
+          document.getElementById("pricing-heading").textContent = enabled ? "Choose a business plan" : "Free for customers and businesses";
+          document.getElementById("pricing-description").textContent = enabled
+            ? "Review plan features, monthly prices and payment details before subscribing."
+            : "Discover products, create a seller account and publish listings without a subscription payment.";
+          pricingStatus.textContent = enabled
+            ? "Subscription payments are processed through Paynow. SMS and data charges from your mobile provider may apply separately."
+            : "Paid subscriptions are currently paused. No subscription payment is required to use the marketplace.";
+        })
+        .catch(() => {
+          pricingStatus.textContent = "Subscription availability could not be checked. Paid checkout remains subject to the status shown by the billing service.";
+        });
+
+      document.getElementById("year").textContent = new Date().getFullYear();
+
+      // boot
+      loadCart();
+      updateCartUI();
+      runSearch("");
+    })();
+
+  </script>  
+</body>
+</html>
